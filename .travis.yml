@@ -1,0 +1,43 @@
+group: edge
+dist: trusty
+
+language: java
+jdk: oraclejdk8
+
+install: true
+before_install:
+
+  # install docker-compose
+  - sudo apt update
+  - sudo apt install -y python-pip curl jq libxml2-utils
+  - sudo pip install docker-compose
+  - sudo usermod -aG docker $(whoami)
+
+  # kill whatever punning on postgres / rabbitmq port
+  - sudo kill $(sudo lsof -t -i:5432) | true
+  - sudo kill $(sudo lsof -t -i:5672) | true
+
+script:
+  - export ROOT=$PWD
+  - >
+    for path in 04-reactive-mongo-webflux; do
+
+      export TARGET="$ROOT/$path";
+      cd $TARGET;
+      bash gradlew clean assemble # build
+
+    done;
+
+after_script:
+  - echo "custom testing here..."
+
+before_cache:
+  - gradle --stop
+  - rm -rf $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.m2/
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/

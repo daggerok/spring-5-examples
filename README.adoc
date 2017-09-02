@@ -1,0 +1,5 @@
+= spring-5-examples image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
+
+This repository is contains some spring-boot 2 / spring 5 playground project examples
+
+. link:04-reactive-mongo-webflux/[Spring 5 Reactive MongoDB / Webflux REST API]
