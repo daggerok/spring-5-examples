@@ -1,0 +1,35 @@
+= Spring 5 Reactive MongoDB / Webflux REST API image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
+
+[source,bash]
+----
+bash gradlew bootRun
+
+http :8080/all\?q=olo
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+transfer-encoding: chunked
+
+[
+    {
+        "id": "59ab6ad5789d33e00f308260",
+        "title": "ololo"
+    },
+    {
+        "id": "59ab6ad5789d33e00f308261",
+        "title": "trololo"
+    }
+]
+
+http --stream :8080/events/59ab6ad5789d33e00f308261                                                             05:37:29
+HTTP/1.1 200 OK
+Content-Type: text/event-stream
+transfer-encoding: chunked
+
+data:{"movie":{"title":"trololo","id":"59ab6ad5789d33e00f308261"},"updatedAt":[2017,9,3,5,37,30,29000000]}
+
+data:{"movie":{"title":"trololo","id":"59ab6ad5789d33e00f308261"},"updatedAt":[2017,9,3,5,37,31,35000000]}
+
+data:{"movie":{"title":"trololo","id":"59ab6ad5789d33e00f308261"},"updatedAt":[2017,9,3,5,37,32,29000000]}
+
+...
+----

@@ -16,59 +16,23 @@ before_install:
   # kill whatever punning on postgres / rabbitmq port
   - sudo kill $(sudo lsof -t -i:5432) | true
   - sudo kill $(sudo lsof -t -i:5672) | true
+  - sudo kill $(sudo lsof -t -i:27017) | true
 
 script:
   - export ROOT=$PWD
   - >
-    for path in 04-reactive-mongo-webflux \
-                03-reactive-webflux-spring-data-redis \
-                01-functional-spring; do
-
+    for path in \
+      05-reactive-mongo-webflux-functional \
+      04-reactive-mongo-webflux \
+      03-reactive-webflux-spring-data-redis \
+      02-spring-integration-5-example \
+      01-functional-spring;
+    do
       export TARGET="$ROOT/$path";
       cd $TARGET;
       bash gradlew clean build
 
     done;
-
-after_script:
-  - echo "functional-spring"
-  - cd $ROOT/01-functional-spring
-  - export SPRING_PROFILES_ACTIVE=dev
-  - bash gradlew bootRun-service &
-  - sleep 10
-  - bash gradlew bootRun-client &
-  - sleep 10
-  - echo "you should be abe to see hi"
-  - sleep 5
-  - bash gradlew --stop
-
-  - echo "spring-5-integration-example"
-  - cd $ROOT/02-spring-integration-5-example
-  - bash gradlew clean build
-  - sudo mkdir -p /var/app
-  - sudo mv -f ./build/libs/*.jar /var/app/boot.jar
-  - sudo ln -s /var/app/boot.jar /etc/init.d/boot
-  - sudo service boot start
-  - sleep 10
-  #- curl localhost:8080/sse -H'accept:text/event-stream'
-  - curl localhost:8080/sse
-  - sleep 1
-  - sudo service boot stop
-  - bash gradlew --stop
-
-  - echo "reactive-mongo-webflux"
-  - cd $ROOT/04-reactive-mongo-webflux
-  - bash gradlew clean build
-  - sudo mkdir -p /var/app
-  - sudo mv -f ./build/libs/*.jar /var/app/boot.jar
-  - sudo ln -s /var/app/boot.jar /etc/init.d/boot
-  - sudo service boot start
-  - sleep 10
-  - http :8080/first\?q=ololo
-  - sleep 1
-  - http :8080/all\?q=ololo
-  - sleep 1
-  - sudo service boot stop
 
 before_cache:
   - bash gradlew --stop
