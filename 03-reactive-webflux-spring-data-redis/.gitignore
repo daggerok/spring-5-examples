@@ -1,0 +1,23 @@
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+### IntelliJ IDEA ###
+.gradle/
+*.iws
+*.iml
+*.ipr
+.idea/
+!.idea/runConfigurations/*

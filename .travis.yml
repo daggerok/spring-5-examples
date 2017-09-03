@@ -20,7 +20,8 @@ before_install:
 script:
   - export ROOT=$PWD
   - >
-    for path in 04-reactive-mongo-webflux; do
+    for path in 04-reactive-mongo-webflux \
+                03-reactive-webflux-spring-data-redis; do
 
       export TARGET="$ROOT/$path";
       cd $TARGET;
