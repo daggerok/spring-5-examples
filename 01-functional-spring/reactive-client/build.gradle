@@ -1,0 +1,62 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.0.BUILD-SNAPSHOT'
+    }
+    repositories {
+        mavenCentral()
+        maven { url 'https://repo.spring.io/snapshot' }
+        maven { url 'https://repo.spring.io/milestone' }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'idea'
+    id 'application'
+    id 'cn.bestwu.propdeps' version '0.0.10'
+    id 'cn.bestwu.propdeps-idea' version '0.0.10'
+    id 'cn.bestwu.propdeps-maven' version '0.0.10'
+    id 'cn.bestwu.propdeps-eclipse' version '0.0.10'
+    id 'io.spring.dependency-management' version '1.0.2.RELEASE'
+}
+
+apply plugin: 'org.springframework.boot'
+
+mainClassName = 'daggerok.ReactiveClientApplication'
+
+bootJar {
+    launchScript {
+        included = true
+    }
+    mainClass = "$mainClassName"
+}
+
+assemble.dependsOn bootJar
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
+    }
+}
+
+version = '0.0.1'
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-webflux')
+    compile('org.springframework.boot:spring-boot-starter-aop')
+    compile('org.springframework.retry:spring-retry')
+    runtime('org.springframework.boot:spring-boot-devtools')
+    compileOnly('org.springframework.boot:spring-boot-configuration-processor')
+    compileOnly('org.projectlombok:lombok')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}

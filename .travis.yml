@@ -21,7 +21,8 @@ script:
   - export ROOT=$PWD
   - >
     for path in 04-reactive-mongo-webflux \
-                03-reactive-webflux-spring-data-redis; do
+                03-reactive-webflux-spring-data-redis \
+                01-functional-spring; do
 
       export TARGET="$ROOT/$path";
       cd $TARGET;
@@ -30,10 +31,19 @@ script:
     done;
 
 after_script:
-  - echo "custom testing here..."
+  - echo "functional-spring"
+  - export SPRING_PROFILES_ACTIVE=dev
+  - cd $ROOT/01-functional-spring
+  - bash gradlew bootRun-service &
+  - sleep 10
+  - bash gradlew bootRun-client &
+  - sleep 10
+  - echo "you should be abe to see hi"
+  - sleep 5
+  - bash gradlew --stop
 
 before_cache:
-  - gradle --stop
+  - bash gradlew --stop
   - rm -rf $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
 

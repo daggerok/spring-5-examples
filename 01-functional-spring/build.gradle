@@ -1,0 +1,28 @@
+plugins {
+    id 'idea'
+}
+
+def projectNames = [
+        'reactive-old-service',
+        'reactive-service',
+        'reactive-client',
+]
+
+['clean', 'assemble', 'test', 'build'].each { taskName ->
+    tasks.create(taskName) { task ->
+        projectNames.each { projectName ->
+            dependsOn gradle.includedBuild(projectName).task(":$taskName")
+        }
+    }
+}
+
+// bootRun
+projectNames.each { projectName ->
+
+    def bootRunTaskName = 'bootRun'
+    def taskName = projectName.replace('reactive', bootRunTaskName)
+
+    tasks.create(taskName) { task ->
+        dependsOn gradle.includedBuild(projectName).task(":$bootRunTaskName")
+    }
+}
