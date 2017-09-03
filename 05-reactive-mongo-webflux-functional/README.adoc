@@ -1,4 +1,4 @@
-= Spring 5 Reactive MongoDB / Webflux REST API image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
+= Spring 5 Reactive MongoDB / Functional REST API image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
 
 [source,bash]
 ----

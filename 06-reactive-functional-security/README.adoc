@@ -1,0 +1,55 @@
+= Spring 5 Reactive Functional Security image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
+
+1
+
+.build run and test
+[source,bash]
+----
+$ bash gradlew bootRun
+----
+
+2
+
+.unauthorizated request
+[source,bash]
+----
+$ http :8080                                                                 09:20:06
+HTTP/1.1 401 Unauthorized
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Expires: 0
+Pragma: no-cache
+WWW-Authenticate: Basic realm="Realm"
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+X-XSS-Protection: 1 ; mode=block
+content-length: 0
+----
+
+3
+
+.authorizated request
+[source,bash]
+----
+$ http --auth user:user :8080
+HTTP/1.1 200 OK
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Content-Type: application/json;charset=UTF-8
+Expires: 0
+Pragma: no-cache
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+X-XSS-Protection: 1 ; mode=block
+set-cookie: SESSION=400718a0-62c1-4acd-a437-14333bb09c08; HTTPOnly
+transfer-encoding: chunked
+
+[
+    {
+        "id": "59ab9e88f6abd5ffb856e4fe",
+        "title": "ololo"
+    },
+    {
+        "id": "59ab9e88f6abd5ffb856e4ff",
+        "title": "trololo"
+    }
+]
+----
