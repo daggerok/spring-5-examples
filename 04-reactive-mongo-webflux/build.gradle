@@ -51,4 +51,10 @@ subprojects { sp ->
     t.dependsOn ":docker:composeUp"
     t.finalizedBy ":docker:composeDown"
   }
+
+  sp.bootJar {
+    launchScript {
+      included = true
+    }
+  }
 }

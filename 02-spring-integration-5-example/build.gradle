@@ -1,0 +1,55 @@
+buildscript {
+  ext {
+    springBootVersion = '2.0.0.M3'
+    springIntegrationVersion = '5.0.0.M6'
+  }
+  repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
+  }
+}
+
+version = '0.0.1'
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+  mavenCentral()
+  maven { url "https://repo.spring.io/snapshot" }
+  maven { url "https://repo.spring.io/milestone" }
+  maven { url "https://repo.spring.io/lib-milestone" }
+}
+
+dependencies {
+  // spring-integration 5: start
+  compile("org.springframework.integration:spring-integration-http:$springIntegrationVersion")
+  compile("org.springframework.integration:spring-integration-core:$springIntegrationVersion")
+  // spring-integration 5: end
+  compile('org.springframework.boot:spring-boot-starter-integration')
+  compile('org.springframework.boot:spring-boot-starter-webflux')
+  runtime('org.springframework.boot:spring-boot-devtools')
+  compileOnly('org.projectlombok:lombok')
+  testCompile('org.springframework.boot:spring-boot-starter-test')
+  testCompile('io.projectreactor:reactor-test')
+}
+
+// executable spring-boot application (spring-boot gradle plugin version: 2+)
+bootJar {
+  launchScript {
+    included = true
+  }
+}

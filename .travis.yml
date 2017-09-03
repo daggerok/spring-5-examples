@@ -10,7 +10,7 @@ before_install:
   # install docker-compose
   - sudo apt update
   - sudo apt install -y python-pip curl jq libxml2-utils
-  - sudo pip install docker-compose
+  - sudo pip install docker-compose httpie
   - sudo usermod -aG docker $(whoami)
 
   # kill whatever punning on postgres / rabbitmq port
@@ -32,8 +32,8 @@ script:
 
 after_script:
   - echo "functional-spring"
-  - export SPRING_PROFILES_ACTIVE=dev
   - cd $ROOT/01-functional-spring
+  - export SPRING_PROFILES_ACTIVE=dev
   - bash gradlew bootRun-service &
   - sleep 10
   - bash gradlew bootRun-client &
@@ -41,6 +41,19 @@ after_script:
   - echo "you should be abe to see hi"
   - sleep 5
   - bash gradlew --stop
+
+  - echo "spring-5-integration-example"
+  - cd $ROOT/02-spring-integration-5-example
+  - bash gradlew clean build
+  - sudo mkdir -p /var/app
+  - sudo mv -f ./build/libs/*.jar /var/app/boot.jar
+  - sudo ln -s /var/app/boot.jar /etc/init.d/boot
+  - sudo service boot start
+  - sleep 10
+  #- curl localhost:8080/sse -H'accept:text/event-stream'
+  - curl localhost:8080/sse
+  - sleep 1
+  - sudo service boot stop
 
 before_cache:
   - bash gradlew --stop

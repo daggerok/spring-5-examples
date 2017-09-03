@@ -3,5 +3,6 @@
 This repository is contains some spring-boot 2 / spring 5 playground project examples
 
 . link:01-functional-spring/[Spring 5 Reactive Webflux RouterFunction / WebClient examples]
+. link:02-spring-integration-5-example/[Spring 5 Integration example]
 . link:03-reactive-webflux-spring-data-redis/[Spring 5 Reactive Redis / Webflux REST API (oldest)]
 . link:04-reactive-mongo-webflux/[Spring 5 Reactive MongoDB / Webflux REST API]

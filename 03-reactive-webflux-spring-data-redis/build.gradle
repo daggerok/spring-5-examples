@@ -49,3 +49,15 @@ dependencies {
     t.dependsOn ":docker:composeUp"
     t.finalizedBy ":docker:composeDown"
 }
+
+springBoot {
+    executable = true
+}
+
+/*
+bootJar {
+    launchScript {
+        included = true
+    }
+}
+*/
