@@ -54,6 +54,21 @@ after_script:
   - curl localhost:8080/sse
   - sleep 1
   - sudo service boot stop
+  - bash gradlew --stop
+
+  - echo "reactive-mongo-webflux"
+  - cd $ROOT/04-reactive-mongo-webflux
+  - bash gradlew clean build
+  - sudo mkdir -p /var/app
+  - sudo mv -f ./build/libs/*.jar /var/app/boot.jar
+  - sudo ln -s /var/app/boot.jar /etc/init.d/boot
+  - sudo service boot start
+  - sleep 10
+  - http :8080/first\?q=ololo
+  - sleep 1
+  - http :8080/all\?q=ololo
+  - sleep 1
+  - sudo service boot stop
 
 before_cache:
   - bash gradlew --stop
