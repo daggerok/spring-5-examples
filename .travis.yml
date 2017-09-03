@@ -24,7 +24,7 @@ script:
 
       export TARGET="$ROOT/$path";
       cd $TARGET;
-      bash gradlew clean assemble # build
+      bash gradlew clean build
 
     done;
 

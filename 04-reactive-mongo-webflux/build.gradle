@@ -45,4 +45,10 @@ subprojects { sp ->
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("io.projectreactor:reactor-test")
   }
+
+  [test, build, bootRun].each { Task t ->
+    t.shouldRunAfter clean, assemble, ":docker:composeUp"
+    t.dependsOn ":docker:composeUp"
+    t.finalizedBy ":docker:composeDown"
+  }
 }
