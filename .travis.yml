@@ -22,6 +22,7 @@ script:
   - export ROOT=$PWD
   - >
     for path in \
+      07-reactive-security-client \
       06-reactive-functional-security \
       05-reactive-mongo-webflux-functional \
       04-reactive-mongo-webflux \
@@ -29,8 +30,8 @@ script:
       02-spring-integration-5-example \
       01-functional-spring;
     do
-      export TARGET="$ROOT/$path";
-      cd $TARGET;
+      export TARGET="$ROOT/$path"
+      cd $TARGET
       bash gradlew clean build
     done;
 

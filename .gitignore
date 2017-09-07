@@ -1,3 +1,6 @@
+08-cassandra-reactive-security-client/
+08-redis-reactive-security-client/
+.DS_Store
 .gradle/
 !gradle/wrapper/gradle-wrapper.jar
 

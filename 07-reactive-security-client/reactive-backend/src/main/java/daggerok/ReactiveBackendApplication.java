@@ -5,12 +5,15 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import java.util.Collections;
 
+import static java.util.Collections.singletonMap;
+
 @SpringBootApplication
 public class ReactiveBackendApplication {
 
   public static void main(String[] args) {
+
     new SpringApplicationBuilder(ReactiveBackendApplication.class)
-        .properties(Collections.singletonMap("server.port", 8001))
+        .properties(singletonMap("server.port", 8001))
         .run(args);
   }
 }
