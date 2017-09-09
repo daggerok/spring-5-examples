@@ -1,0 +1,21 @@
+server:
+  port: 8002
+spring:
+  profiles:
+    active: default
+boot-reactive-backend:
+  ip: 127.0.0.1
+  port: 8001
+  base-url: http://${boot-reactive-backend.ip}:${boot-reactive-backend.port}
+---
+spring:
+  profiles: default
+boot-reactive-backend.credentials:
+  username: admin
+  password: admin
+---
+spring:
+  profiles: unauth
+boot-reactive-backend.credentials:
+  username: user
+  password: user

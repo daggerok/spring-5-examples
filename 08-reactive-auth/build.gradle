@@ -1,0 +1,60 @@
+buildscript {
+  ext {
+    springBootVersion = "2.0.0.M3"
+  }
+  repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+  }
+}
+
+plugins {
+  id "idea"
+  id "eclipse"
+}
+
+allprojects { p ->
+
+  p.apply plugin: "java"
+
+  p.version = "0.0.1"
+  p.group = "daggerok"
+  p.sourceCompatibility = p.targetCompatibility = JavaVersion.VERSION_1_8
+
+  p.repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+  }
+}
+
+subprojects { p ->
+
+  if ("docker" == p.name) return
+
+  p.apply plugin: "org.springframework.boot"
+  p.apply plugin: "io.spring.dependency-management"
+
+  p.dependencies {
+    compile("org.springframework.boot:spring-boot-starter-webflux")
+    compile("org.springframework.boot:spring-boot-starter")
+    runtime("org.springframework.boot:spring-boot-devtools")
+    compileOnly("org.projectlombok:lombok")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("io.projectreactor:reactor-test")
+  }
+
+  p.bootJar {
+    launchScript {
+      included = true
+    }
+  }
+
+  bootRun {
+    systemProperties = System.properties
+  }
+}

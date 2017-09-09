@@ -9,5 +9,6 @@ This repository is contains some spring-boot 2 / spring 5 playground project exa
 . link:05-reactive-mongo-webflux-functional/[Spring 5 Reactive MongoDB / Functional REST API]
 . link:06-reactive-functional-security/[Spring 5 Reactive Functional Security]
 . link:07-reactive-security-client/[Spring 5 Reactive WebClient Security]
+. link:08-reactive-auth/[Spring 5 Security Authentication and Authorization]
 
 link:https://www.youtube.com/watch?v=TZUZgU6rsNY[TODO: watch Reactive Spring by Juergen Hoeller and Josh Long]
