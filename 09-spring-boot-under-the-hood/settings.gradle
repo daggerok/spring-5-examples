@@ -1,1 +1,2 @@
 include "power-of-conditions"
+include "spring-boot-custom-starter"
