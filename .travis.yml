@@ -22,6 +22,7 @@ script:
   - export ROOT=$PWD
   - >
     for path in \
+      09-spring-boot-under-the-hood \
       08-reactive-auth \
       07-reactive-security-client \
       06-reactive-functional-security \
