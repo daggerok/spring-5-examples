@@ -20,7 +20,7 @@ plugins {
 allprojects {
 
   apply plugin: "java"
-
+  group = "daggerok"
   version = "0.0.1"
 
   sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8

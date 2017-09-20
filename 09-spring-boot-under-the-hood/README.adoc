@@ -53,3 +53,14 @@ bash gradlew -t bootRun
 ----
 
 == own starters
+
+. create a starter configuration with provided by you custom functionality.
+In our case it's kind of Java analog for JSON.stringify / JSON.parse from JS.
+
+. create src/main/resources/META-INF/spring.factories file
+
+.src/main/resources/META-INF/spring.factories
+[source,properties]
+----
+
+----

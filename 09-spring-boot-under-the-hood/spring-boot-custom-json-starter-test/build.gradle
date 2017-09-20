@@ -1,0 +1,50 @@
+buildscript {
+  ext {
+    springBootVersion = "2.0.0.M4"
+  }
+  repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+  }
+}
+
+plugins {
+  id "idea"
+  id "maven"
+  id "eclipse"
+}
+
+apply plugin: "java"
+group = "daggerok"
+version = "0.0.1"
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+  mavenCentral()
+  maven { url "https://repo.spring.io/snapshot" }
+  maven { url "https://repo.spring.io/milestone" }
+}
+
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+
+dependencies {
+  compile project(":spring-boot-custom-json-starter").sourceSets.main.output
+  testCompile project(":spring-boot-custom-json-starter").sourceSets.main.output
+  compile("org.projectlombok:lombok:1.16.18")
+  compile("org.springframework.boot:spring-boot-starter")
+  testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+bootJar {
+  launchScript {
+    included = true
+  }
+}
+
+assemble.dependsOn ":spring-boot-custom-json-starter:assemble"
