@@ -10,6 +10,7 @@ This repository is contains some spring-boot 2 / spring 5 playground project exa
 . link:06-reactive-functional-security/[Spring 5 Reactive Functional Security]
 . link:07-reactive-security-client/[Spring 5 Reactive WebClient Security]
 . link:08-reactive-auth/[Spring 5 Security Authentication and Authorization]
+. link:09-spring-boot-under-the-hood/[Spring boot conditions, auto-configurations and custom starter]
 
 resources:
 
