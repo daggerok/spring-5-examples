@@ -1,11 +1,11 @@
 buildscript {
     ext {
-        springBootVersion = '2.0.0.BUILD-SNAPSHOT'
+        springBootVersion = "2.0.0.M4"
     }
     repositories {
         mavenCentral()
-        maven { url 'https://repo.spring.io/snapshot' }
-        maven { url 'https://repo.spring.io/milestone' }
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
@@ -13,24 +13,24 @@ buildscript {
 }
 
 plugins {
-    id 'java'
-    id 'idea'
-    id 'application'
-    id 'cn.bestwu.propdeps' version '0.0.10'
-    id 'cn.bestwu.propdeps-idea' version '0.0.10'
-    id 'cn.bestwu.propdeps-maven' version '0.0.10'
-    id 'cn.bestwu.propdeps-eclipse' version '0.0.10'
-    id 'io.spring.dependency-management' version '1.0.2.RELEASE'
+    id "java"
+    id "idea"
+    id "application"
+    id "cn.bestwu.propdeps" version "0.0.10"
+    id "cn.bestwu.propdeps-idea" version "0.0.10"
+    id "cn.bestwu.propdeps-maven" version "0.0.10"
+    id "cn.bestwu.propdeps-eclipse" version "0.0.10"
+    id "io.spring.dependency-management" version "1.0.3.RELEASE"
 }
 
-apply plugin: 'org.springframework.boot'
+apply plugin: "org.springframework.boot"
 
-mainClassName = 'daggerok.ReactiveServiceApplication'
+mainClassName = "daggerok.ReactiveServiceApplication"
 
 bootJar {
-    launchScript {
-        included = true
-    }
+//    launchScript {
+//        included = true
+//    }
     mainClass = "$mainClassName"
 }
 
@@ -42,7 +42,7 @@ dependencyManagement {
     }
 }
 
-version = '0.0.1'
+version = "0.0.1"
 sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
@@ -52,8 +52,8 @@ repositories {
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-webflux')
-    runtime('org.springframework.boot:spring-boot-devtools')
-    compileOnly('org.projectlombok:lombok')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile("org.springframework.boot:spring-boot-starter-webflux")
+    runtime("org.springframework.boot:spring-boot-devtools")
+    compileOnly("org.projectlombok:lombok")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }
