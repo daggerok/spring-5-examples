@@ -91,6 +91,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
-src/main/resources/static/
+**/ui/src/main/resources/static/
 yarn.lock
 package-lock.json
+
