@@ -1,33 +1,5 @@
-08-cassandra-reactive-security-client/
-08-redis-reactive-security-client/
-out/
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-
-### IntelliJ IDEA ###
-.idea/
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-nbproject/private/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-
-node_modules/
-yarn.lock
 back/.gradle
 build/
-.gradle/
 !gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###

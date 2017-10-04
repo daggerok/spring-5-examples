@@ -1,0 +1,6 @@
+server:
+  port: 8000
+spring:
+  mustache:
+    prefix: classpath:/static
+    suffix: .html
