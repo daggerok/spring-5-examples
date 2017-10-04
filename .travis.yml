@@ -24,7 +24,7 @@ script:
   - export ROOT=$PWD
   - >
     for path in \
-      10-reactive-websocket-api \
+      10-reactive-websocket-sse \
       09-spring-boot-under-the-hood \
       08-reactive-auth \
       07-reactive-security-client \

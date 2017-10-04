@@ -1,0 +1,3 @@
+rootProject.name = "reactive-websocket-sse"
+includeBuild "ui"
+includeBuild "back"

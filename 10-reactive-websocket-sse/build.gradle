@@ -1,0 +1,23 @@
+plugins {
+    id "idea"
+}
+
+def projectNames = [
+        "ui",
+]
+
+[ "clean", "assemble", "test", "build" ].each { taskName ->
+    tasks.create(taskName) { task ->
+        projectNames.each { projectName ->
+            dependsOn gradle.includedBuild(projectName).task(":$taskName")
+        }
+    }
+}
+
+[ "bootRun" ].each { taskName ->
+    tasks.create(taskName) { task ->
+        gradle.includedBuilds.each { build ->
+            dependsOn gradle.includedBuild(build.name).task(":$taskName")
+        }
+    }
+}
