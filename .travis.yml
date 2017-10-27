@@ -37,6 +37,7 @@ script:
     do
       export TARGET="$ROOT/$path"
       cd $TARGET
+      echo "build $path"
       bash gradlew clean build
     done;
 

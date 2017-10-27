@@ -1,3 +1,9 @@
 plugins {
   id "idea"
+  id "base"
+}
+
+task wrapper(type: Wrapper) {
+  distributionType = "ALL"
+  gradleVersion = "4.2.1"
 }

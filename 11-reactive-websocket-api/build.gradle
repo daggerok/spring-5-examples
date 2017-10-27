@@ -21,3 +21,8 @@ def projectNames = [
         }
     }
 }
+
+task wrapper(type: Wrapper) {
+    distributionType = "ALL"
+    gradleVersion = "4.2.1"
+}
