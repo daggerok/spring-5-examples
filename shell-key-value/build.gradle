@@ -53,7 +53,7 @@ allprojects {
 }
 
 dependencies {
-  compile("org.springframework.boot:spring-boot-starter-webflux")
+//  compile("org.springframework.boot:spring-boot-starter-webflux")
   compile("org.springframework.data:spring-data-keyvalue")
   compile("org.springframework.shell:spring-shell-starter:$springShellVersion")
   compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion")
