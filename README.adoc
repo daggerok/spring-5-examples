@@ -2,17 +2,18 @@
 
 This repository is contains some spring-boot 2 / spring 5 playground project examples
 
-. link:01-functional-spring/[Spring 5 Reactive Webflux RouterFunction / WebClient examples]
-. link:02-spring-integration-5-example/[Spring 5 Integration example]
-. link:03-reactive-webflux-spring-data-redis/[Spring 5 Reactive Redis / Old Webflux REST API]
-. link:04-reactive-mongo-webflux/[Spring 5 Reactive MongoDB / Webflux REST API]
-. link:05-reactive-mongo-webflux-functional/[Spring 5 Reactive MongoDB / Functional REST API]
-. link:06-reactive-functional-security/[Spring 5 Reactive Functional Security]
-. link:07-reactive-security-client/[Spring 5 Reactive WebClient Security]
-. link:08-reactive-auth/[Spring 5 Security Authentication and Authorization]
-. link:09-spring-boot-under-the-hood/[Spring boot conditions, auto-configurations and custom starter]
-. link:10-reactive-websocket-sse/[Reactive WebSocket SSE]
+. link:functional-spring/[Spring 5 Reactive Webflux RouterFunction / WebClient examples]
+. link:spring-integration-5-example/[Spring 5 Integration example]
+. link:reactive-webflux-spring-data-redis/[Spring 5 Reactive Redis / Old Webflux REST API]
+. link:reactive-mongo-webflux/[Spring 5 Reactive MongoDB / Webflux REST API]
+. link:reactive-mongo-webflux-functional/[Spring 5 Reactive MongoDB / Functional REST API]
+. link:reactive-functional-security/[Spring 5 Reactive Functional Security]
+. link:reactive-security-client/[Spring 5 Reactive WebClient Security]
+. link:reactive-auth/[Spring 5 Security Authentication and Authorization]
+. link:spring-boot-under-the-hood/[Spring boot conditions, auto-configurations and custom starter]
+. link:reactive-websocket-sse/[Reactive WebSocket SSE]
 . link:webflux-static-content/[Serving static web content with WebFlux]
+. link:shell-key-value/[Spring shell / webflux / spring-data-keyvalue / kotlin]
 
 resources:
 

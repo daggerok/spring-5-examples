@@ -1,0 +1,10 @@
+server:
+  port: 8002
+
+boot-reactive-backend:
+  ip: 127.0.0.1
+  port: 8001
+  base-url: http://${boot-reactive-backend.ip}:${boot-reactive-backend.port}
+  credentials:
+    username: user
+    password: user

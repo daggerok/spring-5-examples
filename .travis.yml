@@ -1,6 +1,10 @@
 group: edge
 dist: trusty
 
+env:
+  global:
+    TERM=dumb
+
 language: java
 jdk:
   - openjdk8
@@ -24,16 +28,17 @@ script:
   - export ROOT=$PWD
   - >
     for path in \
-      10-reactive-websocket-sse \
-      09-spring-boot-under-the-hood \
-      08-reactive-auth \
-      07-reactive-security-client \
-      06-reactive-functional-security \
-      05-reactive-mongo-webflux-functional \
-      04-reactive-mongo-webflux \
-      03-reactive-webflux-spring-data-redis \
-      02-spring-integration-5-example \
-      01-functional-spring;
+      shell-key-value \
+      reactive-websocket-sse \
+      spring-boot-under-the-hood \
+      reactive-auth \
+      reactive-security-client \
+      reactive-functional-security \
+      reactive-mongo-webflux-functional \
+      reactive-mongo-webflux \
+      reactive-webflux-spring-data-redis \
+      spring-integration-5-example \
+      functional-spring;
     do
       export TARGET="$ROOT/$path"
       cd $TARGET
