@@ -10,7 +10,17 @@ bash gradlew clean assemble
 java -jar build/libs/*.jar
 
 shell>help
+
 shell>connect --name max
+> connected: true
+> total: 1
+
+shell>all
+> all system users: [User(id=1c2568c4-0de2-481a-ada1-707c3a5c83ff, name=Max, username=max)]
+
+shell>disconnect --name max
+> disconnected: false
+> total: 0
 ----
 
 using:

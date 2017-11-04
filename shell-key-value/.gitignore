@@ -1,6 +1,7 @@
 out/
 .DS_Store
 .gradle
+*.log
 
 ### STS ###
 .apt_generated
