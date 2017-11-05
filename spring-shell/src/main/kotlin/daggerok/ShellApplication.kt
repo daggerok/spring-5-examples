@@ -1,8 +1,10 @@
 package daggerok
 
+import org.springframework.beans.factory.InitializingBean
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.ansi.AnsiColor
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.context.annotation.Bean
 import org.springframework.data.annotation.Id
 import org.springframework.data.keyvalue.annotation.KeySpace
 import org.springframework.data.keyvalue.core.KeyValueTemplate
@@ -21,6 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 data class User(@Id var id: String? = null,
                 var name: String? = null,
                 var username: String? = null) {
+
   companion object
 }
 
@@ -33,7 +36,8 @@ fun User.Companion.of(name: String) = User(
 @Repository
 interface UserRepository : CrudRepository<User, String>
 
-fun String.containsIgnoreCase(s: String) = this.toLowerCase().contains(s.toLowerCase())
+fun String.containsIgnoreCase(s: String) =
+    this.toLowerCase().contains(s.toLowerCase())
 
 @Service
 class ConnectionService(val repo: UserRepository,
@@ -140,17 +144,17 @@ class ConnectionCommands(val svc: ConnectionService,
 
 @SpringBootApplication
 @EnableMapRepositories(basePackageClasses = arrayOf(UserRepository::class))
-class ShellApplication /*{
+class ShellApplication {
 
   @Bean
   fun initializer(repo: UserRepository) = InitializingBean {
-    Stream.of("max", "dag", "daggerok")
-        .map { User.Companion.of(it) }
+    arrayOf("max", "dag", "daggerok")
+        .map { User.of(it) }
         .forEach { repo.save(it) }
 
     repo.findAll().forEach { println(it) }
   }
-}*/
+}
 
 fun main(args: Array<String>) {
   SpringApplication.run(ShellApplication::class.java, *args)
