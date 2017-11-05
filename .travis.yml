@@ -28,7 +28,7 @@ script:
   - export ROOT=$PWD
   - >
     for path in \
-      shell-key-value \
+      spring-shell \
       reactive-websocket-sse \
       spring-boot-under-the-hood \
       reactive-auth \

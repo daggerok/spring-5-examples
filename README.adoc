@@ -13,7 +13,7 @@ This repository is contains some spring-boot 2 / spring 5 playground project exa
 . link:spring-boot-under-the-hood/[Spring boot conditions, auto-configurations and custom starter]
 . link:reactive-websocket-sse/[Reactive WebSocket SSE]
 . link:webflux-static-content/[Serving static web content with WebFlux]
-. link:shell-key-value/[Spring shell / webflux / spring-data-keyvalue / kotlin]
+. link:spring-shell/[Spring shell / webflux / spring-data-keyvalue / kotlin]
 
 resources:
 
