@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -13,12 +14,14 @@ import java.util.Optional;
 @SpringBootApplication
 public class MustacheJsonApplication {
 
-  @GetMapping("/hello/{name}")
+  @GetMapping({
+      "/hello",
+      "/hello/{name}",
+  })
   public String index(@PathVariable final Optional<String> name, final Model model) {
     model.addAttribute("name", "world");
-    name.ifPresent(s -> {
-      model.addAttribute("name", s);
-    });
+    name.filter(s -> !StringUtils.isEmpty(s))
+        .ifPresent(s -> model.addAttribute("name", s));
     return "hello";
   }
 

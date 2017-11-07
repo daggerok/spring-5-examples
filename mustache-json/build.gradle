@@ -8,18 +8,18 @@ buildscript {
     maven { url "https://repo.spring.io/milestone" }
   }
   dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
   }
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'daggerok'
 version = '0.0.1'
-sourceCompatibility = 1.8
+sourceCompatibility = targetCompatibility = 1.8
 
 repositories {
   mavenCentral()
