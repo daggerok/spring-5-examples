@@ -26,8 +26,18 @@ before_install:
 
 script:
   - export ROOT=$PWD
+
+  - bash gradlew build -b $ROOT/mustache-json/build.gradle
+  - java -jar $ROOT/mustache-json/build/libs/*jar &
+  - sleep 10
+  - http :8080
+  - http :8080/hello
+  - http :8080/hello/mustache
+  - sudo killall -9 java | sudo kill $(sudo lsof -t -i:8080) | true
+
   - >
     for path in \
+      mustache-json \
       spring-shell \
       reactive-websocket-sse \
       spring-boot-under-the-hood \

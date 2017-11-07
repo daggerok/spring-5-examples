@@ -1,0 +1,12 @@
+= spring-5-examples image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
+
+//tag::content[]
+
+.build and run
+----
+bash gradlew bootRun
+http :8080
+---
+
+//end::content[]
+
