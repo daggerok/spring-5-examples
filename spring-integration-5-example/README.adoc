@@ -1,4 +1,4 @@
-= spring-integration-5-example image:https://travis-ci.org/daggerok/spring-integration-5-example.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-integration-5-example"]
+= spring-integration-5-example image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
 
 this repository is containing simple spring-integration 5 example
 
