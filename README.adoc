@@ -9,7 +9,7 @@ This repository is contains some spring-boot 2 / spring 5 playground project exa
 . link:reactive-mongo-webflux-functional/[Spring 5 Reactive MongoDB / Functional REST API]
 . link:reactive-functional-security/[Spring 5 Reactive Functional Security]
 . link:reactive-security-client/[Spring 5 Reactive WebClient Security]
-. link:reactive-auth/[Spring 5 Security Authentication and Authorization]
+. link:reactive-security-auth/[Spring 5 Security Authentication and Authorization]
 . link:spring-boot-under-the-hood/[Spring boot conditions, auto-configurations and custom starter]
 . link:reactive-websocket-sse/[Reactive WebSocket SSE]
 . link:webflux-static-content/[Serving static web content with WebFlux]
