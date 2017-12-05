@@ -5,7 +5,7 @@ services:
   app-maven:
     restart: unless-stopped
     build:
-      context: .
+      context: ../../..
       dockerfile: ./src/main/docker/maven/Dockerfile
     volumes: ["app-maven-data:/home/app"]
     ports: ["8001:8080"]
@@ -14,7 +14,7 @@ services:
   app-gradle:
     restart: unless-stopped
     build:
-      context: .
+      context: ../../..
       dockerfile: ./src/main/docker/gradle/Dockerfile
     volumes: ["app-maven-data:/home/app"]
     ports: ["8002:8080"]

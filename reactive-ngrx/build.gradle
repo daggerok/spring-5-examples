@@ -39,6 +39,7 @@ repositories {
 }
 
 dependencies {
+  compile("org.springframework.boot:spring-boot-starter-actuator")
   compile("org.springframework.boot:spring-boot-starter-thymeleaf")
   compile("org.springframework.boot:spring-boot-starter-webflux")
   runtime("org.springframework.boot:spring-boot-devtools")
@@ -66,6 +67,6 @@ yarn_install.dependsOn yarn_cache_clean
 
 clean.doFirst {
   ["nodejs", "npm", "yarn"].each { delete "$projectDir/.gradle/$it" }
-  ["out", "build", "target"].each { delete "$projectDir/$it" }
+  ["out", "build"].each { delete "$projectDir/$it" }
   delete Paths.get(node.nodeModulesDir.path, "node_modules")
 }

@@ -34,6 +34,12 @@ script:
   - sleep 15
   - http :8080
   - stop_any 8080
+  - bash gradlew clean build -b $ROOT/reactive-ngrx/build.gradle
+  - docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml up --build -d
+  - sleep 15
+  - http :8001
+  - http :8002
+  - docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
 
   - bash gradlew build -b $ROOT/mustache-json/build.gradle
   - java -jar $ROOT/mustache-json/build/libs/*.jar &
