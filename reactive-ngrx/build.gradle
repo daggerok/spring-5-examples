@@ -1,0 +1,71 @@
+import java.nio.file.Paths
+
+buildscript {
+  ext {
+    springBootVersion = "2.0.0.M7"
+  }
+  repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+  }
+}
+
+plugins {
+  id "java"
+  id "idea"
+  id "eclipse"
+  id "com.moowork.node" version "1.2.0"
+}
+
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+
+allprojects {
+  group = "daggerok"
+  version = "0.0.1"
+  description = "Spring Boot 5 Reactive Angular ngrx"
+}
+
+sourceCompatibility = targetCompatibility = 1.8
+
+repositories {
+  mavenCentral()
+  maven { url "https://repo.spring.io/snapshot" }
+  maven { url "https://repo.spring.io/milestone" }
+}
+
+dependencies {
+  compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+  compile("org.springframework.boot:spring-boot-starter-webflux")
+  runtime("org.springframework.boot:spring-boot-devtools")
+  compileOnly("org.springframework.boot:spring-boot-configuration-processor")
+  testCompile("org.springframework.boot:spring-boot-starter-test")
+  testCompile("io.projectreactor:reactor-test")
+}
+
+task wrapper(type: Wrapper) {
+  distributionType = "ALL"
+}
+
+node {
+  download = true
+  version = "8.9.1"
+  npmVersion = "5.5.1"
+  yarnVersion = "0.24.5"
+  nodeModulesDir = Paths.get("src", "main", "ngrx").toFile()
+}
+
+assemble.dependsOn yarn_build
+yarn_build.dependsOn yarn_install
+yarn_lint.dependsOn yarn_install
+yarn_install.dependsOn yarn_cache_clean
+
+clean.doFirst {
+  ["nodejs", "npm", "yarn"].each { delete "$projectDir/.gradle/$it" }
+  ["out", "build", "target"].each { delete "$projectDir/$it" }
+  delete Paths.get(node.nodeModulesDir.path, "node_modules")
+}

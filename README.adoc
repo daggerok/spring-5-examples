@@ -15,6 +15,7 @@ This repository is contains some spring-boot 2 / spring 5 playground project exa
 . link:webflux-static-content/[Serving static web content with WebFlux]
 . link:spring-shell/[Spring shell / webflux / spring-data-keyvalue / kotlin]
 . link:mustache-json/[REST API using mustache view engine]
+. link:reactive-ngrx/[Reactive static content]
 
 resources:
 

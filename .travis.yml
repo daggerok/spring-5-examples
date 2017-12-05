@@ -19,13 +19,26 @@ before_install:
   - sudo pip install docker-compose httpie
   - sudo usermod -aG docker $(whoami)
 
+  # helper bash functions
+  - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/stop_any.bash)
+  - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/wait_for.bash)
+
   # kill whatever punning on postgres / rabbitmq port
-  - sudo kill $(sudo lsof -t -i:5432) | true
-  - sudo kill $(sudo lsof -t -i:5672) | true
-  - sudo kill $(sudo lsof -t -i:27017) | true
+  - stop_any 5432 5672 27017
 
 script:
   - export ROOT=$PWD
+
+  - bash gradlew clean build -b $ROOT/reactive-ngrx/build.gradle
+  - java -jar $ROOT/reactive-ngrx/build/libs/*jar &
+  - sleep 15
+  - http :8080
+  - stop_any 8080
+  - bash mvnw clean package -f $ROOT/reactive-ngrx/pom.xml
+  - java -jar $ROOT/reactive-ngrx/target/*jar &
+  - sleep 15
+  - http :8080
+  - stop_any 8080
 
   - bash gradlew build -b $ROOT/mustache-json/build.gradle
   - java -jar $ROOT/mustache-json/build/libs/*jar &

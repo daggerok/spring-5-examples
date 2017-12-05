@@ -1,0 +1,16 @@
+= spring-5-examples image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
+
+This repository contains:
+
+. reactive static content
+. TODO: in progress...
+
+.gradle
+----
+./gradlew build bootRun
+----
+
+.maven
+----
+./mvnw install spring-boot:run
+----
