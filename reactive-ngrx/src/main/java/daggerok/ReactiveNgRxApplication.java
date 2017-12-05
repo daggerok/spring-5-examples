@@ -18,7 +18,7 @@ public class ReactiveNgRxApplication {
 
     @GetMapping({"", "/"})
     public Mono<String> index() {
-      return Mono.just("/index.html");
+      return Mono.just("index");
     }
   }
 }

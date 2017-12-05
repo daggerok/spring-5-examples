@@ -29,19 +29,14 @@ before_install:
 script:
   - export ROOT=$PWD
 
-  - bash gradlew clean build -b $ROOT/reactive-ngrx/build.gradle
-  - java -jar $ROOT/reactive-ngrx/build/libs/*jar &
-  - sleep 15
-  - http :8080
-  - stop_any 8080
   - bash mvnw clean package -f $ROOT/reactive-ngrx/pom.xml
-  - java -jar $ROOT/reactive-ngrx/target/*jar &
+  - java -jar $ROOT/reactive-ngrx/target/*.jar &
   - sleep 15
   - http :8080
   - stop_any 8080
 
   - bash gradlew build -b $ROOT/mustache-json/build.gradle
-  - java -jar $ROOT/mustache-json/build/libs/*jar &
+  - java -jar $ROOT/mustache-json/build/libs/*.jar &
   - sleep 10
   - http :8080
   - http :8080/hello/
@@ -50,6 +45,7 @@ script:
 
   - >
     for path in \
+      reactive-ngrx \
       mustache-json \
       spring-shell \
       reactive-websocket-sse \
