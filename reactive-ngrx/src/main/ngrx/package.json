@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build -prod --aot=false",
+    "build": "ng build -aot -prod",
     "serve": "serve -s -C -p 3000 ../resources/public",
     "lint": "ng lint"
   },
