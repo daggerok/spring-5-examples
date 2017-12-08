@@ -6,10 +6,15 @@ import { Component } from '@angular/core';
     <h1>
       {{title}}
     </h1>
+    <button mat-raised-button="">click me!</button>
     <router-outlet></router-outlet>
   `,
-  styles: []
+  styles: [],
 })
 export class AppComponent {
   title = 'app works!';
+
+  constructor() {
+    console.log('hey!');
+  }
 }

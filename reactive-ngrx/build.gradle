@@ -10,7 +10,7 @@ buildscript {
     maven { url "https://repo.spring.io/milestone" }
   }
   dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
   }
 }
 
@@ -63,7 +63,7 @@ node {
 assemble.dependsOn yarn_build
 yarn_build.dependsOn yarn_install
 yarn_lint.dependsOn yarn_install
-yarn_install.dependsOn yarn_cache_clean
+//yarn_install.dependsOn yarn_cache_clean
 
 clean.doFirst {
   ["nodejs", "npm", "yarn"].each { delete "$projectDir/.gradle/$it" }
