@@ -8,7 +8,7 @@ services:
     ports: ["8080:8080"]
     networks: [backing-services]
     restart: unless-stopped
-    mem_limit: 104857600 # container limit: 100Mb (100 * 1024 * 1024)
+    #mem_limit: 104857600 # container limit: 100Mb (100 * 1024 * 1024)
 
 volumes:
   app-data: {}

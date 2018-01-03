@@ -1,0 +1,7 @@
+= seeds projects
+
+.redux store seed
+----
+git clone https://github.com/UltimateAngular/redux-store
+----
+

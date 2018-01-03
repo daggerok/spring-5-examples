@@ -1,5 +1,5 @@
-group: edge
-dist: trusty
+sudo: required
+group: travis_lts
 
 env:
   global:
@@ -13,9 +13,11 @@ jdk:
 install: true
 before_install:
 
-  # install docker-compose
+  # install docker / compose
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt update
-  - sudo apt install -y python-pip curl jq libxml2-utils
+  - sudo apt -y install docker-ce python-pip curl jq libxml2-utils docker-ce
   - sudo pip install docker-compose httpie
   - sudo usermod -aG docker $(whoami)
 
@@ -27,7 +29,24 @@ before_install:
   - stop_any 5432 5672 27017
 
 script:
+
   - export ROOT=$PWD
+
+  - bash gradlew build -b $ROOT/mustache-json/build.gradle
+  - java -jar $ROOT/mustache-json/build/libs/*.jar &
+  - sleep 10
+  - http :8080
+  - http :8080/hello/
+  - http :8080/hello/mustache
+  - stop_any 8080
+  - bash ./gradlew clean build
+  - docker-compose -f $ROOT/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
+  - docker-compose -f $ROOT/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
+  - sleep 20
+  - http :8080
+  - http :8080/hello
+  - http :8080/hello/lol
+  - docker-compose -f $ROOT/mustache-json/docker-compose.yaml down -v
 
   - bash mvnw clean package -f $ROOT/reactive-ngrx/pom.xml
   - java -jar $ROOT/reactive-ngrx/target/*.jar &
@@ -40,14 +59,6 @@ script:
   - http :8001
   - http :8002
   - docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
-
-  - bash gradlew build -b $ROOT/mustache-json/build.gradle
-  - java -jar $ROOT/mustache-json/build/libs/*.jar &
-  - sleep 10
-  - http :8080
-  - http :8080/hello/
-  - http :8080/hello/mustache
-  - sudo killall -9 java | sudo kill $(sudo lsof -t -i:8080) | true
 
   - >
     for path in \

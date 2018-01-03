@@ -1,6 +1,21 @@
 = spring-5-examples image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
 
 //tag::content[]
+=== mustache-json
+
+.docker
+----
+docker-compose down -v; ./gradlew clean build; docker-compose up --build --force-recreate --remove-orphans
+
+# or
+
+./gradlew clean build
+docker-compose up --build --force-recreate --remove-orphans
+http :8080
+http :8080/hello
+http :8080/hello/lol
+docker-compose down -v;
+---
 
 .build and run
 ----
