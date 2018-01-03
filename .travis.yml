@@ -17,7 +17,7 @@ before_install:
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt update
-  - sudo apt -y install docker-ce python-pip curl jq libxml2-utils docker-ce
+  - sudo apt -y install docker-ce python-pip curl jq libxml2-utils
   - sudo pip install docker-compose httpie
   - sudo usermod -aG docker $(whoami)
 
