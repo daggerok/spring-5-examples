@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.0.0.M6'
+    springBootVersion = "2.0.0.M7"
   }
   repositories {
     mavenCentral()
@@ -12,13 +12,13 @@ buildscript {
   }
 }
 
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
 
-group = 'daggerok'
-version = '0.0.1'
+group = "daggerok"
+version = "0.0.1"
 sourceCompatibility = targetCompatibility = 1.8
 
 repositories {
@@ -28,6 +28,11 @@ repositories {
 }
 
 dependencies {
-  compile('org.springframework.boot:spring-boot-starter-web')
-  compile('org.springframework.boot:spring-boot-starter-mustache')
+  compile("org.springframework.boot:spring-boot-starter-web")
+  compile("org.springframework.boot:spring-boot-starter-mustache")
+}
+
+task wrapper(type: Wrapper) {
+  distributionType = "ALL"
+  gradleVersion = "4.4.1"
 }
