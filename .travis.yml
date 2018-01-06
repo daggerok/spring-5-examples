@@ -42,7 +42,7 @@ script:
   - http :8080/actuator/health
   - stop_any 8080
   # hotel maven docker
-  - bash ./hotel/mvnw -f ./hotel/pom.xml clean package -U
+  - bash mvnw -f ./hotel/pom.xml clean package -U
   - docker-compose -f $ROOT/hotel/docker-compose.yaml build --force-rm --no-cache --pull
   - docker-compose -f $ROOT/hotel/docker-compose.yaml up --force-recreate --remove-orphans &
   - sleep 20

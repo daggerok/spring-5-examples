@@ -135,9 +135,9 @@
         <configuration>
           <workingDirectory>src/main/ngrx</workingDirectory>
           <installDirectory>target</installDirectory>
-          <nodeVersion>v8.9.1</nodeVersion>
-          <npmVersion>v5.5.1</npmVersion>
-          <yarnVersion>v0.25.4</yarnVersion>
+          <nodeVersion>v9.3.0</nodeVersion>
+          <npmVersion>v5.6.0</npmVersion>
+          <yarnVersion>v1.3.2</yarnVersion>
         </configuration>
       </plugin>
     </plugins>
