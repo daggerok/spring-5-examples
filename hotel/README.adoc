@@ -1,0 +1,36 @@
+= hotel image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
+
+//tag::content[]
+
+This repository is contains spring-boot 2 / spring framework 5 project: `hotel`
+
+.up
+----
+./gradlew clean build
+./mvnw clean package -U
+docker-conpose up --build
+----
+
+.test
+----
+http :8080?name=bla-bla
+----
+
+.down
+----
+docker-conpose down -v
+----
+
+=== or
+
+.all
+----
+docker-compose down -v; ./gradlew clean build; ./mvnw clean package -U; docker-conpose up --build --force-recreate --remove-orphans
+
+http :8080
+http :8080?name=Max
+
+docker-compose down -v
+----
+
+//end::content[]

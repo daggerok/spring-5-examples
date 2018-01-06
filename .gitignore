@@ -1,5 +1,7 @@
 08-cassandra-reactive-security-client/
 08-redis-reactive-security-client/
+target/
+build/
 out/
 
 ### STS ###

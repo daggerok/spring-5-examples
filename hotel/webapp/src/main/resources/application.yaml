@@ -1,0 +1,8 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+management:
+  endpoint:
+    health:
+      enabled: true

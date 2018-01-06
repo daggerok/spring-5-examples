@@ -32,6 +32,27 @@ script:
 
   - export ROOT=$PWD
 
+  # hotel gradle
+  - bash gradlew build -b $ROOT/hotel/build.gradle
+  - java -jar $ROOT/hotel/webapp/build/libs/*.jar &
+  - sleep 20
+  - http :8080
+  - http :8080?name=Gradle
+  - http :8080/actuator/
+  - http :8080/actuator/health
+  - stop_any 8080
+  # hotel maven docker
+  - bash ./hotel/mvnw -f ./hotel/pom.xml clean package -U
+  - docker-compose -f $ROOT/hotel/docker-compose.yaml build --force-rm --no-cache --pull
+  - docker-compose -f $ROOT/hotel/docker-compose.yaml up --force-recreate --remove-orphans &
+  - sleep 20
+  - http :8080
+  - http :8080?name=Maven
+  - http :8080/actuator/
+  - http :8080/actuator/health
+  - docker-compose -f $ROOT/hotel/docker-compose.yaml down -v
+
+  # mustache-json gradle
   - bash gradlew build -b $ROOT/mustache-json/build.gradle
   - java -jar $ROOT/mustache-json/build/libs/*.jar &
   - sleep 10
@@ -40,6 +61,7 @@ script:
   - http :8080/hello/mustache
   - stop_any 8080
   - bash ./gradlew clean build
+  # mustache-json docker
   - docker-compose -f $ROOT/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
   - docker-compose -f $ROOT/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
   - sleep 20
@@ -48,12 +70,14 @@ script:
   - http :8080/hello/lol
   - docker-compose -f $ROOT/mustache-json/docker-compose.yaml down -v
 
+  # reactive-ngrx gradle
   - bash mvnw clean package -f $ROOT/reactive-ngrx/pom.xml
   - java -jar $ROOT/reactive-ngrx/target/*.jar &
   - sleep 15
   - http :8080
   - stop_any 8080
   - bash gradlew clean build -b $ROOT/reactive-ngrx/build.gradle
+  # reactive-ngrx docker
   - docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml up --build -d
   - sleep 30
   - http :8001
@@ -62,8 +86,6 @@ script:
 
   - >
     for path in \
-      reactive-ngrx \
-      mustache-json \
       spring-shell \
       reactive-websocket-sse \
       spring-boot-under-the-hood \
