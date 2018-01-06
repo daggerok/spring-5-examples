@@ -13,20 +13,24 @@ jdk:
 install: true
 before_install:
 
-
-  ## install docker / compose
+  ## install compose (old)
   #- curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   #- sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  ##- wget get.docker.com -O- | sudo sh -
-  - curl -fsSL get.docker.com | sudo sh -
-  - sudo apt update
-  - sudo apt -y install docker-ce python-pip curl jq libxml2-utils
-  - sudo pip install docker-compose httpie
+  #- sudo pt install -y docker-ce
+
+  # install docker
+  #- curl -fsSL get.docker.com | sudo sh -
+  - wget get.docker.com -O- | sudo sh -
   - sudo usermod -aG docker $(whoami)
 
+  # install docker-compose, HTTPie, etc...
+  - sudo apt update
+  - sudo apt -y install curl jq libxml2-utils python-pip
+  - sudo pip install docker-compose httpie
+
   # helper bash functions
-  - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/stop_any.bash)
-  - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/src/wait_for.bash)
+  - source <(curl -s https://raw.github.com/daggerok/bash-functions/master/src/stop_any.bash)
+  - source <(curl -s https://raw.github.com/daggerok/bash-functions/master/src/wait_for.bash)
 
   # kill whatever punning on postgres / rabbitmq port
   - stop_any 5432 5672 27017
