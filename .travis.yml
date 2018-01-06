@@ -13,9 +13,12 @@ jdk:
 install: true
 before_install:
 
-  # install docker / compose
-  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+  ## install docker / compose
+  #- curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  #- sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  ##- wget get.docker.com -O- | sudo sh -
+  - curl -fsSL get.docker.com | sudo sh -
   - sudo apt update
   - sudo apt -y install docker-ce python-pip curl jq libxml2-utils
   - sudo pip install docker-compose httpie
@@ -104,13 +107,7 @@ script:
       bash gradlew clean build
     done;
 
-before_cache:
-  - bash gradlew --stop
-  - rm -rf $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
-
 cache:
   directories:
     - $HOME/.m2/
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
+    - $HOME/.gradle/
