@@ -4,9 +4,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>daggerok</groupId>
-  <artifactId>webapp</artifactId>
-  <version>0.0.1</version>
+  <artifactId>reservations</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
+
+  <name>reservations</name>
+  <description>Demo project for Spring Boot</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -24,7 +27,7 @@
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-mustache</artifactId>
+      <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -58,6 +61,34 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>com.dkanejs.maven.plugins</groupId>
+        <artifactId>docker-compose-maven-plugin</artifactId>
+        <version>1.0.1</version>
+        <executions>
+          <execution>
+            <id>up</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>up</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>down</id>
+            <phase>test</phase>
+            <goals>
+              <goal>down</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <composeFile>${project.basedir}/docker-compose.yml</composeFile>
+          <detachedMode>true</detachedMode>
+          <removeVolumes>true</removeVolumes>
+          <detail>true</detail>
+        </configuration>
       </plugin>
     </plugins>
   </build>

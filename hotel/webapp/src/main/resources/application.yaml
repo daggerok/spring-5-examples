@@ -6,3 +6,5 @@ management:
   endpoint:
     health:
       enabled: true
+server:
+  port: 8080

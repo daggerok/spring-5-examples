@@ -4,6 +4,30 @@
 
 This repository is contains spring-boot 2 / spring framework 5 project: `hotel`
 
+== reservations
+
+.up
+----
+docker-compose -f reservations/docker-compose.yml down -v; docker-compose -f reservations/docker-compose.yml up
+----
+
+.up
+----
+./gradlew clean build
+./mvnw clean package -U
+
+java -jar reservations/target/*.jar
+# or
+java -jar reservations/build/lisbs/*.jar
+----
+
+.down
+----
+docker-compose -f reservations/docker-compose.yml down -v
+----
+
+== webapp
+
 .up
 ----
 ./gradlew clean build
@@ -32,5 +56,12 @@ http :8080?name=Max
 
 docker-compose down -v
 ----
+
+links:
+
+. link:https://bclozel.github.io/webflux-workshop/[Brian Clozel Spring WebFlux Workshop docs]
+. link:https://github.com/bclozel/webflux-workshop/[Brian Clozel Spring WebFlux Workshop repo]
+. link:http://mongodb.github.io/mongo-csharp-driver/2.3/examples/tailable_cursor/[using tailable cursor]
+. link:http://mongodb.github.io/mongo-csharp-driver/2.3/examples/tailable_cursor/[using tailable cursor]
 
 //end::content[]

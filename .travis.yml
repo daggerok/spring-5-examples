@@ -40,14 +40,17 @@ script:
   - export ROOT=$PWD
 
   # hotel gradle
-  - bash gradlew build -b $ROOT/hotel/build.gradle
+  - bash gradlew clean build -b $ROOT/hotel/build.gradle
   - java -jar $ROOT/hotel/webapp/build/libs/*.jar &
-  - sleep 20
+  - docker-compose -f $ROOT/hotel/reservations/docker-compose.yml up
+  - java -jar $ROOT/hotel/reservations/build/libs/*.jar &
+  - wait_for 8080 8081
+  - http :8081/api/v1/reservations
   - http :8080
   - http :8080?name=Gradle
   - http :8080/actuator/
   - http :8080/actuator/health
-  - stop_any 8080
+  - stop_any 8080 8081
   # hotel maven docker
   - bash mvnw -f ./hotel/pom.xml clean package -U
   - docker-compose -f $ROOT/hotel/docker-compose.yaml build --force-rm --no-cache --pull
