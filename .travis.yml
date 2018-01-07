@@ -29,8 +29,7 @@ before_install:
   - sudo pip install docker-compose httpie
 
   # helper bash functions
-  - source <(curl -s https://raw.github.com/daggerok/bash-functions/master/src/stop_any.bash)
-  - source <(curl -s https://raw.github.com/daggerok/bash-functions/master/src/wait_for.bash)
+  - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
 
   # kill whatever punning on postgres / rabbitmq port
   - stop_any 5432 5672 27017
