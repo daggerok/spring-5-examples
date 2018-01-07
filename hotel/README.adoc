@@ -5,6 +5,7 @@
 This repository is contains spring-boot 2 / spring framework 5 project: `hotel`
 
 == reservations
+Docker required
 
 .up
 ----

@@ -18,18 +18,18 @@ before_install:
   #- sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   #- sudo pt install -y docker-ce
 
-  # install docker
-  #- curl -fsSL get.docker.com | sudo sh -
-  - wget get.docker.com -O- | sudo sh -
-  - sudo usermod -aG docker $(whoami)
+  ## install docker
+  ##- curl -fsSL get.docker.com | sudo sh -
+  #- wget get.docker.com -O- | sudo sh -
+  #- sudo usermod -aG docker $(whoami)
 
   # install docker-compose, HTTPie, etc...
-  - sudo apt update
+  - sudo apt update -y || true
   - sudo apt -y install curl jq libxml2-utils python-pip
   - sudo pip install docker-compose httpie
 
   # helper bash functions
-  - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
+  - source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
 
   # kill whatever punning on postgres / rabbitmq port
   - stop_any 5432 5672 27017
@@ -41,7 +41,7 @@ script:
   # hotel gradle
   - bash gradlew clean build -b $ROOT/hotel/build.gradle
   - java -jar $ROOT/hotel/webapp/build/libs/*.jar &
-  - docker-compose -f $ROOT/hotel/reservations/docker-compose.yml up
+  - docker-compose -f $ROOT/hotel/reservations/docker-compose.yml up -d
   - java -jar $ROOT/hotel/reservations/build/libs/*.jar &
   - wait_for 8080 8081
   - http :8081/api/v1/reservations
