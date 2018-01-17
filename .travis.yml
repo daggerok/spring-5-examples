@@ -38,6 +38,11 @@ script:
 
   - export ROOT=$PWD
 
+  # mailbox
+  - bash gradlew clean build -b $ROOT/mailbox/build.gradle
+  - bash mvnw clean package -f $ROOT/mailbox/pom.xml
+  - wait_for 8080 8081
+
   # hotel gradle
   - bash gradlew clean build -b $ROOT/hotel/build.gradle
   - java -jar $ROOT/hotel/webapp/build/libs/*.jar &

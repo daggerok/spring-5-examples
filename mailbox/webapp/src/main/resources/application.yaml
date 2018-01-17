@@ -1,0 +1,13 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  mvc:
+    favicon:
+      enabled: false
+management:
+  endpoint:
+    health:
+      enabled: true
+server:
+  port: 8080

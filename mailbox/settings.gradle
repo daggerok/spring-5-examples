@@ -1,0 +1,4 @@
+rootProject.name = "mailbox"
+include "users-map"
+include "users-mongo"
+include "webapp"

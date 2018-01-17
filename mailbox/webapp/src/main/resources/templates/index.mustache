@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mustache</title>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
+  <link rel="stylesheet" href="/webjars/material-design-icons/material-icons.css">
+  <link rel="stylesheet" href="/webjars/materializecss/css/materialize.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="grid-container">
+
+<nav>
+  <div class="nav-wrapper grid-header">
+    <a href="/" class="brand-logo">&nbsp; Mailbox</a>
+    <a href="/" data-activates="mobile-menu" class="button-collapse">
+      <i class="material-icons">menu</i>
+    </a>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="/">Home</a></li>
+      <li><a href="/login">Login</a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+    <ul class="side-nav" id="mobile-menu">
+      <li><a href="/">Home</a></li>
+      <li><a href="/login">Login</a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="grid-mail-content">
+  <div class="container">
+    <p>Hola, {{name}}!</p>
+  </div>
+</div>
+
+<footer class="page-footer blue-grey lighten-1 grid-footer">
+  <div class="footer-copyright">
+    <div class="container">
+      2018 <a class="grey-text text-lighten-3" href="http://materializecss.com">daggerok</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/webjars/hammerjs/hammer.min.js"></script>
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/materializecss/js/materialize.min.js"></script>
+<script>
+  $(".button-collapse").sideNav();
+</script>
+</body>
+</html>

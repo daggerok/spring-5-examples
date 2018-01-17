@@ -1,0 +1,15 @@
+= mailbox users messaging image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
+
+//tag::content[]
+
+This repository is contains spring-boot 2 / spring framework 5 project: `mailbox`
+TODO
+
+links:
+
+. link:https://bclozel.github.io/webflux-workshop/[Brian Clozel Spring WebFlux Workshop docs]
+. link:https://github.com/bclozel/webflux-workshop/[Brian Clozel Spring WebFlux Workshop repo]
+. link:http://mongodb.github.io/mongo-csharp-driver/2.3/examples/tailable_cursor/[using tailable cursor]
+. link:http://mongodb.github.io/mongo-csharp-driver/2.3/examples/tailable_cursor/[using tailable cursor]
+
+//end::content[]
