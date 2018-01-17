@@ -7,9 +7,6 @@ TODO
 
 links:
 
-. link:https://bclozel.github.io/webflux-workshop/[Brian Clozel Spring WebFlux Workshop docs]
-. link:https://github.com/bclozel/webflux-workshop/[Brian Clozel Spring WebFlux Workshop repo]
-. link:http://mongodb.github.io/mongo-csharp-driver/2.3/examples/tailable_cursor/[using tailable cursor]
-. link:http://mongodb.github.io/mongo-csharp-driver/2.3/examples/tailable_cursor/[using tailable cursor]
+. link:https://www.youtube.com/watch?v=EDO1zlyFq6I[Spring Security]
 
 //end::content[]
