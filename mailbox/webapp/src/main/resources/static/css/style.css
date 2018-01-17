@@ -1,3 +1,4 @@
+/* CSS Grid: start */
 .grid-container {
   width: 100vw;
   height: 100vh;
@@ -20,4 +21,14 @@
 
 .grid-footer {
   grid-area: grid-footer;
+}
+
+/* CSS Grid: stop */
+
+.hide-me {
+  border: none;
+}
+
+button[type=submit].hide-me:focus {
+  background-color: transparent;
 }

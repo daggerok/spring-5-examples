@@ -1,8 +1,7 @@
 package daggerok.web;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.DefaultCsrfToken;
+import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.server.ServerWebExchange;
@@ -16,21 +15,17 @@ import static org.springframework.security.web.reactive.result.view.CsrfRequestD
 @ControllerAdvice
 public class SecurityAdvice {
 
-  private Mono<Principal> currentUser;
+  @ModelAttribute("_csrf")
+  Mono<CsrfToken> csrfToken(final ServerWebExchange exchange) {
 
-  @ModelAttribute("csrfToken") Mono<CsrfToken> csrfToken(final ServerWebExchange exchange) {
+    final Mono<CsrfToken> csrfToken = exchange.getAttribute(CsrfToken.class.getName());
 
-    //exchange.getAttributes().forEach((k, v) -> log.info("k={}, v={}", k, v));
-
-    final CsrfToken csrfToken = exchange.getAttribute(CsrfToken.class.getName());
-
-    return Mono.justOrEmpty(csrfToken)
-               .switchIfEmpty(Mono.just(new DefaultCsrfToken("CSRF_TOKEN", DEFAULT_CSRF_ATTR_NAME, "empty"))
-                                  .doOnSuccess(token -> exchange.getAttributes()
-                                                                .put(DEFAULT_CSRF_ATTR_NAME, token)));
+    return csrfToken.doOnSuccess(token -> exchange.getAttributes()
+                                                  .put(DEFAULT_CSRF_ATTR_NAME, token));
   }
 
-  @ModelAttribute("currentUser") Mono<Principal> currentUser(final Mono<Principal> currentUser) {
+  @ModelAttribute("currentUser")
+  Mono<Principal> currentUser(final Mono<Principal> currentUser) {
     return currentUser;
   }
 }

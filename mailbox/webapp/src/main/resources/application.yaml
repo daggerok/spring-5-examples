@@ -5,6 +5,9 @@ spring:
   mvc:
     favicon:
       enabled: false
+  mustache:
+    expose-request-attributes: true
+    expose-spring-macro-helpers: true
 management:
   endpoint:
     health:

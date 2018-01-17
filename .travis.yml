@@ -41,7 +41,10 @@ script:
   # mailbox
   - bash gradlew clean build -b $ROOT/mailbox/build.gradle
   - bash mvnw clean package -f $ROOT/mailbox/pom.xml
-  - wait_for 8080 8081
+  - java -jar $ROOT/mailbox/webapp/target/*.jar &
+  - wait_for 8080
+  - http -a max:max get :8080/
+  - stop_any 8080
 
   # hotel gradle
   - bash gradlew clean build -b $ROOT/hotel/build.gradle

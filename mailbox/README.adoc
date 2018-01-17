@@ -1,9 +1,10 @@
 = mailbox users messaging image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
 
+
 //tag::content[]
+NOTE: in progress, but check link:https://github.com/daggerok/csrf-spring-webflux-mustache[that repository]
 
 This repository is contains spring-boot 2 / spring framework 5 project: `mailbox`
-TODO
 
 links:
 

@@ -23,8 +23,18 @@
 
 <div class="grid-mail-content">
   <div class="container">
-    <p>hi, {{#currentUser}}{{currentUser.name}}{{/currentUser}}!</p>
-    <p>hola, {{#name}}{{name}}{{/name}}!</p>
+    <p>
+      hi, {{#currentUser}}{{currentUser.name}}{{/currentUser}}!
+      <a href="https://github.com/daggerok/csrf-spring-webflux-mustache">Check this out</a>
+    </p>
+
+    <form method="post" action="/">
+      <input type="text" id="name" name="name" placeholder="enter some.."/>
+      <input type="hidden" name="_csrf" value="{{#_csrf.token}}{{_csrf.token}}{{/_csrf.token}}"/>
+      <button type="submit" class="hide-me btn-floating btn-large waves-effect waves-light red">
+          <i class="material-icons">add</i>
+      </button>
+    </form>
   </div>
 </div>
 
