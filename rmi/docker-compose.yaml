@@ -1,0 +1,29 @@
+version: "2.1"
+
+services:
+
+  rmi-server:
+    build: ./spring-rmi-service
+    volumes: ["rmi-server-data:/home"]
+    ports: ["1199:1199"]
+    networks: [backing-services]
+    restart: unless-stopped
+    mem_limit: 209715200 # container limit: 200Mb (200 * 1024 * 1024)
+
+  rmi-client:
+    build: ./spring-rmi-client
+    environment:
+      RMI_SERVER_HOST: rmi-server
+    volumes: ["rmi-client-data:/home"]
+    ports: ["8080:8080"]
+    networks: [backing-services]
+    restart: unless-stopped
+    mem_limit: 209715200 # container limit: 200Mb (200 * 1024 * 1024)
+
+volumes:
+  rmi-server-data: {}
+  rmi-client-data: {}
+
+networks:
+  backing-services:
+    driver: bridge

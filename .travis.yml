@@ -38,36 +38,58 @@ script:
 
   - export ROOT=$PWD
 
-  # mailbox
-  - bash gradlew clean build -b $ROOT/mailbox/build.gradle
-  - bash mvnw clean package -f $ROOT/mailbox/pom.xml
-  - java -jar $ROOT/mailbox/webapp/target/*.jar &
-  - wait_for 8080
-  - http -a max:max get :8080/
-  - stop_any 8080
 
-  # hotel gradle
-  - bash gradlew clean build -b $ROOT/hotel/build.gradle
-  - java -jar $ROOT/hotel/webapp/build/libs/*.jar &
-  - docker-compose -f $ROOT/hotel/reservations/docker-compose.yml up -d
-  - java -jar $ROOT/hotel/reservations/build/libs/*.jar &
-  - wait_for 8080 8081
-  - http :8081/api/v1/reservations
-  - http :8080
-  - http :8080?name=Gradle
-  - http :8080/actuator/
-  - http :8080/actuator/health
-  - stop_any 8080 8081
+  # rmi
+  - bash gradlew clean build -b $ROOT/rmi/build.gradle
+  - java -jar $ROOT/rmi/spring-rmi-client/build/libs/*.jar &
+  - bash mvnw -f $ROOT/rmi/pom.xml clean package
+  - java -jar $ROOT/rmi/spring-rmi-server/target/*.jar --server.port=8000 &
+  - wait_for 8080 8000
+  - http :8080/api/v1/users name=maksimko
+  - http :8080/api/v1/users name=maks
+  - http :8080/api/v1/users name=max
+  - http post :8080/api/v1/users
+  - stop_any 8080 8000
   # hotel maven docker
-  - bash mvnw -f ./hotel/pom.xml clean package -U
-  - docker-compose -f $ROOT/hotel/docker-compose.yaml build --force-rm --no-cache --pull
-  - docker-compose -f $ROOT/hotel/docker-compose.yaml up --force-recreate --remove-orphans &
+  - docker-compose -f $ROOT/rmi/docker-compose.yaml build --force-rm --no-cache --pull
+  - docker-compose -f $ROOT/rmi/docker-compose.yaml up --force-recreate --remove-orphans &
   - sleep 20
-  - http :8080
-  - http :8080?name=Maven
-  - http :8080/actuator/
-  - http :8080/actuator/health
-  - docker-compose -f $ROOT/hotel/docker-compose.yaml down -v
+  - http :8080/api/v1/users name=maksimko
+  - http :8080/api/v1/users name=maks
+  - http :8080/api/v1/users name=max
+  - http post :8080/api/v1/users
+  - docker-compose -f $ROOT/rmi/docker-compose.yaml down -v
+
+#  # mailbox
+#  - bash gradlew clean build -b $ROOT/mailbox/build.gradle
+#  - bash mvnw clean package -f $ROOT/mailbox/pom.xml
+#  - java -jar $ROOT/mailbox/webapp/target/*.jar &
+#  - wait_for 8080
+#  - http -a max:max get :8080/
+#  - stop_any 8080
+
+#  # hotel gradle
+#  - bash gradlew clean build -b $ROOT/hotel/build.gradle
+#  - java -jar $ROOT/hotel/webapp/build/libs/*.jar &
+#  - docker-compose -f $ROOT/hotel/reservations/docker-compose.yml up -d
+#  - java -jar $ROOT/hotel/reservations/build/libs/*.jar &
+#  - wait_for 8080 8081
+#  - http :8081/api/v1/reservations
+#  - http :8080
+#  - http :8080?name=Gradle
+#  - http :8080/actuator/
+#  - http :8080/actuator/health
+#  - stop_any 8080 8081
+#  # hotel maven docker
+#  - bash mvnw -f ./hotel/pom.xml clean package -U
+#  - docker-compose -f $ROOT/hotel/docker-compose.yaml build --force-rm --no-cache --pull
+#  - docker-compose -f $ROOT/hotel/docker-compose.yaml up --force-recreate --remove-orphans &
+#  - sleep 20
+#  - http :8080
+#  - http :8080?name=Maven
+#  - http :8080/actuator/
+#  - http :8080/actuator/health
+#  - docker-compose -f $ROOT/hotel/docker-compose.yaml down -v
 
   # mustache-json gradle
   - bash gradlew build -b $ROOT/mustache-json/build.gradle
@@ -87,19 +109,19 @@ script:
   - http :8080/hello/lol
   - docker-compose -f $ROOT/mustache-json/docker-compose.yaml down -v
 
-  # reactive-ngrx gradle
-  - bash mvnw clean package -f $ROOT/reactive-ngrx/pom.xml
-  - java -jar $ROOT/reactive-ngrx/target/*.jar &
-  - sleep 15
-  - http :8080
-  - stop_any 8080
-  - bash gradlew clean build -b $ROOT/reactive-ngrx/build.gradle
-  # reactive-ngrx docker
-  - docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml up --build -d
-  - sleep 30
-  - http :8001
-  - http :8002
-  - docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
+#  # reactive-ngrx gradle
+#  - bash mvnw clean package -f $ROOT/reactive-ngrx/pom.xml
+#  - java -jar $ROOT/reactive-ngrx/target/*.jar &
+#  - sleep 15
+#  - http :8080
+#  - stop_any 8080
+#  - bash gradlew clean build -b $ROOT/reactive-ngrx/build.gradle
+#  # reactive-ngrx docker
+#  - docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml up --build -d
+#  - sleep 30
+#  - http :8001
+#  - http :8002
+#  - docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
 
   - >
     for path in \
