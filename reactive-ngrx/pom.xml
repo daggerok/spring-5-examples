@@ -8,14 +8,11 @@
   <version>0.0.1</version>
   <packaging>jar</packaging>
 
-  <name>reactive-ngrx</name>
-  <description>Spring Boot 5 Reactive Angular ngrx</description>
-
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.0.0.M7</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <relativePath/>
   </parent>
 
   <properties>
@@ -66,6 +63,8 @@
   </dependencies>
 
   <build>
+    <defaultGoal>package</defaultGoal>
+
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>

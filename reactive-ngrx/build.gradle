@@ -50,6 +50,7 @@ dependencies {
 
 task wrapper(type: Wrapper) {
   distributionType = "ALL"
+  gradleVersion = "4.4.1"
 }
 
 node {
@@ -70,3 +71,5 @@ clean.doFirst {
   ["out", "build"].each { delete "$projectDir/$it" }
   delete Paths.get(node.nodeModulesDir.path, "node_modules")
 }
+
+defaultTasks "build"

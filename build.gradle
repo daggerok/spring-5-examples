@@ -5,5 +5,5 @@ plugins {
 
 task wrapper(type: Wrapper) {
   distributionType = "ALL"
-  gradleVersion = "4.3"
+  gradleVersion = "4.4.1"
 }

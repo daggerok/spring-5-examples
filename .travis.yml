@@ -1,149 +1,150 @@
 sudo: required
 group: travis_lts
 
+service:
+- docker
+
 env:
   global:
     TERM=dumb
 
 language: java
 jdk:
-  - openjdk8
-  - oraclejdk8
+- openjdk8
+- oraclejdk8
 
 install: true
 before_install:
 
-  ## install compose (old)
-  #- curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  #- sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-  #- sudo pt install -y docker-ce
+#- curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+#- sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+#- sudo apt install -y docker-ce
+#- sudo usermod -aG docker $(whoami)
 
-  ## install docker
-  ##- curl -fsSL get.docker.com | sudo sh -
-  #- wget get.docker.com -O- | sudo sh -
-  #- sudo usermod -aG docker $(whoami)
+#- curl -fsSL get.docker.com | sudo sh -
+#- wget get.docker.com -O- | sudo sh -
 
-  # install docker-compose, HTTPie, etc...
-  - sudo apt update -y || true
-  - sudo apt -y install curl jq libxml2-utils python-pip
-  - sudo pip install docker-compose httpie
+# install docker-compose, HTTPie, etc...
+- sudo apt update -y || true
+- sudo apt -y install docker-ce curl jq libxml2-utils python-pip
+- sudo pip install docker-compose httpie
 
-  # helper bash functions
-  - source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
+- nvm install 9
+- npm i -g yarn
 
-  # kill whatever punning on postgres / rabbitmq port
-  - stop_any 5432 5672 27017
+# helper bash functions (wait_for, stop_any)
+- source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
+- stop_any 5432 5672 27017
 
 script:
 
-  - export ROOT=$PWD
+- export ROOT=$PWD
 
+# rmi
+- bash gradlew -b $ROOT/rmi/build.gradle
+- java -jar $ROOT/rmi/spring-rmi-client/build/libs/*.jar &
+- bash mvnw -f $ROOT/rmi/pom.xml
+- java -jar $ROOT/rmi/spring-rmi-service/target/*.jar --server.port=8000 &
+- wait_for 8080 8000
+- http :8080/api/v1/users name=maksimko
+- http :8080/api/v1/users name=maks
+- http :8080/api/v1/users name=max
+- http :8080/api/v1/users
+- stop_any 8080 8000
+# hotel maven docker
+- docker-compose -f $ROOT/rmi/docker-compose.yaml build --force-rm --no-cache --pull
+- docker-compose -f $ROOT/rmi/docker-compose.yaml up --force-recreate --remove-orphans &
+- sleep 20
+- http :8080/api/v1/users name=maksimko
+- http :8080/api/v1/users name=maks
+- http :8080/api/v1/users name=max
+- http :8080/api/v1/users
+- docker-compose -f $ROOT/rmi/docker-compose.yaml down -v
 
-  # rmi
-  - bash gradlew clean build -b $ROOT/rmi/build.gradle
-  - java -jar $ROOT/rmi/spring-rmi-client/build/libs/*.jar &
-  - bash mvnw -f $ROOT/rmi/pom.xml clean package
-  - java -jar $ROOT/rmi/spring-rmi-server/target/*.jar --server.port=8000 &
-  - wait_for 8080 8000
-  - http :8080/api/v1/users name=maksimko
-  - http :8080/api/v1/users name=maks
-  - http :8080/api/v1/users name=max
-  - http post :8080/api/v1/users
-  - stop_any 8080 8000
-  # hotel maven docker
-  - docker-compose -f $ROOT/rmi/docker-compose.yaml build --force-rm --no-cache --pull
-  - docker-compose -f $ROOT/rmi/docker-compose.yaml up --force-recreate --remove-orphans &
-  - sleep 20
-  - http :8080/api/v1/users name=maksimko
-  - http :8080/api/v1/users name=maks
-  - http :8080/api/v1/users name=max
-  - http post :8080/api/v1/users
-  - docker-compose -f $ROOT/rmi/docker-compose.yaml down -v
+## mailbox
+#- bash gradlew clean build -b $ROOT/mailbox/build.gradle
+#- bash mvnw clean package -f $ROOT/mailbox/pom.xml
+#- java -jar $ROOT/mailbox/webapp/target/*.jar &
+#- wait_for 8080
+#- http -a max:max get :8080/
+#- stop_any 8080
 
-#  # mailbox
-#  - bash gradlew clean build -b $ROOT/mailbox/build.gradle
-#  - bash mvnw clean package -f $ROOT/mailbox/pom.xml
-#  - java -jar $ROOT/mailbox/webapp/target/*.jar &
-#  - wait_for 8080
-#  - http -a max:max get :8080/
-#  - stop_any 8080
+## hotel gradle
+#- bash gradlew clean build -b $ROOT/hotel/build.gradle
+#- java -jar $ROOT/hotel/webapp/build/libs/*.jar &
+#- docker-compose -f $ROOT/hotel/reservations/docker-compose.yml up -d
+#- java -jar $ROOT/hotel/reservations/build/libs/*.jar &
+#- wait_for 8080 8081
+#- http :8081/api/v1/reservations
+#- http :8080
+#- http :8080?name=Gradle
+#- http :8080/actuator/
+#- http :8080/actuator/health
+#- stop_any 8080 8081
+## hotel maven docker
+#- bash mvnw -f ./hotel/pom.xml clean package -U
+#- docker-compose -f $ROOT/hotel/docker-compose.yaml build --force-rm --no-cache --pull
+#- docker-compose -f $ROOT/hotel/docker-compose.yaml up --force-recreate --remove-orphans &
+#- sleep 20
+#- http :8080
+#- http :8080?name=Maven
+#- http :8080/actuator/
+#- http :8080/actuator/health
+#- docker-compose -f $ROOT/hotel/docker-compose.yaml down -v
 
-#  # hotel gradle
-#  - bash gradlew clean build -b $ROOT/hotel/build.gradle
-#  - java -jar $ROOT/hotel/webapp/build/libs/*.jar &
-#  - docker-compose -f $ROOT/hotel/reservations/docker-compose.yml up -d
-#  - java -jar $ROOT/hotel/reservations/build/libs/*.jar &
-#  - wait_for 8080 8081
-#  - http :8081/api/v1/reservations
-#  - http :8080
-#  - http :8080?name=Gradle
-#  - http :8080/actuator/
-#  - http :8080/actuator/health
-#  - stop_any 8080 8081
-#  # hotel maven docker
-#  - bash mvnw -f ./hotel/pom.xml clean package -U
-#  - docker-compose -f $ROOT/hotel/docker-compose.yaml build --force-rm --no-cache --pull
-#  - docker-compose -f $ROOT/hotel/docker-compose.yaml up --force-recreate --remove-orphans &
-#  - sleep 20
-#  - http :8080
-#  - http :8080?name=Maven
-#  - http :8080/actuator/
-#  - http :8080/actuator/health
-#  - docker-compose -f $ROOT/hotel/docker-compose.yaml down -v
+# mustache-json gradle
+- bash gradlew build -b $ROOT/mustache-json/build.gradle
+- java -jar $ROOT/mustache-json/build/libs/*.jar &
+- sleep 10
+- http :8080
+- http :8080/hello/
+- http :8080/hello/mustache
+- stop_any 8080
+- bash ./gradlew clean build
+# mustache-json docker
+- docker-compose -f $ROOT/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
+- docker-compose -f $ROOT/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
+- sleep 20
+- http :8080
+- http :8080/hello
+- http :8080/hello/lol
+- docker-compose -f $ROOT/mustache-json/docker-compose.yaml down -v
 
-  # mustache-json gradle
-  - bash gradlew build -b $ROOT/mustache-json/build.gradle
-  - java -jar $ROOT/mustache-json/build/libs/*.jar &
-  - sleep 10
-  - http :8080
-  - http :8080/hello/
-  - http :8080/hello/mustache
-  - stop_any 8080
-  - bash ./gradlew clean build
-  # mustache-json docker
-  - docker-compose -f $ROOT/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
-  - docker-compose -f $ROOT/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
-  - sleep 20
-  - http :8080
-  - http :8080/hello
-  - http :8080/hello/lol
-  - docker-compose -f $ROOT/mustache-json/docker-compose.yaml down -v
+# reactive-ngrx gradle
+- bash mvnw -f $ROOT/reactive-ngrx/pom.xml
+- java -jar $ROOT/reactive-ngrx/target/*.jar &
+- sleep 25
+- http :8080
+- stop_any 8080
+- bash gradlew -b $ROOT/reactive-ngrx/build.gradle
+# reactive-ngrx docker
+- docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml up --build -d
+- sleep 30
+- http :8001
+- http :8002
+- docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
 
-#  # reactive-ngrx gradle
-#  - bash mvnw clean package -f $ROOT/reactive-ngrx/pom.xml
-#  - java -jar $ROOT/reactive-ngrx/target/*.jar &
-#  - sleep 15
-#  - http :8080
-#  - stop_any 8080
-#  - bash gradlew clean build -b $ROOT/reactive-ngrx/build.gradle
-#  # reactive-ngrx docker
-#  - docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml up --build -d
-#  - sleep 30
-#  - http :8001
-#  - http :8002
-#  - docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
-
-  - >
-    for path in \
-      spring-shell \
-      reactive-websocket-sse \
-      spring-boot-under-the-hood \
-      reactive-auth \
-      reactive-security-client \
-      reactive-functional-security \
-      reactive-mongo-webflux-functional \
-      reactive-mongo-webflux \
-      reactive-webflux-spring-data-redis \
-      spring-integration-5-example \
-      functional-spring;
-    do
-      export TARGET="$ROOT/$path"
-      cd $TARGET
-      echo "build $path"
-      bash gradlew clean build
-    done;
+- >
+  for path in \
+    spring-shell \
+    reactive-websocket-sse \
+    spring-boot-under-the-hood \
+    reactive-auth \
+    reactive-security-client \
+    reactive-functional-security \
+    reactive-mongo-webflux-functional \
+    reactive-mongo-webflux \
+    reactive-webflux-spring-data-redis \
+    spring-integration-5-example \
+    functional-spring;
+  do
+    export TARGET="$ROOT/$path"
+    cd $TARGET
+    echo "build $path"
+    bash gradlew clean build
+  done;
 
 cache:
   directories:
-    - $HOME/.m2/
-    - $HOME/.gradle/
+  - $HOME/.m2/
+  - $HOME/.gradle/
