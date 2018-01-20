@@ -1,0 +1,23 @@
+= reactive-data-flow-systems image:https://travis-ci.org/daggerok/reactive-data-flow-systems.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/reactive-data-flow-systems"]
+
+link:https://github.com/daggerok/reactive-data-flow-systems[See this repository]
+
+This repository is containing reactive data-flow systems integration using kafka, tailable mongodb webflux api.
+
+.build, run and test
+----
+./gradlew                                                # or ./mwnw
+java - jar ./kafka/build/libs/*.jar                      # or java - jar ./kafka/target/*.jar
+java - jar ./reactive-dataflow-api/build/libs/*.jar       # or java - jar ./reactive-dataflow-api/target/*.jar
+java - jar ./reactive-dataflow-processor/build/libs/*.jar # or java - jar ./reactive-dataflow-processor/target/*.jar
+curl localhost:8083 &
+http :8082 body=message1
+curl localhost:8083 &
+http :8082 body=message2
+http :8082 body=message3
+killall -9 java curl
+----
+
+links:
+
+. link:https://www.youtube.com/watch?v=VWefNT8Lb74[Oliver Gierke Spring data talk: Refactoring to a System of Systems]
