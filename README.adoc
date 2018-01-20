@@ -17,6 +17,7 @@ This repository is contains some spring-boot 2 / spring 5 playground project exa
 . link:mustache-json/[REST API using mustache view engine]
 . link:reactive-ngrx/[Reactive static content]
 . link:reactive-rmi/[Reactive RMI integration O.o]
+. link:spring-integration-5-examples/[reactive data-flow systems]
 
 resources:
 
