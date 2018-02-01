@@ -20,6 +20,7 @@ This repository is contains some spring-boot 2 / spring 5 playground project exa
 . link:https://github.com/daggerok/reactive-data-flow-systems/[reactive data-flow systems]
 . link:thymeleaf-webflux/[Reactive Thymeleaf]
 . link:listener-of-listener/[Kotlin Webflux DSL | listen listener of listeners O.o]
+. link:monolith/[Reactive monolith ...again]
 
 resources:
 

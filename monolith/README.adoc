@@ -1,0 +1,22 @@
+= monolith
+
+generated using link:https://github.com/daggerok/generator-daggerok-fatjar/[daggerok-fatjar] yeoman generator
+
+inside:
+
+. java 8 based project
+. lombok (slf4j + logback logging)
+. support fatjar
+. support maven
+. support gradle
+. supports testing junit 4 / 5
+. docker / docker-compose support
+
+.build
+----
+./mvnw clean package com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up
+./mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
+
+./gradlew clean build composeUp
+./gradlew composeDown
+----
