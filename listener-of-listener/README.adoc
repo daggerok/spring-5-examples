@@ -42,4 +42,5 @@ docker-compose -f docker-compose-gradle.yaml down -v
 
 links:
 
+. link:https://spring.io/blog/2017/08/01/spring-framework-5-kotlin-apis-the-functional-way[kotlin spring 2 DSL]
 . link:https://github.com/snicoll-scratches/test-kotlin-event-listener[Github: snicoll-scratches/test-kotlin-event-listener]
