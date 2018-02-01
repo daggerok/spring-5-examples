@@ -26,7 +26,7 @@ before_install:
 
 # install docker-compose, HTTPie, etc...
 - sudo apt update -y || true
-- sudo apt -y install docker-ce curl jq libxml2-utils python-pip
+- sudo apt install -y --no-install-recommends docker-ce curl jq libxml2-utils python-pip
 - sudo pip install docker-compose httpie
 
 - nvm install 9
@@ -38,35 +38,35 @@ before_install:
 
 script:
 
-- export ROOT=$PWD
+- export root=$(pwd)
 
 # thymeleaf-webflux
-- bash gradlew -b $ROOT/thymeleaf-webflux/build.gradle
-- java -jar $ROOT/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar &
-- bash mvnw -f $ROOT/thymeleaf-webflux/pom.xml
-- java -jar $ROOT/thymeleaf-webflux/reactive-thymeleaf/target/*.jar --server.port=8000 &
+- bash gradlew -b ${root}/thymeleaf-webflux/build.gradle
+- java -jar ${root}/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar &
+- bash mvnw -f ${root}/thymeleaf-webflux/pom.xml
+- java -jar ${root}/thymeleaf-webflux/reactive-thymeleaf/target/*.jar --server.port=8000 &
 - wait_for 8080 8000
 - http --stream :8080
 - http --stream :8000
 - stop_any 8080 8000
 # maven docker
-- docker-compose -f $ROOT/thymeleaf-webflux/docker-compose-maven.yaml build --force-rm --no-cache --pull
-- docker-compose -f $ROOT/thymeleaf-webflux/docker-compose-maven.yaml up --force-recreate --remove-orphans &
+- docker-compose -f ${root}/thymeleaf-webflux/docker-compose-maven.yaml build --force-rm --no-cache --pull
+- docker-compose -f ${root}/thymeleaf-webflux/docker-compose-maven.yaml up --force-recreate --remove-orphans &
 - sleep 20
-- http --stream :8000
-- docker-compose -f $ROOT/thymeleaf-webflux/docker-compose-gradle.yaml down -v
+- http --stream :8080
+- docker-compose -f ${root}/thymeleaf-webflux/docker-compose-maven.yaml down -v
 # gradle docker
-- docker-compose -f $ROOT/thymeleaf-webflux/docker-compose-gradle.yaml build --force-rm --no-cache --pull
-- docker-compose -f $ROOT/thymeleaf-webflux/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+- docker-compose -f ${root}/thymeleaf-webflux/docker-compose-gradle.yaml build --force-rm --no-cache --pull
+- docker-compose -f ${root}/thymeleaf-webflux/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
 - sleep 20
-- http --stream :8000
-- docker-compose -f $ROOT/thymeleaf-webflux/docker-compose-gradle.yaml down -v
+- http --stream :8080
+- docker-compose -f ${root}/thymeleaf-webflux/docker-compose-gradle.yaml down -v
 
 ## rmi
-#- bash gradlew -b $ROOT/rmi/build.gradle
-#- java -jar $ROOT/rmi/spring-rmi-client/build/libs/*.jar &
-#- bash mvnw -f $ROOT/rmi/pom.xml
-#- java -jar $ROOT/rmi/spring-rmi-service/target/*.jar --server.port=8000 &
+#- bash gradlew -b ${root}/rmi/build.gradle
+#- java -jar ${root}/rmi/spring-rmi-client/build/libs/*.jar &
+#- bash mvnw -f ${root}/rmi/pom.xml
+#- java -jar ${root}/rmi/spring-rmi-service/target/*.jar --server.port=8000 &
 #- wait_for 8080 8000
 #- http :8080/api/v1/users name=maksimko
 #- http :8080/api/v1/users name=maks
@@ -74,28 +74,28 @@ script:
 #- http :8080/api/v1/users
 #- stop_any 8080 8000
 ## hotel maven docker
-#- docker-compose -f $ROOT/rmi/docker-compose.yaml build --force-rm --no-cache --pull
-#- docker-compose -f $ROOT/rmi/docker-compose.yaml up --force-recreate --remove-orphans &
+#- docker-compose -f ${root}/rmi/docker-compose.yaml build --force-rm --no-cache --pull
+#- docker-compose -f ${root}/rmi/docker-compose.yaml up --force-recreate --remove-orphans &
 #- sleep 20
 #- http :8080/api/v1/users name=maksimko
 #- http :8080/api/v1/users name=maks
 #- http :8080/api/v1/users name=max
 #- http :8080/api/v1/users
-#- docker-compose -f $ROOT/rmi/docker-compose.yaml down -v
+#- docker-compose -f ${root}/rmi/docker-compose.yaml down -v
 
 ## mailbox
-#- bash gradlew clean build -b $ROOT/mailbox/build.gradle
-#- bash mvnw clean package -f $ROOT/mailbox/pom.xml
-#- java -jar $ROOT/mailbox/webapp/target/*.jar &
+#- bash gradlew clean build -b ${root}/mailbox/build.gradle
+#- bash mvnw clean package -f ${root}/mailbox/pom.xml
+#- java -jar ${root}/mailbox/webapp/target/*.jar &
 #- wait_for 8080
 #- http -a max:max get :8080/
 #- stop_any 8080
 
 ## hotel gradle
-#- bash gradlew clean build -b $ROOT/hotel/build.gradle
-#- java -jar $ROOT/hotel/webapp/build/libs/*.jar &
-#- docker-compose -f $ROOT/hotel/reservations/docker-compose.yml up -d
-#- java -jar $ROOT/hotel/reservations/build/libs/*.jar &
+#- bash gradlew clean build -b ${root}/hotel/build.gradle
+#- java -jar ${root}/hotel/webapp/build/libs/*.jar &
+#- docker-compose -f ${root}/hotel/reservations/docker-compose.yml up -d
+#- java -jar ${root}/hotel/reservations/build/libs/*.jar &
 #- wait_for 8080 8081
 #- http :8081/api/v1/reservations
 #- http :8080
@@ -105,18 +105,18 @@ script:
 #- stop_any 8080 8081
 ## hotel maven docker
 #- bash mvnw -f ./hotel/pom.xml clean package -U
-#- docker-compose -f $ROOT/hotel/docker-compose.yaml build --force-rm --no-cache --pull
-#- docker-compose -f $ROOT/hotel/docker-compose.yaml up --force-recreate --remove-orphans &
+#- docker-compose -f ${root}/hotel/docker-compose.yaml build --force-rm --no-cache --pull
+#- docker-compose -f ${root}/hotel/docker-compose.yaml up --force-recreate --remove-orphans &
 #- sleep 20
 #- http :8080
 #- http :8080?name=Maven
 #- http :8080/actuator/
 #- http :8080/actuator/health
-#- docker-compose -f $ROOT/hotel/docker-compose.yaml down -v
+#- docker-compose -f ${root}/hotel/docker-compose.yaml down -v
 
 # mustache-json gradle
-- bash gradlew build -b $ROOT/mustache-json/build.gradle
-- java -jar $ROOT/mustache-json/build/libs/*.jar &
+- bash gradlew build -b ${root}/mustache-json/build.gradle
+- java -jar ${root}/mustache-json/build/libs/*.jar &
 - sleep 10
 - http :8080
 - http :8080/hello/
@@ -124,27 +124,27 @@ script:
 - stop_any 8080
 - bash ./gradlew clean build
 # mustache-json docker
-- docker-compose -f $ROOT/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
-- docker-compose -f $ROOT/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
+- docker-compose -f ${root}/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
+- docker-compose -f ${root}/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
 - sleep 20
 - http :8080
 - http :8080/hello
 - http :8080/hello/lol
-- docker-compose -f $ROOT/mustache-json/docker-compose.yaml down -v
+- docker-compose -f ${root}/mustache-json/docker-compose.yaml down -v
 
 # reactive-ngrx gradle
-- bash mvnw -f $ROOT/reactive-ngrx/pom.xml
-- java -jar $ROOT/reactive-ngrx/target/*.jar &
+- bash mvnw -f ${root}/reactive-ngrx/pom.xml
+- java -jar ${root}/reactive-ngrx/target/*.jar &
 - sleep 25
 - http :8080
 - stop_any 8080
-- bash gradlew -b $ROOT/reactive-ngrx/build.gradle
+- bash gradlew -b ${root}/reactive-ngrx/build.gradle
 # reactive-ngrx docker
-- docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml up --build -d
+- docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml up --build -d
 - sleep 30
 - http :8001
 - http :8002
-- docker-compose -f $ROOT/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
+- docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
 
 - >
   for path in \
@@ -160,8 +160,8 @@ script:
     spring-integration-5-example \
     functional-spring;
   do
-    export TARGET="$ROOT/$path"
-    cd $TARGET
+    export project="${root}/$path"
+    cd ${project}
     echo "build $path"
     bash gradlew clean build
   done;
