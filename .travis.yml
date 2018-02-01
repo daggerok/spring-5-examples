@@ -40,6 +40,30 @@ script:
 
 - export root=$(pwd)
 
+# listener-of-listener
+- bash gradlew -b ${root}/listener-of-listener/build.gradle
+- java -jar ${root}/listener-of-listener/kotlin-listeners/build/libs/*.jar &
+- bash mvnw -f ${root}/listener-of-listener/pom.xml
+- java -jar ${root}/listener-of-listener/kotlin-listeners/target/*.jar --server.port=8000 &
+- wait_for 8080 8000
+- http :8080
+- http :8080 message=send\ message,\ y0!
+- stop_any 8080 8000
+# maven docker
+- docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml build --force-rm --no-cache --pull
+- docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml up --force-recreate --remove-orphans &
+- sleep 20
+- http :8080
+- http :8080 message=send\ message,\ y0!
+- docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml down -v
+# gradle docker
+- docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml build --force-rm --no-cache --pull
+- docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+- sleep 20
+- http :8080
+- http :8080 message=send\ message,\ y0!
+- docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml down -v
+
 # thymeleaf-webflux
 - bash gradlew -b ${root}/thymeleaf-webflux/build.gradle
 - java -jar ${root}/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar &
