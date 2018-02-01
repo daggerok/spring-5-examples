@@ -40,26 +40,48 @@ script:
 
 - export ROOT=$PWD
 
-# rmi
-- bash gradlew -b $ROOT/rmi/build.gradle
-- java -jar $ROOT/rmi/spring-rmi-client/build/libs/*.jar &
-- bash mvnw -f $ROOT/rmi/pom.xml
-- java -jar $ROOT/rmi/spring-rmi-service/target/*.jar --server.port=8000 &
+# thymeleaf-webflux
+- bash gradlew -b $ROOT/thymeleaf-webflux/build.gradle
+- java -jar $ROOT/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar &
+- bash mvnw -f $ROOT/thymeleaf-webflux/pom.xml
+- java -jar $ROOT/thymeleaf-webflux/reactive-thymeleaf/target/*.jar --server.port=8000 &
 - wait_for 8080 8000
-- http :8080/api/v1/users name=maksimko
-- http :8080/api/v1/users name=maks
-- http :8080/api/v1/users name=max
-- http :8080/api/v1/users
+- http --stream :8080
+- http --stream :8000
 - stop_any 8080 8000
-# hotel maven docker
-- docker-compose -f $ROOT/rmi/docker-compose.yaml build --force-rm --no-cache --pull
-- docker-compose -f $ROOT/rmi/docker-compose.yaml up --force-recreate --remove-orphans &
+# maven docker
+- docker-compose -f $ROOT/thymeleaf-webflux/docker-compose-maven.yaml build --force-rm --no-cache --pull
+- docker-compose -f $ROOT/thymeleaf-webflux/docker-compose-maven.yaml up --force-recreate --remove-orphans &
 - sleep 20
-- http :8080/api/v1/users name=maksimko
-- http :8080/api/v1/users name=maks
-- http :8080/api/v1/users name=max
-- http :8080/api/v1/users
-- docker-compose -f $ROOT/rmi/docker-compose.yaml down -v
+- http --stream :8000
+- docker-compose -f $ROOT/thymeleaf-webflux/docker-compose-gradle.yaml down -v
+# gradle docker
+- docker-compose -f $ROOT/thymeleaf-webflux/docker-compose-gradle.yaml build --force-rm --no-cache --pull
+- docker-compose -f $ROOT/thymeleaf-webflux/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+- sleep 20
+- http --stream :8000
+- docker-compose -f $ROOT/thymeleaf-webflux/docker-compose-gradle.yaml down -v
+
+## rmi
+#- bash gradlew -b $ROOT/rmi/build.gradle
+#- java -jar $ROOT/rmi/spring-rmi-client/build/libs/*.jar &
+#- bash mvnw -f $ROOT/rmi/pom.xml
+#- java -jar $ROOT/rmi/spring-rmi-service/target/*.jar --server.port=8000 &
+#- wait_for 8080 8000
+#- http :8080/api/v1/users name=maksimko
+#- http :8080/api/v1/users name=maks
+#- http :8080/api/v1/users name=max
+#- http :8080/api/v1/users
+#- stop_any 8080 8000
+## hotel maven docker
+#- docker-compose -f $ROOT/rmi/docker-compose.yaml build --force-rm --no-cache --pull
+#- docker-compose -f $ROOT/rmi/docker-compose.yaml up --force-recreate --remove-orphans &
+#- sleep 20
+#- http :8080/api/v1/users name=maksimko
+#- http :8080/api/v1/users name=maks
+#- http :8080/api/v1/users name=max
+#- http :8080/api/v1/users
+#- docker-compose -f $ROOT/rmi/docker-compose.yaml down -v
 
 ## mailbox
 #- bash gradlew clean build -b $ROOT/mailbox/build.gradle

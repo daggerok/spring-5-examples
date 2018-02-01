@@ -1,0 +1,37 @@
+= thymeleaf-webflux
+
+using ReactiveDataDriverContextVariable model on reactive thymeleaf view
+
+.gradle
+----
+./gradelw
+java -jar reactive-thymeleaf/build/libs/*.jar
+http --stream :8080
+----
+
+.gradle-docker
+----
+./gradlew
+docker-compose -f docker-compose-gradle.yaml up --build
+http --stream :8080
+docker-compose -f docker-compose-gradle.yaml down -v
+----
+
+.maven
+----
+./mvnw
+java -jar reactive-thymeleaf/target/*.jar
+http --stream :8080
+----
+
+.maven-docker
+----
+./mvnw
+docker-compose -f docker-compose-gradle.yaml up --build
+http --stream :8080
+docker-compose -f docker-compose-gradle.yaml down -v
+----
+
+links:
+
+. link:https://github.com/meistermeier/reactive-thymeleaf[meistermeier/reactive-thymeleaf]
