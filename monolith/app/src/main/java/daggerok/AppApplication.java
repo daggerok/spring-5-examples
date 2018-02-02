@@ -9,9 +9,13 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.web.reactive.accept.RequestedContentTypeResolverBuilder;
+import org.springframework.web.reactive.config.EnableWebFlux;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.reactive.result.view.Rendering;
@@ -86,8 +90,10 @@ public class AppApplication {
     return
 
         route(GET("/api/v1/messages"),
-              request -> ok().contentType(TEXT_EVENT_STREAM)
-                             //.contentType(APPLICATION_STREAM_JSON)
+              request -> ok().contentType(request.headers()
+                                                 .accept()
+                                                 .contains(TEXT_EVENT_STREAM)
+                                              ? TEXT_EVENT_STREAM : APPLICATION_STREAM_JSON)
                              .body(Flux.zip(
                                  Flux.interval(Duration.ofSeconds(1)),
                                  messages.findAll())
