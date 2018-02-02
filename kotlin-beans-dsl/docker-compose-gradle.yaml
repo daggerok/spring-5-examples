@@ -1,0 +1,17 @@
+version: "2.1"
+
+services:
+
+  gradle-kotlin-beans-dsl-app:
+    build:
+      context: ./kotlin-config-dsl
+      dockerfile: ./gradle/Dockerfile
+    volumes: ["gradle-app-data:/home/appuser"]
+    networks: [backing-services]
+
+volumes:
+  gradle-app-data: {}
+
+networks:
+  backing-services:
+    driver: bridge

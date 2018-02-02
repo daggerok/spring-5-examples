@@ -40,6 +40,12 @@ script:
 
 - export root=$(pwd)
 
+# kotlin-beans-dsl
+- bash gradlew -b ${root}/kotlin-beans-dsl/build.gradle
+- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/build/libs/*.jar
+- bash mvnw -f ${root}/kotlin-beans-dsl/pom.xml
+- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/target/*.jar
+
 # xml-wtf
 - bash gradlew -b ${root}/xml-wtf/build.gradle
 - java -jar ${root}/xml-wtf/kotlin-xml/build/libs/*.jar &
