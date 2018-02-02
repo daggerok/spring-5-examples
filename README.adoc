@@ -22,7 +22,7 @@ This repository is contains some spring-boot 2 / spring 5 playground project exa
 . link:listener-of-listener/[Kotlin Webflux DSL | listen listener of listeners O.o]
 . link:monolith/[Reactive monolith ...again]
 . link:xml-wtf/[XML application context config for Kotlin? O.o]
-. link:hantsy/spring-reactive-sample/[Kotlin beans DSL]
+. link:kotlin-beans-dsl/[Kotlin beans DSL]
 
 resources:
 
