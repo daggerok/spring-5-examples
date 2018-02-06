@@ -1,0 +1,20 @@
+version: "2.1"
+
+services:
+
+  gradle-axon-lock-app:
+    build:
+      context: ./axon-app
+      dockerfile: gradle/Dockerfile
+    volumes: ["gradle-axon-lock-app-data:/home/appuser"]
+    networks: [backing-services]
+    ports: ["8080:8080"]
+    restart: unless-stopped
+    mem_limit: 209715200 # container limit: 200Mb (200 * 1024 * 1024)
+
+volumes:
+  gradle-axon-lock-app-data: {}
+
+networks:
+  backing-services:
+    driver: bridge

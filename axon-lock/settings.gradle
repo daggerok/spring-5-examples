@@ -1,0 +1,2 @@
+rootProject.name = "axon-lock"
+include "axon-app"
