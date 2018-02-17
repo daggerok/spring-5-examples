@@ -29,6 +29,16 @@ before_install:
 script:
 - export root=$(pwd)
 
+# github-api-v3-gateway
+- bash gradlew -b ${root}/github-api-v3-gateway/build.gradle
+- bash mvnw -f ${root}/github-api-v3-gateway/pom.xml
+#- bash ${root}/github-api-v3-gateway/app/build/libs/*.jar &
+#- bash ${root}/github-api-v3-gateway/app/target/*.jar --server.port=80801 &
+#- wait_for 8080 8081
+#- http :8080
+#- http :8081
+#- stop_any 8080 8081
+
 # reactor-processors
 - bash gradlew -b ${root}/reactor-processors/build.gradle
 - bash mvnw -f ${root}/reactor-processors/pom.xml
@@ -50,33 +60,33 @@ script:
 - http :8000 name=Axon
 - stop_any 8080 8000
 
-# kotlin-beans-dsl
-- bash gradlew -b ${root}/kotlin-beans-dsl/build.gradle
-- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/build/libs/*.jar
-- bash mvnw -f ${root}/kotlin-beans-dsl/pom.xml
-- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/target/*.jar
+## kotlin-beans-dsl
+#- bash gradlew -b ${root}/kotlin-beans-dsl/build.gradle
+#- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/build/libs/*.jar
+#- bash mvnw -f ${root}/kotlin-beans-dsl/pom.xml
+#- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/target/*.jar
 
-# xml-wtf
-- bash gradlew -b ${root}/xml-wtf/build.gradle
-- java -jar ${root}/xml-wtf/kotlin-xml/build/libs/*.jar &
-- bash mvnw -f ${root}/xml-wtf/pom.xml
-- java -jar ${root}/xml-wtf/kotlin-xml/target/*.jar --server.port=8000 &
-- wait_for 8080 8000
-- http :8080
-- http :8000
-- stop_any 8080 8000
-# maven docker
-- docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml build --force-rm --no-cache --pull
-- docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml up --force-recreate --remove-orphans &
-- sleep 20
-- http :8080
-- docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml down -v
-# gradle docker
-- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml build --force-rm --no-cache --pull
-- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
-- sleep 20
-- http :8080
-- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml down -v
+## xml-wtf
+#- bash gradlew -b ${root}/xml-wtf/build.gradle
+#- java -jar ${root}/xml-wtf/kotlin-xml/build/libs/*.jar &
+#- bash mvnw -f ${root}/xml-wtf/pom.xml
+#- java -jar ${root}/xml-wtf/kotlin-xml/target/*.jar --server.port=8000 &
+#- wait_for 8080 8000
+#- http :8080
+#- http :8000
+#- stop_any 8080 8000
+## maven docker
+#- docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml build --force-rm --no-cache --pull
+#- docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml up --force-recreate --remove-orphans &
+#- sleep 20
+#- http :8080
+#- docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml down -v
+## gradle docker
+#- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml build --force-rm --no-cache --pull
+#- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+#- sleep 20
+#- http :8080
+#- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml down -v
 
 # monolith
 - bash gradlew -b ${root}/monolith/build.gradle
@@ -188,23 +198,23 @@ script:
 #- http :8080/actuator/health
 #- docker-compose -f ${root}/hotel/docker-compose.yaml down -v
 
-# mustache-json gradle
-- bash gradlew build -b ${root}/mustache-json/build.gradle
-- java -jar ${root}/mustache-json/build/libs/*.jar &
-- sleep 10
-- http :8080
-- http :8080/hello/
-- http :8080/hello/mustache
-- stop_any 8080
-- bash ./gradlew clean build
-# mustache-json docker
-- docker-compose -f ${root}/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
-- docker-compose -f ${root}/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
-- sleep 20
-- http :8080
-- http :8080/hello
-- http :8080/hello/lol
-- docker-compose -f ${root}/mustache-json/docker-compose.yaml down -v
+## mustache-json gradle
+#- bash gradlew build -b ${root}/mustache-json/build.gradle
+#- java -jar ${root}/mustache-json/build/libs/*.jar &
+#- sleep 10
+#- http :8080
+#- http :8080/hello/
+#- http :8080/hello/mustache
+#- stop_any 8080
+#- bash ./gradlew clean build
+## mustache-json docker
+#- docker-compose -f ${root}/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
+#- docker-compose -f ${root}/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
+#- sleep 20
+#- http :8080
+#- http :8080/hello
+#- http :8080/hello/lol
+#- docker-compose -f ${root}/mustache-json/docker-compose.yaml down -v
 
 # reactive-ngrx gradle
 - bash mvnw -f ${root}/reactive-ngrx/pom.xml
@@ -220,27 +230,22 @@ script:
 - http :8002
 - docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
 
-- >
-  for path in \
-    spring-shell \
-    reactive-websocket-sse \
-    spring-boot-under-the-hood \
-    reactive-auth \
-    reactive-security-client \
-    reactive-functional-security \
-    reactive-mongo-webflux-functional \
-    reactive-mongo-webflux \
-    reactive-webflux-spring-data-redis \
-    spring-integration-5-example \
-    functional-spring;
-  do
-    export project="${root}/$path"
-    cd ${project}
-    echo "build $path"
-    bash gradlew clean build
-  done;
-
-#cache:
-#  directories:
-#  - $HOME/.m2/
-#  - $HOME/.gradle/
+#- >
+#  for path in \
+#    spring-shell \
+#    reactive-websocket-sse \
+#    spring-boot-under-the-hood \
+#    reactive-auth \
+#    reactive-security-client \
+#    reactive-functional-security \
+#    reactive-mongo-webflux-functional \
+#    reactive-mongo-webflux \
+#    reactive-webflux-spring-data-redis \
+#    spring-integration-5-example \
+#    functional-spring;
+#  do
+#    export project="${root}/$path"
+#    cd ${project}
+#    echo "build $path"
+#    bash gradlew clean build
+#  done;

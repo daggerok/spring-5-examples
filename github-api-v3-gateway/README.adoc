@@ -1,0 +1,15 @@
+= github-api-v3-gateway
+
+//tag::content[]
+in progres...
+
+.build
+----
+./mvnw clean package com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up
+./mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
+
+./gradlew clean build composeUp
+./gradlew composeDown
+----
+
+//end::content[]

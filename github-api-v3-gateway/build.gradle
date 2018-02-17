@@ -1,0 +1,62 @@
+buildscript {
+  ext {
+    javaVersion = "1.8"
+    vavrVersion = "0.9.2"
+  }
+}
+
+plugins {
+  id "idea"
+  id "eclipse"
+  id "com.avast.gradle.docker-compose" version "0.6.13"
+}
+
+allprojects {
+
+  apply plugin: "base"
+  apply plugin: "maven"
+
+  group = "daggerok"
+  version = "0.0.1"
+
+  defaultTasks "clean", "build"
+
+  task wrapper(type: Wrapper) {
+    gradleVersion = "4.5.1"
+    distributionType = "ALL"
+  }
+}
+
+subprojects {
+
+  apply plugin: "java"
+
+  sourceCompatibility = targetCompatibility = "$javaVersion"
+
+  repositories {
+    mavenLocal()
+    mavenCentral()
+  }
+
+  dependencies {
+    compile "io.vavr:vavr:$vavrVersion"
+  }
+}
+
+def profile = project.hasProperty("profile") ? project.getProperty("profile") : "gradle"
+
+dockerCompose {
+  useComposeFiles = [project.file("docker-compose-${profile}.yaml")]
+  // captureContainersOutput = true
+  captureContainersOutput = false
+  stopContainers = true
+  removeContainers = true
+  removeImages = "Local"
+  removeVolumes = true
+  removeOrphans = true
+  forceRecreate = true
+  waitForTcpPorts = false
+  projectName = project.name
+}
+
+composeUp.dependsOn assemble
