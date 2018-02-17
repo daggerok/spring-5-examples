@@ -13,11 +13,10 @@ buildscript {
 }
 
 plugins {
+  id "java"
   id "com.avast.gradle.docker-compose" version "0.6.13"
 }
 
-apply plugin: "java"
-apply plugin: "eclipse"
 apply plugin: "org.springframework.boot"
 apply plugin: "io.spring.dependency-management"
 

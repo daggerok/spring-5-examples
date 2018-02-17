@@ -13,11 +13,13 @@ import static java.lang.String.format;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Configuration
-public class WebClientConfig {
+public class WebClientAuthMiddlewareConfig {
 
   @Bean
   WebClient githubWebClient(final GithubProperties props) {
+
     return WebClient.builder()
+                    .baseUrl(props.getBaseUrl())
                     .filter((request, next) -> next.exchange(
                         ClientRequest.from(request)
                                      .header(AUTHORIZATION, basicAuthorization(props.getToken()))
@@ -25,7 +27,7 @@ public class WebClientConfig {
                     .build();
   }
 
-  private static String basicAuthorization(final @Pattern(regexp = "\\w+:\\w+") String token) {
+  private static String basicAuthorization(final String token) {
 
     final byte[] basicAuthValue = token.getBytes(StandardCharsets.UTF_8);
     final String encoded = Base64Utils.encodeToString(basicAuthValue);

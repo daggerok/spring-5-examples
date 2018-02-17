@@ -4,7 +4,9 @@ sudo: required
 group: travis_lts
 env:
   global:
-    TERM=dumb
+  # github-api-v3-gateway app requires github token
+  - secure: "PLL6z6iFOkP1zcJt2R7Yq8ut1313FX70opXUrC7/O0HUEgQdU1q77McSjxxyY4AtzvT+XPgbGNAx5JXuVpHyQ4rnM1Q/3HBz7E2ZHr+71ehLap95x9XKkwShw/Can9IYu66FUGm7sOdN2b01JOpH4IKR50tGeUY9dWzdld10f/Se5KaRjCtzCKsMyMPm02dhUvxvzLn0VWNQDuZC2hAsLsBGOBKc9cGcI03b0u98We8lqyaJ6FT6j0Fjd4t3CycOVR+0XrVbEJ3tFaILmSZoer+N76vqnY42sTyHfbNUPyJboZshy8A19AAngebw4yJWKaHQ+B3eowLcpDRoR32SYnFHgDMtDLLsKMVZeGBvUazORgQpl5YKQeInOKbSku796ZiWz7ciGsCm52ve9dymlX+PUzkfA9J9ylK4XRl9/yLNFfqtjmWLRkP0+V3qRtwCnLU3yd5ZQ7D8t1dhSNJHddvC75oH6Cn/KFOk+4h6jjo+hXOj64ZcjJF8bvYLbdhlFNbNdmq8I9MT0qge95UcufJ9pJk42PL1ojAmxw2REACdW3MMPfcSWukQAuzOgPeZYAjQ9zUIFBqkrrbH2j4Eo+wEq+wwxsgcmBSAkgjdLR9Ni1x/RcqrO1kZ3fXbIr/1P8XXF9d1l0oMDgNjgt64MVT0wwNyxOEPBwGXUO3TkFw="
+  - TERM=dumb
 language: java
 jdk:
 - openjdk8
@@ -24,41 +26,44 @@ before_install:
 - nvm install 9
 - npm i -g yarn
 - source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
-- stop_any 5432 5672 27017
+- stop_any 5432 5672 27017 80 8080
 
 script:
 - export root=$(pwd)
 
 # github-api-v3-gateway
-- bash gradlew -b ${root}/github-api-v3-gateway/build.gradle >/dev/null 2>&1
-- bash gradlew -b ${root}/github-api-v3-gateway/build.gradle :w-g:composeUp
-- http :8080/github/manual
-- http :8080/github
-- http :8080
-- bash gradlew -b ${root}/github-api-v3-gateway/build.gradle :w-g:composeDown
+- cp -Rf ${root}/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github-default.properties ${root}/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github.properties
+- http -a "$GITHUB_TOKEN" https://api.github.com
 #
+- bash gradlew -b ${root}/github-api-v3-gateway/build.gradle >/dev/null 2>&1
 - bash ${root}/github-api-v3-gateway/webflux-gateway/build/libs/*.jar &
 - wait_for 8080
-- http :8080/github/manual
-- http :8080/github
-- http :8080
+- http :8080/github/props/manual
+- http :8080/github/props
+- http :8080/github/search/users/dagg\?page=0\&size=2
+- http :8080/github/search/users/dagge\?page=0\&size=2
+- http :8080/github/search/users/daggr\?page=0\&size=2
 - stop_any 8080
 #
 - bash mvnw -f ${root}/github-api-v3-gateway/pom.xml >/dev/null 2>&1
 - bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway clean package com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up
 - sleep 15
-- http :8080/github/manual
-- http :8080/github
-- http :8080
 - bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
 #
-- bash mvnw -f ${root}/github-api-v3-gateway/pom.xml >/dev/null 2>&1
 - bash ${root}/github-api-v3-gateway/webflux-gateway/target/*.jar &
 - wait_for 8080
-- http :8080/github/manual
-- http :8080/github
+- http :8080/github/props/manual
+- http :8080/github/props
 - http :8080
+- http :8080/github/search/users/dagg\?page=0\&size=2
+- http :8080/github/search/users/dagge\?page=0\&size=2
+- http :8080/github/search/users/daggrok\?page=0\&size=2
 - stop_any 8080
+#
+- docker-compose -f ${root}/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml build --force-rm --no-cache --pull
+- docker-compose -f ${root}/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml up &
+- sleep 20
+- docker-compose -f ${root}/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml down -v &
 
 # reactor-processors
 - bash gradlew -b ${root}/reactor-processors/build.gradle >/dev/null 2>&1

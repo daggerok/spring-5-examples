@@ -10,3 +10,4 @@ target
 *.log
 .DS_Store
 *.log
+**/config/application-github.properties

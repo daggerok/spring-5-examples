@@ -10,3 +10,4 @@ syntax: glob
 *.ipr
 *.iws
 *.log
+*/config/application-github.properties

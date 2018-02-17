@@ -10,7 +10,9 @@ in progress...
 .build, run and test
 ----
 ./gradlew bootRun
-http :8080/github
+http :8080/github/search/users/dagg\?page=0\&size=2
+http :8080/github/search/users/dagge\?page=0\&size=2
+http :8080/github/search/users/daggr\?page=0\&size=2
 ----
 
 .docker

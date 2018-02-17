@@ -56,9 +56,20 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 public class GithubProperties {
 
   /**
-   * github token in format username:password
+   * github base URI
+   *
+   * default: https://api.github.com
    */
   @JsonProperty(access = READ_ONLY)
-  @Pattern(regexp = "\\w+:\\w+")
+  String baseUrl;
+
+  /**
+   * github token in format username:password.
+   *
+   * username: Several word characters, short for [a-zA-Z_0-9]
+   * password: Several non-whitespace characters
+   */
+  @JsonProperty(access = READ_ONLY)
+  @Pattern(regexp = "\\w+:\\S+")
   String token;
 }
