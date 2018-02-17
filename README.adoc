@@ -2,6 +2,7 @@
 
 This repository is contains some spring-boot 2 / spring 5 playground project examples
 
+. link:reactor-processors/[Webflux Reactor processors: FluxSink, etc...]
 . link:functional-spring/[Spring 5 Reactive Webflux RouterFunction / WebClient examples]
 . link:spring-integration-5-example/[Spring 5 Integration example]
 . link:reactive-webflux-spring-data-redis/[Spring 5 Reactive Redis / Old Webflux REST API]

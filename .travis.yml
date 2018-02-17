@@ -15,22 +15,23 @@ before_install:
 #- sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 #- sudo apt install -y docker-ce
 #- sudo usermod -aG docker $(whoami)
-
 #- curl -fsSL get.docker.com | sudo sh -
 #- wget get.docker.com -O- | sudo sh -
+
 - sudo apt update -y || true
 - sudo apt install -y --no-install-recommends docker-ce curl jq libxml2-utils python-pip
 - sudo pip install docker-compose httpie
-
 - nvm install 9
 - npm i -g yarn
-
 - source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
 - stop_any 5432 5672 27017
 
 script:
-
 - export root=$(pwd)
+
+# reactor-processors
+- bash gradlew -b ${root}/reactor-processors/build.gradle
+- bash mvnw -f ${root}/reactor-processors/pom.xml
 
 # reactive axon
 - bash gradlew -b ${root}/axon-lock/build.gradle
