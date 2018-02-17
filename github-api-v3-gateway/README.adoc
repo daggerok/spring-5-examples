@@ -1,15 +1,25 @@
 = github-api-v3-gateway
 
 //tag::content[]
-in progres...
+in progress...
 
-.build
+.build, run and test
 ----
-./mvnw clean package com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up
-./mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
+./gradlew bootRun
+http :8080/github
+----
+
+.docker
+----
+./mvnw -pl webflux-gateway clean package com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up
+./mvnw -pl webflux-gateway com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
 
 ./gradlew clean build composeUp
 ./gradlew composeDown
 ----
+
+links:
+
+. link:https://www.youtube.com/watch?v=aA4tfBGY6jY[From Zero to Hero with Spring Boot - Brian Clozel]
 
 //end::content[]

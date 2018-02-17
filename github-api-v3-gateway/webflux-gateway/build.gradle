@@ -1,0 +1,63 @@
+buildscript {
+  ext {
+    springBootVersion = "2.0.0.RC1"
+  }
+  repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+  }
+}
+
+plugins {
+  id "com.avast.gradle.docker-compose" version "0.6.13"
+}
+
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+
+repositories {
+  mavenCentral()
+  maven { url "https://repo.spring.io/snapshot" }
+  maven { url "https://repo.spring.io/milestone" }
+}
+
+dependencies {
+  compile("io.vavr:vavr:${vavrVersion}")
+  compile("org.springframework.boot:spring-boot-starter-actuator")
+  compile("org.springframework.boot:spring-boot-starter-webflux")
+  runtime("org.springframework.boot:spring-boot-devtools")
+  compileOnly("org.springframework.boot:spring-boot-configuration-processor") // compileJava.dependsOn(processResources)
+  compileOnly("org.projectlombok:lombok")
+  testCompile("org.springframework.boot:spring-boot-starter-test")
+  testCompile("io.projectreactor:reactor-test")
+}
+
+bootJar {
+  launchScript()
+}
+
+compileJava.dependsOn(processResources)
+
+def profile = project.hasProperty("profile") ? project.getProperty("profile") : "gradle"
+
+dockerCompose {
+  useComposeFiles = [project.file("docker-compose-${profile}.yaml")]
+  // captureContainersOutput = true
+  captureContainersOutput = false
+  stopContainers = true
+  removeContainers = true
+  removeImages = "Local"
+  removeVolumes = true
+  removeOrphans = true
+  forceRecreate = true
+  waitForTcpPorts = false
+  projectName = project.name
+}
+
+composeUp.dependsOn assemble

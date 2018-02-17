@@ -5,6 +5,7 @@ group: travis_lts
 env:
   global:
     TERM=dumb
+  secure: "tejTfNzMCm6jHj195iOW/0TFlsYywNlyMHqIKoHcvTg6lgpjbA5i+w49LLfDnYlNFH0MJP+H68djsB0J/44dsV9V5A6Kbv5Uno664OnJ2CnsnRglLqyKpSSzvOccOw+117i+5CYAkN8acJarvIeo+sQz8XMc6y1eGHM3pcHQaUDO5h/FuRrV6Ub+Xc6qexQ5OcojedGxtu8K8HX8VJtb6zKzVvzbQ+gpifha33oVmuCODNqZCIwlnZ9+jlH+yTxE8emx92AcqfweXji7JQz1YzhMzdI9+cDQn0RubFUCeifaz8zejFAKN/rMO5STdoBZeiOLnz6hUHu+mFM509t4USr6SpAKGb/tl80iZUqimMvHEGqYONREDA4e4oDCtEUMex+t0gLbn081QA5rli6+wkGAxqmkmglSNap15qHRMgLe3c5+W500jzSsBRIHeJXt8ghrpVcsTQCu2F9JOINM58nc3kj7Ht8yDIppzYFPTc/ZCU+pbcbxFZXgaW/Py9L8JWGej8c3JUP6jkhBpuuBZHX1wZuQXkfkWA0ydzjPX+Wz6sOcLc7axO5u0uClveWOZh424lqPDphrB51IP8+5u2JRfJG7PapdF8jDok9JyWfKAWHQaimf6MLs6VJ46dC2T20Xsu+WWm42HHFnBVcUpQ0lRJF1ItHgvBbg3ErgQKI="
 language: java
 jdk:
 - openjdk8
@@ -31,13 +32,33 @@ script:
 
 # github-api-v3-gateway
 - bash gradlew -b ${root}/github-api-v3-gateway/build.gradle >/dev/null 2>&1
+- bash gradlew -b ${root}/github-api-v3-gateway/build.gradle :w-g:composeUp
+- http :8080/github
+- http :8080/
+- bash gradlew -b ${root}/github-api-v3-gateway/build.gradle :w-g:composeDown
+#
+- bash ${root}/github-api-v3-gateway/webflux-gateway/build/libs/*.jar &
+- wait_for 8080
+- http :8080/github
+- http :8080/
+- stop_any 8080
+#
 - bash mvnw -f ${root}/github-api-v3-gateway/pom.xml >/dev/null 2>&1
-#- bash ${root}/github-api-v3-gateway/app/build/libs/*.jar &
-#- bash ${root}/github-api-v3-gateway/app/target/*.jar --server.port=80801 &
-#- wait_for 8080 8081
-#- http :8080
-#- http :8081
-#- stop_any 8080 8081
+- bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway clean package com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up
+- sleep 15
+- http :8080/github
+- http :8080/
+- bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway clean package com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
+#
+- bash mvnw -f ${root}/github-api-v3-gateway/pom.xml >/dev/null 2>&1
+- bash ${root}/github-api-v3-gateway/webflux-gateway/target/*.jar &
+- wait_for 8080
+- http :8080/github
+- http :8080/
+- stop_any 8080
+#
+- http -a "$GITHUB_AUTHORIZATION" https://api.github.com
+- curl -u "$GITHUB_AUTHORIZATION" https://api.github.com
 
 # reactor-processors
 - bash gradlew -b ${root}/reactor-processors/build.gradle >/dev/null 2>&1
