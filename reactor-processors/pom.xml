@@ -37,37 +37,6 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.7.0</version>
       </plugin>
-
-      <!-- docker -->
-      <plugin>
-        <groupId>com.dkanejs.maven.plugins</groupId>
-        <artifactId>docker-compose-maven-plugin</artifactId>
-        <version>1.0.1</version>
-        <executions>
-          <execution>
-            <id>up</id>
-            <!--<phase>process-resources</phase>-->
-            <phase>verify</phase>
-            <goals>
-              <goal>up</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>down</id>
-            <!--<phase>test</phase>-->
-            <phase>verify</phase>
-            <goals>
-              <goal>down</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <composeFile>${project.basedir}/docker-compose-maven.yaml</composeFile>
-          <detachedMode>true</detachedMode>
-          <removeVolumes>true</removeVolumes>
-          <detail>true</detail>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 

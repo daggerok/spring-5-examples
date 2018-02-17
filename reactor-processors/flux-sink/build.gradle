@@ -8,12 +8,12 @@ buildscript {
     maven { url "https://repo.spring.io/milestone" }
   }
   dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
   }
 }
 
 plugins {
-  id "maven"
+  id "com.avast.gradle.docker-compose" version "0.6.13"
 }
 
 apply plugin: "org.springframework.boot"
@@ -26,8 +26,32 @@ repositories {
 }
 
 dependencies {
+  compile("io.vavr:vavr:$vavrVersion")
+  compile("org.springframework.boot:spring-boot-starter-actuator")
   compile("org.springframework.boot:spring-boot-starter-webflux")
   compileOnly("org.projectlombok:lombok")
   testCompile("org.springframework.boot:spring-boot-starter-test")
   testCompile("io.projectreactor:reactor-test")
+}
+
+def profile = project.hasProperty("profile") ? project.getProperty("profile") : "gradle"
+
+dockerCompose {
+  useComposeFiles = [project.file("docker-compose-${profile}.yaml")]
+  // captureContainersOutput = true
+  captureContainersOutput = false
+  stopContainers = true
+  removeContainers = true
+  removeImages = "Local"
+  removeVolumes = true
+  removeOrphans = true
+  forceRecreate = true
+  waitForTcpPorts = false
+  projectName = project.name
+}
+
+composeUp.dependsOn assemble
+
+bootJar {
+  launchScript()
 }

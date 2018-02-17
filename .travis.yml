@@ -32,6 +32,13 @@ script:
 # reactor-processors
 - bash gradlew -b ${root}/reactor-processors/build.gradle
 - bash mvnw -f ${root}/reactor-processors/pom.xml
+- bash ${root}/reactor-processors/flux-sink/build/libs/*.jar &
+- wait_for 8080
+- curl http://127.0.0.1:8080 &
+- http :8080 --stream &
+- http :8080/message message=hi!
+- http :8080/message message=hey!
+- stop_any 8080
 
 # reactive axon
 - bash gradlew -b ${root}/axon-lock/build.gradle
