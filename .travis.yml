@@ -48,7 +48,7 @@ script:
 - sleep 15
 - http :8080/github
 - http :8080/
-- bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway clean package com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
+- bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
 #
 - bash mvnw -f ${root}/github-api-v3-gateway/pom.xml >/dev/null 2>&1
 - bash ${root}/github-api-v3-gateway/webflux-gateway/target/*.jar &
@@ -251,22 +251,22 @@ script:
 - http :8002
 - docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
 
-- >
-  for path in \
-    spring-shell \
-    reactive-websocket-sse \
-    spring-boot-under-the-hood \
-    reactive-auth \
-    reactive-security-client \
-    reactive-functional-security \
-    reactive-mongo-webflux-functional \
-    reactive-mongo-webflux \
-    reactive-webflux-spring-data-redis \
-    spring-integration-5-example \
-    functional-spring;
-  do
-    export project="${root}/$path"
-    cd ${project}
-    echo "build $path"
-    bash gradlew clean build >/dev/null 2>&1
-  done;
+#- >
+#  for path in \
+#    spring-shell \
+#    reactive-websocket-sse \
+#    spring-boot-under-the-hood \
+#    reactive-auth \
+#    reactive-security-client \
+#    reactive-functional-security \
+#    reactive-mongo-webflux-functional \
+#    reactive-mongo-webflux \
+#    reactive-webflux-spring-data-redis \
+#    spring-integration-5-example \
+#    functional-spring;
+#  do
+#    export project="${root}/$path"
+#    cd ${project}
+#    echo "build $path"
+#    bash gradlew clean build >/dev/null 2>&1
+#  done;
