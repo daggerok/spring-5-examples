@@ -3,6 +3,10 @@
 //tag::content[]
 in progress...
 
+. GitHub API v3
+. Spring configuration processor
+. Spring Webflux WebClient interceptor
+
 .build, run and test
 ----
 ./gradlew bootRun
@@ -21,5 +25,6 @@ http :8080/github
 links:
 
 . link:https://www.youtube.com/watch?v=aA4tfBGY6jY[From Zero to Hero with Spring Boot - Brian Clozel]
+. link:https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-client-filter[Spring Webflux | WebClient | Filters]
 
 //end::content[]
