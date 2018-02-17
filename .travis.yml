@@ -30,8 +30,8 @@ script:
 - export root=$(pwd)
 
 # github-api-v3-gateway
-- bash gradlew -b ${root}/github-api-v3-gateway/build.gradle
-- bash mvnw -f ${root}/github-api-v3-gateway/pom.xml
+- bash gradlew -b ${root}/github-api-v3-gateway/build.gradle >/dev/null 2>&1
+- bash mvnw -f ${root}/github-api-v3-gateway/pom.xml >/dev/null 2>&1
 #- bash ${root}/github-api-v3-gateway/app/build/libs/*.jar &
 #- bash ${root}/github-api-v3-gateway/app/target/*.jar --server.port=80801 &
 #- wait_for 8080 8081
@@ -40,8 +40,8 @@ script:
 #- stop_any 8080 8081
 
 # reactor-processors
-- bash gradlew -b ${root}/reactor-processors/build.gradle
-- bash mvnw -f ${root}/reactor-processors/pom.xml
+- bash gradlew -b ${root}/reactor-processors/build.gradle >/dev/null 2>&1
+- bash mvnw -f ${root}/reactor-processors/pom.xml >/dev/null 2>&1
 - bash ${root}/reactor-processors/flux-sink/build/libs/*.jar &
 - wait_for 8080
 - curl http://127.0.0.1:8080 &
@@ -51,8 +51,8 @@ script:
 - stop_any 8080
 
 # reactive axon
-- bash gradlew -b ${root}/axon-lock/build.gradle
-- bash mvnw -f ${root}/axon-lock/pom.xml
+- bash gradlew -b ${root}/axon-lock/build.gradle >/dev/null 2>&1
+- bash mvnw -f ${root}/axon-lock/pom.xml >/dev/null 2>&1
 - java -jar ${root}/axon-lock/axon-app/build/libs/*.jar &
 - java -jar ${root}/axon-lock/axon-app/target/*.jar --server.port=8000 &
 - wait_for 8080 8000
@@ -61,15 +61,15 @@ script:
 - stop_any 8080 8000
 
 ## kotlin-beans-dsl
-#- bash gradlew -b ${root}/kotlin-beans-dsl/build.gradle
+#- bash gradlew -b ${root}/kotlin-beans-dsl/build.gradle >/dev/null 2>&1
 #- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/build/libs/*.jar
-#- bash mvnw -f ${root}/kotlin-beans-dsl/pom.xml
+#- bash mvnw -f ${root}/kotlin-beans-dsl/pom.xml >/dev/null 2>&1
 #- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/target/*.jar
 
 ## xml-wtf
-#- bash gradlew -b ${root}/xml-wtf/build.gradle
+#- bash gradlew -b ${root}/xml-wtf/build.gradle >/dev/null 2>&1
 #- java -jar ${root}/xml-wtf/kotlin-xml/build/libs/*.jar &
-#- bash mvnw -f ${root}/xml-wtf/pom.xml
+#- bash mvnw -f ${root}/xml-wtf/pom.xml >/dev/null 2>&1
 #- java -jar ${root}/xml-wtf/kotlin-xml/target/*.jar --server.port=8000 &
 #- wait_for 8080 8000
 #- http :8080
@@ -89,9 +89,9 @@ script:
 #- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml down -v
 
 # monolith
-- bash gradlew -b ${root}/monolith/build.gradle
+- bash gradlew -b ${root}/monolith/build.gradle >/dev/null 2>&1
 - java -jar ${root}/monolith/app/build/libs/*.jar &
-- bash mvnw -f ${root}/monolith/pom.xml
+- bash mvnw -f ${root}/monolith/pom.xml >/dev/null 2>&1
 - java -jar ${root}/monolith/app/target/*.jar --server.port=8000 &
 - wait_for 8080 8000
 - http :8080
@@ -101,9 +101,9 @@ script:
 - stop_any 8080 8000
 
 ## listener-of-listener
-#- bash gradlew -b ${root}/listener-of-listener/build.gradle
+#- bash gradlew -b ${root}/listener-of-listener/build.gradle >/dev/null 2>&1
 #- java -jar ${root}/listener-of-listener/kotlin-listeners/build/libs/*.jar &
-#- bash mvnw -f ${root}/listener-of-listener/pom.xml
+#- bash mvnw -f ${root}/listener-of-listener/pom.xml >/dev/null 2>&1
 #- java -jar ${root}/listener-of-listener/kotlin-listeners/target/*.jar --server.port=8000 &
 #- wait_for 8080 8000
 #- http :8080
@@ -125,9 +125,9 @@ script:
 #- docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml down -v
 
 # thymeleaf-webflux
-- bash gradlew -b ${root}/thymeleaf-webflux/build.gradle
+- bash gradlew -b ${root}/thymeleaf-webflux/build.gradle >/dev/null 2>&1
 - java -jar ${root}/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar &
-- bash mvnw -f ${root}/thymeleaf-webflux/pom.xml
+- bash mvnw -f ${root}/thymeleaf-webflux/pom.xml >/dev/null 2>&1
 - java -jar ${root}/thymeleaf-webflux/reactive-thymeleaf/target/*.jar --server.port=8000 &
 - wait_for 8080 8000
 - http --stream :8080
@@ -147,9 +147,9 @@ script:
 - docker-compose -f ${root}/thymeleaf-webflux/docker-compose-gradle.yaml down -v
 
 ## rmi
-#- bash gradlew -b ${root}/rmi/build.gradle
+#- bash gradlew -b ${root}/rmi/build.gradle >/dev/null 2>&1
 #- java -jar ${root}/rmi/spring-rmi-client/build/libs/*.jar &
-#- bash mvnw -f ${root}/rmi/pom.xml
+#- bash mvnw -f ${root}/rmi/pom.xml >/dev/null 2>&1
 #- java -jar ${root}/rmi/spring-rmi-service/target/*.jar --server.port=8000 &
 #- wait_for 8080 8000
 #- http :8080/api/v1/users name=maksimko
@@ -168,15 +168,15 @@ script:
 #- docker-compose -f ${root}/rmi/docker-compose.yaml down -v
 
 ## mailbox
-#- bash gradlew clean build -b ${root}/mailbox/build.gradle
-#- bash mvnw clean package -f ${root}/mailbox/pom.xml
+#- bash gradlew clean build -b ${root}/mailbox/build.gradle >/dev/null 2>&1
+#- bash mvnw clean package -f ${root}/mailbox/pom.xml >/dev/null 2>&1
 #- java -jar ${root}/mailbox/webapp/target/*.jar &
 #- wait_for 8080
 #- http -a max:max get :8080/
 #- stop_any 8080
 
 ## hotel gradle
-#- bash gradlew clean build -b ${root}/hotel/build.gradle
+#- bash gradlew clean build -b ${root}/hotel/build.gradle >/dev/null 2>&1
 #- java -jar ${root}/hotel/webapp/build/libs/*.jar &
 #- docker-compose -f ${root}/hotel/reservations/docker-compose.yml up -d
 #- java -jar ${root}/hotel/reservations/build/libs/*.jar &
@@ -188,7 +188,7 @@ script:
 #- http :8080/actuator/health
 #- stop_any 8080 8081
 ## hotel maven docker
-#- bash mvnw -f ./hotel/pom.xml clean package -U
+#- bash mvnw -f ${root}/hotel/pom.xml clean package -U >/dev/null 2>&1
 #- docker-compose -f ${root}/hotel/docker-compose.yaml build --force-rm --no-cache --pull
 #- docker-compose -f ${root}/hotel/docker-compose.yaml up --force-recreate --remove-orphans &
 #- sleep 20
@@ -199,7 +199,7 @@ script:
 #- docker-compose -f ${root}/hotel/docker-compose.yaml down -v
 
 ## mustache-json gradle
-#- bash gradlew build -b ${root}/mustache-json/build.gradle
+#- bash gradlew build -b ${root}/mustache-json/build.gradle >/dev/null 2>&1
 #- java -jar ${root}/mustache-json/build/libs/*.jar &
 #- sleep 10
 #- http :8080
@@ -230,22 +230,22 @@ script:
 - http :8002
 - docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
 
-#- >
-#  for path in \
-#    spring-shell \
-#    reactive-websocket-sse \
-#    spring-boot-under-the-hood \
-#    reactive-auth \
-#    reactive-security-client \
-#    reactive-functional-security \
-#    reactive-mongo-webflux-functional \
-#    reactive-mongo-webflux \
-#    reactive-webflux-spring-data-redis \
-#    spring-integration-5-example \
-#    functional-spring;
-#  do
-#    export project="${root}/$path"
-#    cd ${project}
-#    echo "build $path"
-#    bash gradlew clean build
-#  done;
+- >
+  for path in \
+    spring-shell \
+    reactive-websocket-sse \
+    spring-boot-under-the-hood \
+    reactive-auth \
+    reactive-security-client \
+    reactive-functional-security \
+    reactive-mongo-webflux-functional \
+    reactive-mongo-webflux \
+    reactive-webflux-spring-data-redis \
+    spring-integration-5-example \
+    functional-spring;
+  do
+    export project="${root}/$path"
+    cd ${project}
+    echo "build $path"
+    bash gradlew clean build >/dev/null 2>&1
+  done;
