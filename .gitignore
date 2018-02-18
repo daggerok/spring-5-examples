@@ -1,3 +1,4 @@
+spring-boot-starter/
 spring-boot-google-oauth2/
 08-cassandra-reactive-security-client/
 08-redis-reactive-security-client/
