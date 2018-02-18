@@ -2,6 +2,7 @@
 
 This repository is contains some spring-boot 2 / spring 5 playground project examples
 
+. link:https://github.com/daggerok/spring-security-examples/tree/master/spring-5-security-oauth2[Spring 5 | Spring Security OAuth2 | Spring Boot 2 | Github + Facebook]
 . link:github-api-v3-gateway/[Github API v3]
 . link:reactor-processors/[Webflux Reactor processors: FluxSink, etc...]
 . link:functional-spring/[Spring 5 Reactive Webflux RouterFunction / WebClient examples]
