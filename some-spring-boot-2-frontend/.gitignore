@@ -1,0 +1,8 @@
+src/main/resources/static
+src/main/resources/templates
+node_modules
+.cache
+.idea
+dist
+yarn.lock
+package-lock.json

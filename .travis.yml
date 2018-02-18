@@ -42,9 +42,9 @@ script:
 - http :8080
 - stop_any 8080
 
-# some-sprng-boot-2-frontend
-- bash gradlew -b ${root}/some-sprng-boot-2-frontende/build.gradle >/dev/null 2>&1
-- bash ${root}/${root}/some-sprng-boot-2-frontende/build/libs/*.jar &
+# some-spring-boot-2-frontend
+- bash gradlew -b ${root}/some-spring-boot-2-frontende/build.gradle >/dev/null 2>&1
+- bash ${root}/${root}/some-spring-boot-2-frontende/build/libs/*.jar &
 - wait_for 8080
 - http :8080
 - stop_any 8080
