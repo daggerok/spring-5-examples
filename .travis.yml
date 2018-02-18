@@ -31,6 +31,24 @@ before_install:
 script:
 - export root=$(pwd)
 
+# axon-vote
+- bash mvnw -f ${root}/axon-vote/pom.xml >/dev/null 2>&1
+- bash ${root}/axon-vote/target/*.jar &
+- wait_for 8080
+- http :8080/api/v1/registration id=my-vote name=my=vote
+- http put http://localhost:8080/api/v1/registration/approve/my-vote
+- http post http://localhost:8080/api/v1/vote/my-vote electorId=dag
+- http post http://localhost:8080/api/v1/vote/my-vote electorId=max
+- http :8080
+- stop_any 8080
+
+# some-sprng-boot-2-frontend
+- bash gradlew -b ${root}/some-sprng-boot-2-frontende/build.gradle >/dev/null 2>&1
+- bash ${root}/${root}/some-sprng-boot-2-frontende/build/libs/*.jar &
+- wait_for 8080
+- http :8080
+- stop_any 8080
+
 # github-api-v3-gateway
 - cp -Rf ${root}/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github-default.properties ${root}/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github.properties
 - http -a "$GITHUB_TOKEN" https://api.github.com
