@@ -33,6 +33,8 @@ bash target/*.jar
 links:
 
 . link:https://jankotek.gitbooks.io/mapdb/content/quick-start/[MapDB reference]
+. link:https://github.com/jankotek/mapdb-site/tree/gh-pages/src/test/java/doc[MapDB Examples]
+. link:https://github.com/logicalguess/stuff[Github: logicalguess/stuff]
 . link:https://spring.io/blog/2017/08/01/spring-framework-5-kotlin-apis-the-functional-way[Kotlin functional Beans / Webflux APIs]
 
 //end::content[]
