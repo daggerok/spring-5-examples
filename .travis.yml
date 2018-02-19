@@ -31,6 +31,14 @@ before_install:
 script:
 - export root=$(pwd)
 
+# mapdb
+- bash gradlew -b ${root}/mapdb/build.gradle >/dev/null 2>&1
+- bash ${root}/mapdb/build/libs/*.jar &
+- wait_for 8080
+- http :8080 message=hello,\ max!
+- http :8080 message=how\ are\ u\?
+- stop_any 8080
+
 # axon-vote
 - bash mvnw -f ${root}/axon-vote/pom.xml >/dev/null 2>&1
 - bash ${root}/axon-vote/target/*.jar &
@@ -42,12 +50,12 @@ script:
 - http :8080
 - stop_any 8080
 
-# some-spring-boot-2-frontend
-- bash gradlew -b ${root}/some-spring-boot-2-frontend/build.gradle >/dev/null 2>&1
-- bash ${root}/some-spring-boot-2-frontend/build/libs/*.jar &
-- wait_for 8080
-- http :8080
-- stop_any 8080
+## some-spring-boot-2-frontend
+#- bash gradlew -b ${root}/some-spring-boot-2-frontend/build.gradle >/dev/null 2>&1
+#- bash ${root}/some-spring-boot-2-frontend/build/libs/*.jar &
+#- wait_for 8080
+#- http :8080
+#- stop_any 8080
 
 # github-api-v3-gateway
 - cp -Rf ${root}/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github-default.properties ${root}/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github.properties
