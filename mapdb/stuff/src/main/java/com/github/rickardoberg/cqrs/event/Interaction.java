@@ -5,25 +5,21 @@ import java.util.List;
 
 import com.github.rickardoberg.cqrs.domain.Identifier;
 
-public class Interaction
-{
-    private Identifier identifier;
+public class Interaction {
+  private Identifier identifier;
 
-    private Collection<Event> events;
+  private Collection<Event> events;
 
-    public Interaction( Identifier identifier, List<Event> events )
-    {
-        this.identifier = identifier;
-        this.events = events;
-    }
+  public Interaction(Identifier identifier, List<Event> events) {
+    this.identifier = identifier;
+    this.events = events;
+  }
 
-    public Identifier getIdentifier()
-    {
-        return identifier;
-    }
+  public Identifier getIdentifier() {
+    return identifier;
+  }
 
-    public Collection<Event> getEvents()
-    {
-        return events;
-    }
+  public Collection<Event> getEvents() {
+    return events;
+  }
 }

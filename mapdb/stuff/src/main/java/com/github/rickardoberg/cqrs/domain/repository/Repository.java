@@ -14,10 +14,9 @@ import com.github.rickardoberg.cqrs.event.InteractionContext;
 /**
  * Repositories are used to create, update, or delete entities.
  */
-public interface Repository
-{
-    <T extends Entity> Function<String, Function<Function<Identifier, T>, InteractionContext>> create( );
+public interface Repository {
+  <T extends Entity> Function<String, Function<Function<Identifier, T>, InteractionContext>> create();
 
-    <T extends Entity> Function<String, Function<Identifier, Function<Block<T>, InteractionContext>>> update()
-            throws IllegalArgumentException, IllegalStateException;
+  <T extends Entity> Function<String, Function<Identifier, Function<Block<T>, InteractionContext>>> update()
+      throws IllegalArgumentException, IllegalStateException;
 }

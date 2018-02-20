@@ -39,87 +39,83 @@ import org.slf4j.LoggerFactory;
  * To understand how Stuff works, start here. This class binds everything together.
  */
 public class StuffApplication
-    extends Application
-{
+    extends Application {
 
-    private InMemoryEventStore eventStore;
-    private FileEventStorage storage;
-    private GraphDatabaseService graphDb;
+  private InMemoryEventStore eventStore;
+  private FileEventStorage storage;
+  private GraphDatabaseService graphDb;
 
-    @Override
-    public synchronized void start() throws Exception
-    {
-        Router router = new Router(getContext());
+  @Override
+  public synchronized void start() throws Exception {
+    Router router = new Router(getContext());
 
 
-        Properties props = new Properties();
-        props.load( getClass().getResourceAsStream( "/velocity.properties" ) );
+    Properties props = new Properties();
+    props.load(getClass().getResourceAsStream("/velocity.properties"));
 
-        VelocityEngine velocity = new VelocityEngine( props );
+    VelocityEngine velocity = new VelocityEngine(props);
 
-        Function<String, Function<Identifier, ? extends Entity>> entityFactory =
-                type -> identifier ->
-                        {
-                            switch ( type )
-                            {
-                                case "task":
-                                    return new Task(identifier);
+    Function<String, Function<Identifier, ? extends Entity>> entityFactory =
+        type -> identifier ->
+        {
+          switch (type) {
+            case "task":
+              return new Task(identifier);
 
-                                case "project":
-                                    return new Project(identifier);
-                            }
+            case "project":
+              return new Project(identifier);
+          }
 
-                            throw new IllegalArgumentException( type );
-                        };
+          throw new IllegalArgumentException(type);
+        };
 
-        eventStore = new InMemoryEventStore(  );
-        Repository repository = new InMemoryRepository( eventStore, eventStore, entityFactory);
+    eventStore = new InMemoryEventStore();
+    Repository repository = new InMemoryRepository(eventStore, eventStore, entityFactory);
 
-        graphDb = new GraphDatabaseFactory().newEmbeddedDatabase( "graphdb" );
+    graphDb = new GraphDatabaseFactory().newEmbeddedDatabase("graphdb");
 
-        InboxModel inboxModel = new Neo4jInboxModel(graphDb);
-        eventStore.addInteractionContextSink( inboxModel );
+    InboxModel inboxModel = new Neo4jInboxModel(graphDb);
+    eventStore.addInteractionContextSink(inboxModel);
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule( new SimpleModule("EventSourcing", new Version(1,0,0, null, "eventsourcing", "eventsourcing")).
-                addSerializer( InteractionContext.class, new InteractionContextSerializer() ).
-                addDeserializer( InteractionContext.class, new InteractionContextDeserializer() ).setMixInAnnotation( Event.class, JacksonEvent.class )
-                );
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new SimpleModule("EventSourcing", new Version(1, 0, 0, null, "eventsourcing", "eventsourcing")).
+        addSerializer(InteractionContext.class, new InteractionContextSerializer()).
+        addDeserializer(InteractionContext.class, new InteractionContextDeserializer()).setMixInAnnotation(Event.class, JacksonEvent.class)
+    );
 
-        File file = new File( "events.log" ).getAbsoluteFile();
-        LoggerFactory.getLogger( getClass() ).info( "Event log:"+file );
-        storage = new FileEventStorage(mapper);
+    File file = new File("events.log").getAbsoluteFile();
+    LoggerFactory.getLogger(getClass()).info("Event log:" + file);
+    storage = new FileEventStorage(mapper);
 
-        if (file.exists())
-            storage.load( file, eventStore );
+    if (file.exists())
+      storage.load(file, eventStore);
 
-        storage.save( file, eventStore );
+    storage.save(file, eventStore);
 
-        eventStore.addInteractionContextSink( new LoggingModel( mapper ) );
+    eventStore.addInteractionContextSink(new LoggingModel(mapper));
 
-        InboxResource inboxResource = new InboxResource( velocity, repository,
-                                                         new TaskResource( velocity, repository, inboxModel ), inboxModel );
-        router.attach( "inbox/{task}/{command}", inboxResource );
-        router.attach( "inbox/{task}/", inboxResource );
-        router.attach( "inbox/{command}", inboxResource );
-        router.attach( "inbox/", inboxResource );
+    InboxResource inboxResource = new InboxResource(velocity, repository,
+        new TaskResource(velocity, repository, inboxModel), inboxModel);
+    router.attach("inbox/{task}/{command}", inboxResource);
+    router.attach("inbox/{task}/", inboxResource);
+    router.attach("inbox/{command}", inboxResource);
+    router.attach("inbox/", inboxResource);
 
-        Reference staticContent = new Reference( new File(getClass().getResource( "/htdocs/index.html" ).getFile()).getParentFile().toURI() );
-        router.attachDefault( new Directory( getContext(), staticContent ) ).setMatchingMode( Template.MODE_STARTS_WITH );
+    Reference staticContent = new Reference(new File(getClass().getResource("/htdocs/index.html").getFile()).getParentFile().toURI());
+    router.attachDefault(new Directory(getContext(), staticContent)).setMatchingMode(Template.MODE_STARTS_WITH);
 
-        setInboundRoot( router );
+    setInboundRoot(router);
 
-        super.start();
-    }
+    super.start();
+  }
 
-    @Override
-    public synchronized void stop() throws Exception
-    {
-        super.stop();
+  @Override
+  public synchronized void stop() throws Exception {
+    super.stop();
 
-        storage.close();
+    storage.close();
 
-        graphDb.shutdown();
-    }
+    graphDb.shutdown();
+  }
 
 }

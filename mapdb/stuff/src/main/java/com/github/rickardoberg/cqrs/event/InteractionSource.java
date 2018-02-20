@@ -4,7 +4,6 @@
  */
 package com.github.rickardoberg.cqrs.event;
 
-public interface InteractionSource
-{
-    Interaction getInteraction();
+public interface InteractionSource {
+  Interaction getInteraction();
 }

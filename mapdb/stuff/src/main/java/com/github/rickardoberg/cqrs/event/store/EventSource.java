@@ -13,12 +13,14 @@ import com.github.rickardoberg.cqrs.domain.Identifier;
 import com.github.rickardoberg.cqrs.event.InteractionContext;
 import com.github.rickardoberg.cqrs.event.InteractionContextSink;
 
-public interface EventSource
-{
-    Function<Identifier, Optional<Stream<InteractionContext>>> getInteractionsById();
-    Function<String, Optional<Stream<InteractionContext>>> getInteractionsByType();
-    Function<Date, Stream<InteractionContext>> getInteractionsByTimestamp();
+public interface EventSource {
+  Function<Identifier, Optional<Stream<InteractionContext>>> getInteractionsById();
 
-    void addInteractionContextSink( InteractionContextSink sink );
-    void removeInteractionContextSink( InteractionContextSink sink );
+  Function<String, Optional<Stream<InteractionContext>>> getInteractionsByType();
+
+  Function<Date, Stream<InteractionContext>> getInteractionsByTimestamp();
+
+  void addInteractionContextSink(InteractionContextSink sink);
+
+  void removeInteractionContextSink(InteractionContextSink sink);
 }

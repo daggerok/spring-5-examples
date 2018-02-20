@@ -4,7 +4,6 @@
  */
 package com.github.rickardoberg.cqrs.event;
 
-public interface InteractionContextSink
-{
-    void apply( InteractionContext interactionContext );
+public interface InteractionContextSink {
+  void apply(InteractionContext interactionContext);
 }

@@ -11,31 +11,28 @@ import com.github.rickardoberg.cqrs.event.Event;
 import com.github.rickardoberg.cqrs.event.InteractionContext;
 
 public class InteractionContextSerializer
-    extends StdSerializer<InteractionContext>
-{
-    public InteractionContextSerializer()
-    {
-        super( InteractionContext.class );
-    }
+    extends StdSerializer<InteractionContext> {
+  public InteractionContextSerializer() {
+    super(InteractionContext.class);
+  }
 
-    @Override
-    public void serialize( InteractionContext value, JsonGenerator jgen, SerializerProvider provider ) throws IOException, JsonGenerationException
-    {
-        jgen.writeStartObject();
-        jgen.writeFieldName( "type" );
-        jgen.writeString( value.getType() );
-        jgen.writeFieldName( "version" );
-        jgen.writeNumber( value.getVersion() );
-        jgen.writeFieldName( "timestamp" );
-        jgen.writeNumber( value.getTimestamp().getTime() );
-        jgen.writeFieldName( "id" );
-        jgen.writeNumber( value.getInteraction().getIdentifier().getIdentifier() );
-        provider.defaultSerializeField( "attributes", value.getAttributes(), jgen );
+  @Override
+  public void serialize(InteractionContext value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonGenerationException {
+    jgen.writeStartObject();
+    jgen.writeFieldName("type");
+    jgen.writeString(value.getType());
+    jgen.writeFieldName("version");
+    jgen.writeNumber(value.getVersion());
+    jgen.writeFieldName("timestamp");
+    jgen.writeNumber(value.getTimestamp().getTime());
+    jgen.writeFieldName("id");
+    jgen.writeNumber(value.getInteraction().getIdentifier().getIdentifier());
+    provider.defaultSerializeField("attributes", value.getAttributes(), jgen);
 
-        jgen.writeFieldName( "events" );
-        provider.findValueSerializer( provider.constructType( List.class ).narrowContentsBy( Event.class ), null ).serialize( value.getInteraction().getEvents(), jgen, provider );
+    jgen.writeFieldName("events");
+    provider.findValueSerializer(provider.constructType(List.class).narrowContentsBy(Event.class), null).serialize(value.getInteraction().getEvents(), jgen, provider);
 
-        jgen.writeEndObject();
+    jgen.writeEndObject();
 
-    }
+  }
 }

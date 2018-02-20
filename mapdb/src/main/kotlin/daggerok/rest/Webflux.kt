@@ -41,9 +41,9 @@ class WebfluxRoutesConfig(@Qualifier("eventStoreDB") val eventStoreDB: DB,
                 }
         )
       }
-      //accept(TEXT_HTML).nest {
-      //  resources("/**", ClassPathResource("static/"))
-      //}
+//      accept(TEXT_HTML).nest {
+//        resources("/**", ClassPathResource("static/"))
+//      }
     }
   }
 }

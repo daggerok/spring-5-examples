@@ -34,7 +34,7 @@ class AppJUnit5Test {
   void testNegative() {
 
     assertThrows(AssertionError.class,
-                 () -> assertThat(false, is(true)),
-                 "Assertion error should thrown");
+        () -> assertThat(false, is(true)),
+        "Assertion error should thrown");
   }
 }

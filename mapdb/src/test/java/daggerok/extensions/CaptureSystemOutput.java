@@ -48,27 +48,27 @@ import org.junit.platform.commons.support.ReflectionSupport;
  * {@code @CaptureSystemOutput} is a JUnit JUpiter extension for capturing
  * output to {@code System.out} and {@code System.err} with expectations
  * supported via Hamcrest matchers.
- *
+ * <p>
  * <h4>Example Usage</h4>
- *
+ * <p>
  * <pre style="code">
  * {@literal @}Test
  * {@literal @}CaptureSystemOutput
  * void systemOut(OutputCapture outputCapture) {
- *     outputCapture.expect(containsString("System.out!"));
- *
- *     System.out.println("Printed to System.out!");
+ * outputCapture.expect(containsString("System.out!"));
+ * <p>
+ * System.out.println("Printed to System.out!");
  * }
- *
+ * <p>
  * {@literal @}Test
  * {@literal @}CaptureSystemOutput
  * void systemErr(OutputCapture outputCapture) {
- *     outputCapture.expect(containsString("System.err!"));
- *
- *     System.err.println("Printed to System.err!");
+ * outputCapture.expect(containsString("System.err!"));
+ * <p>
+ * System.err.println("Printed to System.err!");
  * }
  * </pre>
- *
+ * <p>
  * <p>Based on code from Spring Boot's
  * <a href="https://github.com/spring-projects/spring-boot/blob/d3c34ee3d1bfd3db4a98678c524e145ef9bca51c/spring-boot-project/spring-boot-tools/spring-boot-test-support/src/main/java/org/springframework/boot/testsupport/rule/OutputCapture.java">OutputCapture</a>
  * rule for JUnit 4 by Phillip Webb and Andy Wilkinson.
@@ -77,7 +77,7 @@ import org.junit.platform.commons.support.ReflectionSupport;
  * @author Phillip Webb
  * @author Andy Wilkinson
  */
-@Target({ TYPE, METHOD })
+@Target({TYPE, METHOD})
 @Retention(RUNTIME)
 @ExtendWith(CaptureSystemOutput.Extension.class)
 public @interface CaptureSystemOutput {
@@ -97,8 +97,7 @@ public @interface CaptureSystemOutput {
           String output = outputCapture.toString();
           assertThat(output, allOf(outputCapture.matchers));
         }
-      }
-      finally {
+      } finally {
         outputCapture.releaseOutput();
       }
     }
@@ -131,13 +130,13 @@ public @interface CaptureSystemOutput {
 
   /**
    * {@code OutputCapture} captures output to {@code System.out} and {@code System.err}.
-   *
+   * <p>
    * <p>To obtain an instance of {@code OutputCapture}, declare a parameter of type
    * {@code OutputCapture} in a JUnit Jupiter {@code @Test}, {@code @BeforeEach},
    * or {@code @AfterEach} method.
-   *
+   * <p>
    * <p>{@linkplain #expect Expectations} are supported via Hamcrest matchers.
-   *
+   * <p>
    * <p>To obtain all output to {@code System.out} and {@code System.err}, simply
    * invoke {@link #toString()}.
    *
@@ -173,15 +172,14 @@ public @interface CaptureSystemOutput {
       try {
         this.captureOut.flush();
         this.captureErr.flush();
-      }
-      catch (IOException ex) {
+      } catch (IOException ex) {
         // ignore
       }
     }
 
     /**
      * Verify that the captured output is matched by the supplied {@code matcher}.
-     *
+     * <p>
      * <p>Verification is performed after the test method has executed.
      *
      * @param matcher the matcher

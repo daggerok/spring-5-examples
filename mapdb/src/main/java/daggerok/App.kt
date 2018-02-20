@@ -8,7 +8,6 @@ import org.mapdb.serializer.SerializerCompressionWrapper
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.support.beans
-import java.io.File
 import java.nio.file.Paths
 import java.util.*
 import java.util.concurrent.Executors

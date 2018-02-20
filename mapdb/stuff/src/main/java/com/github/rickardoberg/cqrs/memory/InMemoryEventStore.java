@@ -16,80 +16,71 @@ import com.github.rickardoberg.cqrs.event.store.EventSource;
 import com.github.rickardoberg.cqrs.event.store.EventStore;
 
 public class InMemoryEventStore
-    implements EventStore, EventSource
-{
-    List<InteractionContext> allInteractions = new ArrayList<>(  );
-    Map<Identifier, List<InteractionContext>> byId = new HashMap<>(  );
-    Map<String, List<InteractionContext>> byType = new HashMap<>(  );
-    private ArrayList<InteractionContextSink> sinks = new ArrayList<>(  );
+    implements EventStore, EventSource {
+  List<InteractionContext> allInteractions = new ArrayList<>();
+  Map<Identifier, List<InteractionContext>> byId = new HashMap<>();
+  Map<String, List<InteractionContext>> byType = new HashMap<>();
+  private ArrayList<InteractionContextSink> sinks = new ArrayList<>();
 
-    @Override
-    public void add( InteractionContext interactionContext )
-    {
-        allInteractions.add( interactionContext );
+  @Override
+  public void add(InteractionContext interactionContext) {
+    allInteractions.add(interactionContext);
 
-        Identifier identifier = interactionContext.getInteraction().getIdentifier();
-        List<InteractionContext> identifierInteractions = byId.get( identifier );
-        if (identifierInteractions == null)
-        {
-            identifierInteractions = new ArrayList<>(  );
-            byId.put( identifier, identifierInteractions );
-        }
-        identifierInteractions.add( interactionContext );
-
-        String type = interactionContext.getType();
-        List<InteractionContext> typeInteractions = byType.get( type );
-        if (typeInteractions == null)
-        {
-            typeInteractions = new ArrayList<>(  );
-            byType.put( type, typeInteractions );
-        }
-        typeInteractions.add( interactionContext );
-
-        sinks.forEach( listener -> listener.apply( interactionContext ) );
+    Identifier identifier = interactionContext.getInteraction().getIdentifier();
+    List<InteractionContext> identifierInteractions = byId.get(identifier);
+    if (identifierInteractions == null) {
+      identifierInteractions = new ArrayList<>();
+      byId.put(identifier, identifierInteractions);
     }
+    identifierInteractions.add(interactionContext);
 
-    @Override
-    public Function<Identifier, Optional<Stream<InteractionContext>>> getInteractionsById()
-    {
-        return id ->
-                {
-                    List<InteractionContext> interactionContexts = byId.get( id );
-                    if (interactionContexts == null)
-                        return Optional.empty();
-                    else
-                        return Optional.of(interactionContexts.stream());
-                };
+    String type = interactionContext.getType();
+    List<InteractionContext> typeInteractions = byType.get(type);
+    if (typeInteractions == null) {
+      typeInteractions = new ArrayList<>();
+      byType.put(type, typeInteractions);
     }
+    typeInteractions.add(interactionContext);
 
-    @Override
-    public Function<String, Optional<Stream<InteractionContext>>> getInteractionsByType()
-    {
-        return type ->
-                {
-                    List<InteractionContext> interactionContexts = byType.get( type );
-                    if (interactionContexts == null)
-                        return Optional.empty();
-                    else
-                        return Optional.of( interactionContexts.stream() );
-                };
-    }
+    sinks.forEach(listener -> listener.apply(interactionContext));
+  }
 
-    @Override
-    public Function<Date, Stream<InteractionContext>> getInteractionsByTimestamp()
+  @Override
+  public Function<Identifier, Optional<Stream<InteractionContext>>> getInteractionsById() {
+    return id ->
     {
-        return date -> allInteractions.stream().filter( interaction -> interaction.getTimestamp().after( date ));
-    }
+      List<InteractionContext> interactionContexts = byId.get(id);
+      if (interactionContexts == null)
+        return Optional.empty();
+      else
+        return Optional.of(interactionContexts.stream());
+    };
+  }
 
-    @Override
-    public void addInteractionContextSink( InteractionContextSink sink )
+  @Override
+  public Function<String, Optional<Stream<InteractionContext>>> getInteractionsByType() {
+    return type ->
     {
-        this.sinks.add(sink);
-    }
+      List<InteractionContext> interactionContexts = byType.get(type);
+      if (interactionContexts == null)
+        return Optional.empty();
+      else
+        return Optional.of(interactionContexts.stream());
+    };
+  }
 
-    @Override
-    public void removeInteractionContextSink( InteractionContextSink sink )
-    {
-        this.sinks.remove( sink );
-    }
+  @Override
+  public Function<Date, Stream<InteractionContext>> getInteractionsByTimestamp() {
+    return date -> allInteractions.stream().filter(interaction -> interaction.getTimestamp().after(date));
+  }
+
+  @Override
+  public void addInteractionContextSink(InteractionContextSink sink) {
+    this.sinks.add(sink);
+  }
+
+  @Override
+  public void removeInteractionContextSink(InteractionContextSink sink) {
+    this.sinks.remove(sink);
+  }
 }

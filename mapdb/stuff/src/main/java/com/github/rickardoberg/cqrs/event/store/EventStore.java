@@ -6,7 +6,6 @@ package com.github.rickardoberg.cqrs.event.store;
 
 import com.github.rickardoberg.cqrs.event.InteractionContext;
 
-public interface EventStore
-{
-    void add(InteractionContext interactionContext);
+public interface EventStore {
+  void add(InteractionContext interactionContext);
 }

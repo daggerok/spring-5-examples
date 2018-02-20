@@ -1,14 +1,16 @@
 <html>
 <body>
-    <a rel="newtask" href="newtask">New task</a>
+<a rel="newtask" href="newtask">New task</a>
 
-    <ul>
-        #foreach( $task in $tasks )
-            <li><form name="done" method="post" action="$task.key/done">
-                    <input type="checkbox" name="done" value="Done" #if($task.value.done) checked="checked" #end>
-                    <input type="submit" value="Done"/>
-                </form><a href="$task.key/">$task.value.description</a></li>
-        #end
-    </ul>
+<ul>
+  #foreach( $task in $tasks )
+  <li>
+    <form name="done" method="post" action="$task.key/done">
+      <input type="checkbox" name="done" value="Done" #if($task.value.done) checked="checked" #end>
+      <input type="submit" value="Done"/>
+    </form>
+    <a href="$task.key/">$task.value.description</a></li>
+  #end
+</ul>
 </body>
 </html>

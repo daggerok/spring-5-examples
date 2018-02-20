@@ -1,22 +1,19 @@
-div.menu
-{
-    float:left
+div.menu {
+  float: left
 }
 
-div.menu>ul
-{
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+div.menu > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
-div.menu>ul>li>a
-{
-    display: block;
-    width: 60px;
-    border: thin solid black;
-    background: #d3d3d3;
-    text-align: center;
-    margin: 3px;
-    color: red
+div.menu > ul > li > a {
+  display: block;
+  width: 60px;
+  border: thin solid black;
+  background: #d3d3d3;
+  text-align: center;
+  margin: 3px;
+  color: red
 }

@@ -11,32 +11,26 @@ import com.github.rickardoberg.cqrs.event.InteractionContextSink;
 import org.slf4j.LoggerFactory;
 
 public class LoggingModel
-    implements InteractionContextSink
-{
-    ObjectMapper mapper;
-    MappingJsonFactory jsonFactory = new MappingJsonFactory();
+    implements InteractionContextSink {
+  ObjectMapper mapper;
+  MappingJsonFactory jsonFactory = new MappingJsonFactory();
 
-    public LoggingModel(ObjectMapper mapper)
-    {
-        this.mapper = mapper;
+  public LoggingModel(ObjectMapper mapper) {
+    this.mapper = mapper;
+  }
+
+
+  @Override
+  public void apply(InteractionContext interactionContext) {
+    try {
+      StringWriter sw = new StringWriter();   // serialize
+      JsonGenerator jsonGenerator = jsonFactory.createJsonGenerator(sw);
+      mapper.writeValue(jsonGenerator, interactionContext);
+      sw.close();
+
+      LoggerFactory.getLogger(LoggingModel.class).info(sw.toString());
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-
-
-    @Override
-    public void apply( InteractionContext interactionContext )
-    {
-        try
-        {
-            StringWriter sw = new StringWriter();   // serialize
-            JsonGenerator jsonGenerator = jsonFactory.createJsonGenerator(sw);
-            mapper.writeValue(jsonGenerator, interactionContext);
-            sw.close();
-
-            LoggerFactory.getLogger( LoggingModel.class ).info( sw.toString() );
-        }
-        catch ( IOException e )
-        {
-            e.printStackTrace(  );
-        }
-    }
+  }
 }

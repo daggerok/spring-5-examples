@@ -6,72 +6,62 @@ import com.github.rickardoberg.cqrs.domain.Identifier;
 import com.github.rickardoberg.cqrs.event.InteractionSource;
 import com.github.rickardoberg.stuff.domain.Project;
 
-public class Projects
-{
-    private Project project;
+public class Projects {
+  private Project project;
 
-    public void select( Project project )
+  public void select(Project project) {
+    this.project = project;
+  }
+
+  public static class NewProject {
+    public ChangeDescription changeDescription;
+    public Identifier id;
+  }
+
+  public static Function<Overview, Function<NewProject, Project>> newProject() {
+    return overview -> newProject ->
     {
-        this.project = project;
-    }
+      Project project = new Project(newProject.id);
 
-    public static class NewProject
+      Projects projects = new Projects();
+      projects.select(project);
+      Projects.changeDescription().apply(projects).apply(newProject.changeDescription);
+      return project;
+    };
+  }
+
+  public static class ChangeDescription {
+    public String description;
+  }
+
+  public static Function<Projects, Function<ChangeDescription, InteractionSource>> changeDescription() {
+    return projects -> changeDescription ->
     {
-        public ChangeDescription changeDescription;
-        public Identifier id;
-    }
+      projects.project.changeDescription(changeDescription.description);
+      return projects.project;
+    };
+  }
 
-    public static Function<Overview, Function<NewProject, Project>> newProject()
+  public static class ProjectDone {
+    public boolean done;
+  }
+
+  public static Function<Projects, Function<ProjectDone, InteractionSource>> done() {
+    return projects -> done ->
     {
-        return overview -> newProject ->
-                {
-                    Project project = new Project(newProject.id);
+      projects.project.setDone(done.done);
+      return projects.project;
+    };
+  }
 
-                    Projects projects = new Projects();
-                    projects.select( project );
-                    Projects.changeDescription().apply( projects).apply( newProject.changeDescription );
-                    return project;
-                };
-    }
+  public static class DeleteProject {
+  }
 
-    public static class ChangeDescription
+  public static Function<Projects, Function<DeleteProject, InteractionSource>> deleteProject() {
+    return projects -> deleteProject ->
     {
-        public String description;
-    }
-
-    public static Function<Projects, Function<ChangeDescription, InteractionSource>> changeDescription()
-    {
-        return projects -> changeDescription ->
-                {
-                    projects.project.changeDescription(changeDescription.description);
-                    return projects.project;
-                };
-    }
-
-    public static class ProjectDone
-    {
-        public boolean done;
-    }
-
-    public static Function<Projects, Function<ProjectDone, InteractionSource>> done()
-    {
-        return projects -> done ->
-                {
-                    projects.project.setDone( done.done);
-                    return projects.project;
-                };
-    }
-
-    public static class DeleteProject
-    {
-    }
-
-    public static Function<Projects, Function<DeleteProject, InteractionSource>> deleteProject()
-    {
-        return projects -> deleteProject ->
-                {
-                    projects.project.delete();
-                    return projects.project;
-                };
-    }
+      projects.project.delete();
+      return projects.project;
+    };
+  }
 }

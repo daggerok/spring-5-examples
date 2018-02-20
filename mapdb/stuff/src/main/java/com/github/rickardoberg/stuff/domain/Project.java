@@ -6,31 +6,29 @@ import com.github.rickardoberg.stuff.event.ChangedDescriptionEvent;
 import com.github.rickardoberg.stuff.event.DoneEvent;
 
 public class Project
-    extends Entity
-{
-    private boolean done;
+    extends Entity {
+  private boolean done;
 
-    public Project( Identifier identifier )
-    {
-        super( identifier );
-    }
+  public Project(Identifier identifier) {
+    super(identifier);
+  }
 
-    public void changeDescription( String desc )
-    {
-        add( new ChangedDescriptionEvent(){{this.description = desc;}});
-    }
+  public void changeDescription(String desc) {
+    add(new ChangedDescriptionEvent() {{
+      this.description = desc;
+    }});
+  }
 
-    public void setDone(boolean isDone)
-    {
-        if (this.done != isDone)
-        {
-            this.done = isDone;
-            add( new DoneEvent(){{done = isDone;}} );
-        }
+  public void setDone(boolean isDone) {
+    if (this.done != isDone) {
+      this.done = isDone;
+      add(new DoneEvent() {{
+        done = isDone;
+      }});
     }
+  }
 
-    public boolean isDone()
-    {
-        return done;
-    }
+  public boolean isDone() {
+    return done;
+  }
 }

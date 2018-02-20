@@ -15,22 +15,20 @@ import com.github.rickardoberg.stuff.event.CreatedEvent;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-public class InboxModelTest
-{
-    @Test
-    public void givenEmptyModelWhenCreatedTaskThenModelHasTask()
-    {
-        // Given
-        InboxModel model = new InMemoryInboxModel();
+public class InboxModelTest {
+  @Test
+  public void givenEmptyModelWhenCreatedTaskThenModelHasTask() {
+    // Given
+    InboxModel model = new InMemoryInboxModel();
 
-        // When
-        List<Event> events = new ArrayList<>(  );
-        Identifier id = new Identifier( 0 );
-        events.add( new CreatedEvent( ) );
-        InteractionContext context = new InteractionContext( "task",-1 , new Date(), Collections.<String, String>emptyMap(), new Interaction(id, events ) );
-        model.apply( context );
+    // When
+    List<Event> events = new ArrayList<>();
+    Identifier id = new Identifier(0);
+    events.add(new CreatedEvent());
+    InteractionContext context = new InteractionContext("task", -1, new Date(), Collections.<String, String>emptyMap(), new Interaction(id, events));
+    model.apply(context);
 
-        // Then
-        assertThat( model.getTasks().entrySet().size(), CoreMatchers.equalTo( 1 ) );
-    }
+    // Then
+    assertThat(model.getTasks().entrySet().size(), CoreMatchers.equalTo(1));
+  }
 }
