@@ -1,32 +1,29 @@
 service:
 - docker
-sudo: required
-group: travis_lts
+
 env:
   global:
   # github-api-v3-gateway app requires github token
   - secure: "PLL6z6iFOkP1zcJt2R7Yq8ut1313FX70opXUrC7/O0HUEgQdU1q77McSjxxyY4AtzvT+XPgbGNAx5JXuVpHyQ4rnM1Q/3HBz7E2ZHr+71ehLap95x9XKkwShw/Can9IYu66FUGm7sOdN2b01JOpH4IKR50tGeUY9dWzdld10f/Se5KaRjCtzCKsMyMPm02dhUvxvzLn0VWNQDuZC2hAsLsBGOBKc9cGcI03b0u98We8lqyaJ6FT6j0Fjd4t3CycOVR+0XrVbEJ3tFaILmSZoer+N76vqnY42sTyHfbNUPyJboZshy8A19AAngebw4yJWKaHQ+B3eowLcpDRoR32SYnFHgDMtDLLsKMVZeGBvUazORgQpl5YKQeInOKbSku796ZiWz7ciGsCm52ve9dymlX+PUzkfA9J9ylK4XRl9/yLNFfqtjmWLRkP0+V3qRtwCnLU3yd5ZQ7D8t1dhSNJHddvC75oH6Cn/KFOk+4h6jjo+hXOj64ZcjJF8bvYLbdhlFNbNdmq8I9MT0qge95UcufJ9pJk42PL1ojAmxw2REACdW3MMPfcSWukQAuzOgPeZYAjQ9zUIFBqkrrbH2j4Eo+wEq+wwxsgcmBSAkgjdLR9Ni1x/RcqrO1kZ3fXbIr/1P8XXF9d1l0oMDgNjgt64MVT0wwNyxOEPBwGXUO3TkFw="
   - TERM=dumb
+
 language: java
-jdk:
-- openjdk8
-- oraclejdk8
+jdk: openjdk8
+
+#jdk:
+#- openjdk8
+#- oraclejdk8
+
 install: true
 before_install:
-#- curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-#- sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-#- sudo apt install -y docker-ce
-#- sudo usermod -aG docker $(whoami)
-#- curl -fsSL get.docker.com | sudo sh -
-#- wget get.docker.com -O- | sudo sh -
 
-- sudo apt update -y || true
-- sudo apt install -y --no-install-recommends docker-ce curl jq libxml2-utils python-pip
-- sudo pip install docker-compose httpie
+- sudo apt update -y >/dev/null 2>&1 || true
+- sudo apt install -y --no-install-recommends docker-ce curl jq libxml2-utils python-pip >/dev/null 2>&1
+- sudo pip install docker-compose httpie >/dev/null 2>&1
 - nvm install 9
 - npm i -g yarn
 - source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
-- stop_any 5432 5672 27017 80 8080
+- stop_any 5432 5672 27017 8080 8080 8081 80
 
 script:
 - export root=$(pwd)

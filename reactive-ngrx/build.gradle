@@ -2,15 +2,7 @@ import java.nio.file.Paths
 
 buildscript {
   ext {
-    springBootVersion = "2.0.0.M7"
-  }
-  repositories {
-    mavenCentral()
-    maven { url "https://repo.spring.io/snapshot" }
-    maven { url "https://repo.spring.io/milestone" }
-  }
-  dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+    springBootVersion = "2.0.0.RELEASE"
   }
 }
 
@@ -19,10 +11,9 @@ plugins {
   id "idea"
   id "eclipse"
   id "com.moowork.node" version "1.2.0"
+  id "org.springframework.boot" version "2.0.0.RELEASE"
+  id "io.spring.dependency-management" version "1.0.5.RELEASE"
 }
-
-apply plugin: "org.springframework.boot"
-apply plugin: "io.spring.dependency-management"
 
 allprojects {
   group = "daggerok"
@@ -33,9 +24,8 @@ allprojects {
 sourceCompatibility = targetCompatibility = 1.8
 
 repositories {
+  mavenLocal()
   mavenCentral()
-  maven { url "https://repo.spring.io/snapshot" }
-  maven { url "https://repo.spring.io/milestone" }
 }
 
 dependencies {
@@ -50,7 +40,7 @@ dependencies {
 
 task wrapper(type: Wrapper) {
   distributionType = "ALL"
-  gradleVersion = "4.5"
+  gradleVersion = "4.6"
 }
 
 node {
