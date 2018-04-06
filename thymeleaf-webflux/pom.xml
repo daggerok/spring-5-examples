@@ -37,7 +37,6 @@
         <executions>
           <execution>
             <id>up</id>
-            <!--<phase>process-resources</phase>-->
             <phase>verify</phase>
             <goals>
               <goal>up</goal>
@@ -45,7 +44,6 @@
           </execution>
           <execution>
             <id>down</id>
-            <!--<phase>test</phase>-->
             <phase>verify</phase>
             <goals>
               <goal>down</goal>
