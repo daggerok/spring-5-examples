@@ -27,10 +27,10 @@ allprojects {
   defaultTasks "clean", "build"
 }
 
-def profile = project.hasProperty("profile") ? "-${project.property("profile")}" : "-gradle"
+def profile = project.hasProperty("profile") ? project.property("profile") : "gradle"
 
 dockerCompose {
-  useComposeFiles = [project.file("docker-compose${profile}.yaml")]
+  useComposeFiles = [project.file("docker-compose-${profile}.yaml")]
   captureContainersOutput = true
   stopContainers = true
   removeContainers = true

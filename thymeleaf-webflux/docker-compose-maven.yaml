@@ -9,7 +9,6 @@ services:
     volumes: ["maven-app-data:/home/appuser"]
     networks: [backing-services]
     ports: ["8080:8080"]
-    restart: unless-stopped
 
 volumes:
   maven-app-data: {}

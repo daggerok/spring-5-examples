@@ -183,17 +183,14 @@ script:
 - http --stream :8000
 - stop_any 8080 8000
 # maven docker
-- docker-compose -f ${root}/thymeleaf-webflux/docker-compose-maven.yaml build --force-rm --no-cache --pull
-- docker-compose -f ${root}/thymeleaf-webflux/docker-compose-maven.yaml up --force-recreate --remove-orphans &
-- sleep 20
+- gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp -Pprofile-maven
 - http --stream :8080
-- docker-compose -f ${root}/thymeleaf-webflux/docker-compose-maven.yaml down -v
+- gradlew -b ${root}/thymeleaf-webflux/build.gradle composeDown -Pprofile=maven
 # gradle docker
-- docker-compose -f ${root}/thymeleaf-webflux/docker-compose-gradle.yaml build --force-rm --no-cache --pull
-- docker-compose -f ${root}/thymeleaf-webflux/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+- gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp
 - sleep 20
 - http --stream :8080
-- docker-compose -f ${root}/thymeleaf-webflux/docker-compose-gradle.yaml down -v
+- gradlew -b ${root}/thymeleaf-webflux/build.gradle composeDown
 
 ## rmi
 #- bash gradlew -b ${root}/rmi/build.gradle >/dev/null 2>&1
