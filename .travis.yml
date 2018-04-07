@@ -183,7 +183,7 @@ script:
 - http --stream :8000
 - stop_any 8080 8000
 # maven docker
-- gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp -Pprofile-maven
+- gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp -Pprofile=maven
 - http --stream :8080
 - gradlew -b ${root}/thymeleaf-webflux/build.gradle composeDown -Pprofile=maven
 # gradle docker
