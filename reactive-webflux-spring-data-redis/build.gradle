@@ -7,7 +7,7 @@ plugins {
 }
 
 ext {
-    springBootVersion = "2.0.0.BUILD-SNAPSHOT"
+    springBootVersion = "2.0.0.RELEASE"
 }
 
 dependencyManagement {

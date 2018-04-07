@@ -3,7 +3,7 @@ buildscript {
     javaVersion = "1.8"
     vavrVersion = "0.9.2"
     kotlinVersion = "1.2.21"
-    springBootVersion = "2.0.0.RC1"
+    springBootVersion = "2.0.0.RELEASE"
     springCloudVersion = "Finchley.M6"
     hibernateCoreVersion = "4.2.18.Final"
     junitPlatformVersion = "1.0.2"

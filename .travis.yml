@@ -23,7 +23,7 @@ before_install:
 - nvm install 9
 - npm i -g yarn
 - source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
-- stop_any 5432 5672 27017 8080 8080 8081 80
+- stop_any 5432 5672 27017 8080 8080 8081 80 80
 
 script:
 - export root=$(pwd)
@@ -34,18 +34,18 @@ script:
 - wait_for 8080
 - http :8080 message=hello,\ max!
 - http :8080 message=how\ are\ u\?
-- stop_any 8080
+- stop_any 8080 80
 
-# axon-vote
-- bash mvnw -f ${root}/axon-vote/pom.xml >/dev/null
-- bash ${root}/axon-vote/target/*.jar &
-- wait_for 8080
-- http :8080/api/v1/registration id=my-vote name=my=vote
-- http put http://localhost:8080/api/v1/registration/approve/my-vote
-- http post http://localhost:8080/api/v1/vote/my-vote electorId=dag
-- http post http://localhost:8080/api/v1/vote/my-vote electorId=max
-- http :8080
-- stop_any 8080
+## axon-vote
+#- bash mvnw -f ${root}/axon-vote/pom.xml
+#- bash ${root}/axon-vote/target/*.jar &
+#- wait_for 8080
+#- http :8080/api/v1/registration id=my-vote name=my=vote
+#- http put http://localhost:8080/api/v1/registration/approve/my-vote
+#- http post http://localhost:8080/api/v1/vote/my-vote electorId=dag
+#- http post http://localhost:8080/api/v1/vote/my-vote electorId=max
+#- http :8080
+#- stop_any 8080 8000 80
 
 ## some-spring-boot-2-frontend
 #- bash gradlew -b ${root}/some-spring-boot-2-frontend/build.gradle >/dev/null 2>&1
@@ -66,7 +66,7 @@ script:
 - http :8080/github/search/users/dagg\?page=0\&size=2
 - http :8080/github/search/users/dagge\?page=0\&size=2
 - http :8080/github/search/users/daggr\?page=0\&size=2
-- stop_any 8080
+- stop_any 8080 8000 80
 #
 - bash mvnw -f ${root}/github-api-v3-gateway/pom.xml >/dev/null
 - bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway clean package com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up
@@ -81,7 +81,7 @@ script:
 - http :8080/github/search/users/dagg\?page=0\&size=2
 - http :8080/github/search/users/dagge\?page=0\&size=2
 - http :8080/github/search/users/daggrok\?page=0\&size=2
-- stop_any 8080
+- stop_any 8080 8000 80
 #
 - docker-compose -f ${root}/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml build --force-rm --no-cache --pull
 - docker-compose -f ${root}/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml up &
@@ -97,7 +97,7 @@ script:
 - http :8080 --stream &
 - http :8080/message message=hi!
 - http :8080/message message=hey!
-- stop_any 8080
+- stop_any 8080 8000 80
 
 # reactive axon
 - bash gradlew -b ${root}/axon-lock/build.gradle >/dev/null
@@ -107,7 +107,7 @@ script:
 - wait_for 8080 8000
 - http :8080 name=Max
 - http :8000 name=Axon
-- stop_any 8080 8000
+- stop_any 8080 8000 80
 
 ## kotlin-beans-dsl
 #- bash gradlew -b ${root}/kotlin-beans-dsl/build.gradle >/dev/null
@@ -147,7 +147,7 @@ script:
 - http --stream :8080/api/v1/messages
 - http :8000
 - http --stream :8000/api/v1/messages 'accept:application/stream+json'
-- stop_any 8080 8000
+- stop_any 8080 8000 80
 
 ## listener-of-listener
 #- bash gradlew -b ${root}/listener-of-listener/build.gradle >/dev/null
@@ -174,23 +174,26 @@ script:
 #- docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml down -v
 
 # thymeleaf-webflux
-- bash gradlew -b ${root}/thymeleaf-webflux/build.gradle >/dev/null
-- java -jar ${root}/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar &
-- bash mvnw -f ${root}/thymeleaf-webflux/pom.xml >/dev/null
-- java -jar ${root}/thymeleaf-webflux/reactive-thymeleaf/target/*.jar --server.port=8000 &
+- bash gradlew -b ${root}/thymeleaf-webflux/build.gradle clean build            >/dev/null
+- java -jar       ${root}/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar &
+- bash mvnw    -f ${root}/thymeleaf-webflux/pom.xml      clean package          >/dev/null
+- java -jar       ${root}/thymeleaf-webflux/reactive-thymeleaf/target/*.jar     --server.port=8000 &
 - wait_for 8080 8000
 - http --stream :8080
 - http --stream :8000
-- stop_any 8080 8000
+- stop_any 8080 8000 80 80 8080 8000
 # maven docker
-- bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp -Pprofile=maven
+- bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp   -Pprofile=maven
+- wait_for 8080
 - http --stream :8080
 - bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeDown -Pprofile=maven
+- stop_any 8080 8000 80
 # gradle docker
-- bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp
-- sleep 20
+- bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp   -Pprofile=gradle
+- wait_for 8080
 - http --stream :8080
-- bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeDown
+- bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeDown -Pprofile=gradle
+- stop_any 8080 8000 80
 
 ## rmi
 #- bash gradlew -b ${root}/rmi/build.gradle >/dev/null
@@ -219,7 +222,7 @@ script:
 #- java -jar ${root}/mailbox/webapp/target/*.jar &
 #- wait_for 8080
 #- http -a max:max get :8080/
-#- stop_any 8080
+#- stop_any 8080 8080 80
 
 ## hotel gradle
 #- bash gradlew clean build -b ${root}/hotel/build.gradle >/dev/null
@@ -232,11 +235,11 @@ script:
 #- http :8080?name=Gradle
 #- http :8080/actuator/
 #- http :8080/actuator/health
-#- stop_any 8080 8081
+#- stop_any 8080 8081 80
 ## hotel maven docker
-#- bash mvnw -f ${root}/hotel/pom.xml clean package -U >/dev/null
-#- docker-compose -f ${root}/hotel/docker-compose.yaml build --force-rm --no-cache --pull
-#- docker-compose -f ${root}/hotel/docker-compose.yaml up --force-recreate --remove-orphans &
+#- bash mvnw      -f ${root}/hotel/pom.xml clean package -U >/dev/null
+#- docker-compose -f ${root}/hotel/docker-compose.yaml   build --force-rm --no-cache --pull
+#- docker-compose -f ${root}/hotel/docker-compose.yaml   up --force-recreate --remove-orphans &
 #- sleep 20
 #- http :8080
 #- http :8080?name=Maven
@@ -267,7 +270,7 @@ script:
 - java -jar ${root}/reactive-ngrx/target/*.jar &
 - sleep 25
 - http :8080
-- stop_any 8080
+- stop_any 8080 8000 80
 - bash gradlew -b ${root}/reactive-ngrx/build.gradle
 # reactive-ngrx docker
 - docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml build --force-rm --no-cache --pull
@@ -296,3 +299,7 @@ script:
 #    echo "build $path"
 #    bash gradlew clean build >/dev/null 2>&1
 #  done;
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.gradle
