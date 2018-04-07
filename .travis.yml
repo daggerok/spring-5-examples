@@ -17,9 +17,9 @@ jdk: openjdk8
 install: true
 before_install:
 
-- sudo apt update -y >/dev/null || true
-- sudo apt install -y --no-install-recommends docker-ce curl jq libxml2-utils python-pip >/dev/null
-- sudo pip install docker-compose httpie >/dev/null
+- sudo apt update -y >/dev/null 2>&1 || true
+- sudo apt install -y --no-install-recommends docker-ce curl jq libxml2-utils python-pip >/dev/null 2>&1
+- sudo pip install docker-compose httpie >/dev/null 2>&1
 - nvm install 9
 - npm i -g yarn
 - source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
