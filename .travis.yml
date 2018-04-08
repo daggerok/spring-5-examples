@@ -26,7 +26,7 @@ script:
 
 # mapdb
 - bash gradlew -b ${root}/mapdb/build.gradle >/dev/null
-- LOGGING_LEVEL_ROOT=WARN bash ${root}/mapdb/build/libs/*.jar &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash ${root}/mapdb/build/libs/*.jar &
 - wait_for 8080
 - http :8080 message=hello,\ max!
 - http :8080 message=how\ are\ u\?
@@ -34,7 +34,7 @@ script:
 
 # axon-vote
 - bash mvnw -f ${root}/axon-vote/pom.xml >/dev/null
-- LOGGING_LEVEL_ROOT=WARN bash ${root}/axon-vote/target/*.jar &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash ${root}/axon-vote/target/*.jar &
 - wait_for 8080
 - http :8080/api/v1/registration id=my-vote name=my=vote
 - http put http://localhost:8080/api/v1/registration/approve/my-vote
@@ -45,7 +45,7 @@ script:
 
 # some-spring-boot-2-frontend
 - bash gradlew -b ${root}/some-spring-boot-2-frontend/build.gradle >/dev/null
-- LOGGING_LEVEL_ROOT=WARN bash ${root}/some-spring-boot-2-frontend/build/libs/*.jar &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash ${root}/some-spring-boot-2-frontend/build/libs/*.jar &
 - wait_for 8080
 - http :8080
 - stop_any 8080 8000 80
@@ -55,7 +55,7 @@ script:
 - http -a "$GITHUB_TOKEN" https://api.github.com
 #
 - bash gradlew -b ${root}/github-api-v3-gateway/build.gradle >/dev/null
-- LOGGING_LEVEL_ROOT=WARN bash ${root}/github-api-v3-gateway/webflux-gateway/build/libs/*.jar &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash ${root}/github-api-v3-gateway/webflux-gateway/build/libs/*.jar &
 - wait_for 8080
 - http :8080/github/props/manual
 - http :8080/github/props
@@ -69,7 +69,7 @@ script:
 - sleep 5
 - bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
 #
-- LOGGING_LEVEL_ROOT=WARN bash ${root}/github-api-v3-gateway/webflux-gateway/target/*.jar &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash ${root}/github-api-v3-gateway/webflux-gateway/target/*.jar &
 - wait_for 8080
 - http :8080/github/props/manual
 - http :8080/github/props
@@ -80,14 +80,14 @@ script:
 - stop_any 8080 8000 80
 #
 - docker-compose -f ${root}/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml build --force-rm --no-cache --pull
-- LOGGING_LEVEL_ROOT=WARN docker-compose -f ${root}/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml up &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f ${root}/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml up &
 - sleep 20
 - docker-compose -f ${root}/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml down -v &
 
 # reactor-processors
 - bash gradlew -b ${root}/reactor-processors/build.gradle >/dev/null
 - bash mvnw -f ${root}/reactor-processors/pom.xml >/dev/null
-- LOGGING_LEVEL_ROOT=WARN bash ${root}/reactor-processors/flux-sink/build/libs/*.jar &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash ${root}/reactor-processors/flux-sink/build/libs/*.jar &
 - wait_for 8080
 - curl http://127.0.0.1:8080 &
 - http :8080 --stream &
@@ -98,8 +98,8 @@ script:
 # reactive axon
 - bash gradlew -b ${root}/axon-lock/build.gradle >/dev/null
 - bash mvnw -f ${root}/axon-lock/pom.xml >/dev/null
-- java -jar ${root}/axon-lock/axon-app/build/libs/*.jar --logging.level.org=warn &
-- java -jar ${root}/axon-lock/axon-app/target/*.jar --server.port=8000 --logging.level.org=warn &
+- java -jar ${root}/axon-lock/axon-app/build/libs/*.jar --logging.level.root=warn --logging.level.daggerok=debug &
+- java -jar ${root}/axon-lock/axon-app/target/*.jar --server.port=8000 --logging.level.root=warn --logging.level.daggerok=debug &
 - wait_for 8080 8000
 - http :8080 name=Max
 - http :8000 name=Axon
@@ -122,7 +122,7 @@ script:
 - stop_any 8080 8000 80
 # maven docker
 - docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml build --force-rm --no-cache --pull
-- LOGGING_LEVEL_ROOT=WARN docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml up --force-recreate --remove-orphans &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml up --force-recreate --remove-orphans &
 - wait_for 8080
 - sleep 20
 - http :8080
@@ -130,7 +130,7 @@ script:
 - stop_any 8080 8000 80
 # gradle docker
 - docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml build --force-rm --no-cache --pull
-- LOGGING_LEVEL_ROOT=WARN docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
 - wait_for 8080
 - sleep 20
 - http :8080
@@ -139,9 +139,9 @@ script:
 
 # monolith
 - bash gradlew -b ${root}/monolith/build.gradle >/dev/null
-- LOGGING_LEVEL_ROOT=WARN java -jar ${root}/monolith/app/build/libs/*.jar &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar ${root}/monolith/app/build/libs/*.jar &
 - bash mvnw -f ${root}/monolith/pom.xml >/dev/null
-- LOGGING_LEVEL_ROOT=WARN java -jar ${root}/monolith/app/target/*.jar --server.port=8000 &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar ${root}/monolith/app/target/*.jar --server.port=8000 &
 - wait_for 8080 8000
 - http :8080
 - http --stream :8080/api/v1/messages
@@ -160,7 +160,7 @@ script:
 - stop_any 8080 8080 8000 8000 80 80
 # maven docker
 - docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml build --force-rm --no-cache --pull
-- LOGGING_LEVEL_ROOT=WARN docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml up --force-recreate --remove-orphans &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml up --force-recreate --remove-orphans &
 - wait_for 8080
 - sleep 20
 - http :8080
@@ -169,7 +169,7 @@ script:
 - stop_any 8080 8080 8000 8000 80 80
 # gradle docker
 - docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml build --force-rm --no-cache --pull
-- LOGGING_LEVEL_ROOT=WARN docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
 - wait_for 8080
 - sleep 20
 - http :8080
@@ -179,21 +179,21 @@ script:
 
 # thymeleaf-webflux
 - bash gradlew -b ${root}/thymeleaf-webflux/build.gradle clean build            >/dev/null
-- java -jar       ${root}/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar --logging.level.root=warn &
+- java -jar       ${root}/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar --logging.level.root=warn --logging.level.daggerok=debug &
 - bash mvnw    -f ${root}/thymeleaf-webflux/pom.xml      clean package          >/dev/null
-- java -jar       ${root}/thymeleaf-webflux/reactive-thymeleaf/target/*.jar     --logging.level.root=warn --server.port=8000 &
+- java -jar       ${root}/thymeleaf-webflux/reactive-thymeleaf/target/*.jar     --logging.level.root=warn --logging.level.daggerok=debug --server.port=8000 &
 - wait_for 8080 8000
 - http --stream :8080
 - http --stream :8000
 - stop_any 8080 8000 80 80 8080 8000
 # maven docker
-- LOGGING_LEVEL_ROOT=WARN bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp   -Pprofile=maven
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp   -Pprofile=maven
 - wait_for 8080
 - http --stream :8080
 - bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeDown -Pprofile=maven
 - stop_any 8080 8080 8000 8000 80 80
 # gradle docker
-- LOGGING_LEVEL_ROOT=WARN bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp   -Pprofile=gradle
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp   -Pprofile=gradle
 - wait_for 8080
 - http --stream :8080
 - bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeDown -Pprofile=gradle
@@ -201,9 +201,9 @@ script:
 
 ## rmi
 - bash gradlew -b ${root}/rmi/build.gradle >/dev/null
-- LOGGING_LEVEL_ROOT=WARN java -jar ${root}/rmi/spring-rmi-client/build/libs/*.jar &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar ${root}/rmi/spring-rmi-client/build/libs/*.jar &
 - bash mvnw -f ${root}/rmi/pom.xml >/dev/null
-- LOGGING_LEVEL_ROOT=WARN java -jar ${root}/rmi/spring-rmi-service/target/*.jar --server.port=8000 &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar ${root}/rmi/spring-rmi-service/target/*.jar --server.port=8000 &
 - wait_for 8080 8000
 - http :8080/api/v1/users name=maksimko
 - http :8080/api/v1/users name=maks
@@ -212,7 +212,7 @@ script:
 - stop_any 8080 8080 8000 8000 80 80
 # hotel maven docker
 - docker-compose -f ${root}/rmi/docker-compose.yaml build --force-rm --no-cache --pull
-- LOGGING_LEVEL_ROOT=WARN docker-compose -f ${root}/rmi/docker-compose.yaml up --force-recreate --remove-orphans &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f ${root}/rmi/docker-compose.yaml up --force-recreate --remove-orphans &
 - wait_for 8080
 - sleep 20
 - http :8080/api/v1/users name=maksimko
@@ -224,16 +224,16 @@ script:
 # mailbox
 - bash gradlew clean build -b ${root}/mailbox/build.gradle >/dev/null
 - bash mvnw clean package -f ${root}/mailbox/pom.xml >/dev/null
-- LOGGING_LEVEL_ROOT=WARN java -jar ${root}/mailbox/webapp/target/*.jar &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar ${root}/mailbox/webapp/target/*.jar &
 - wait_for 8080
 - http -a max:max get :8080/
 - stop_any 8080 8080 80 80
 
 # hotel gradle
 - bash gradlew clean build -b ${root}/hotel/build.gradle >/dev/null
-- LOGGING_LEVEL_ROOT=WARN java -jar ${root}/hotel/webapp/build/libs/*.jar &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar ${root}/hotel/webapp/build/libs/*.jar &
 - docker-compose -f ${root}/hotel/reservations/docker-compose.yml up -d
-- LOGGING_LEVEL_ROOT=WARN java -jar ${root}/hotel/reservations/build/libs/*.jar &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar ${root}/hotel/reservations/build/libs/*.jar &
 - wait_for 8080 8081
 - http :8081/api/v1/reservations
 - http :8080
@@ -244,7 +244,7 @@ script:
 # hotel maven docker
 - bash mvnw -f ${root}/hotel/pom.xml clean package -U >/dev/null
 - docker-compose -f ${root}/hotel/docker-compose.yaml   build --force-rm --no-cache --pull
-- LOGGING_LEVEL_ROOT=WARN docker-compose -f ${root}/hotel/docker-compose.yaml up --force-recreate --remove-orphans &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f ${root}/hotel/docker-compose.yaml up --force-recreate --remove-orphans &
 - sleep 20
 - http :8080
 - http :8080?name=Maven
@@ -254,7 +254,7 @@ script:
 
 # mustache-json gradle
 - bash gradlew build -b ${root}/mustache-json/build.gradle >/dev/null
-- LOGGING_LEVEL_ROOT=WARN java -jar ${root}/mustache-json/build/libs/*.jar &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar ${root}/mustache-json/build/libs/*.jar &
 - wait_for 8080
 - http :8080
 - http :8080/hello/
@@ -263,7 +263,7 @@ script:
 # mustache-json docker
 - bash ./gradlew clean build >/dev/null
 - docker-compose -f ${root}/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
-- LOGGING_LEVEL_ROOT=WARN docker-compose -f ${root}/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f ${root}/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
 - wait_for 8080
 - sleep 20
 - http :8080
@@ -281,7 +281,7 @@ script:
 # reactive-ngrx docker
 - bash gradlew -b ${root}/reactive-ngrx/build.gradle >/dev/null
 - docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml build --force-rm --no-cache --pull
-- LOGGING_LEVEL_ROOT=WARN docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml up &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml up &
 - wait_for 8001 8002
 - sleep 30
 - http :8001
@@ -289,25 +289,25 @@ script:
 - docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
 - stop_any 8001 8002 80
 
-#- >
-#  for path in \
-#    spring-shell \
-#    reactive-websocket-sse \
-#    spring-boot-under-the-hood \
-#    reactive-auth \
-#    reactive-security-client \
-#    reactive-functional-security \
-#    reactive-mongo-webflux-functional \
-#    reactive-mongo-webflux \
-#    reactive-webflux-spring-data-redis \
-#    spring-integration-5-example \
-#    functional-spring;
-#  do
-#    export project="${root}/$path"
-#    cd ${project}
-#    echo "build $path"
-#    bash gradlew clean build >/dev/null
-#  done;
+- >
+  for path in \
+    spring-shell \
+    reactive-websocket-sse \
+    spring-boot-under-the-hood \
+    reactive-auth \
+    reactive-security-client \
+    reactive-functional-security \
+    reactive-mongo-webflux-functional \
+    reactive-mongo-webflux \
+    reactive-webflux-spring-data-redis \
+    spring-integration-5-example \
+    functional-spring;
+  do
+    export project="${root}/$path"
+    cd ${project}
+    echo "build $path"
+    bash gradlew clean build >/dev/null
+  done;
 
 cache:
   directories:
