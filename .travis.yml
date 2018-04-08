@@ -8,7 +8,7 @@ env:
   - TERM=dumb
 
 language: java
-jdk: openjdk8
+jdk: oraclejdk8
 
 #jdk:
 #- openjdk8
@@ -17,20 +17,19 @@ jdk: openjdk8
 install: true
 before_install:
 
+- nvm install 9
 - sudo apt update -y >/dev/null 2>&1 || true
 - sudo apt install -y --no-install-recommends docker-ce curl jq libxml2-utils python-pip >/dev/null 2>&1
 - sudo pip install docker-compose httpie >/dev/null 2>&1
-- nvm install 9
-- npm i -g yarn
 - source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
-- stop_any 5432 5672 27017 8080 8080 8081 80 80
+- stop_any 5432 5672 27017 8080 8000 8081 80 80
 
 script:
 - export root=$(pwd)
 
 # mapdb
 - bash gradlew -b ${root}/mapdb/build.gradle >/dev/null
-- bash ${root}/mapdb/build/libs/*.jar &
+- LOGGING_LEVEL_ORG_SPRINGFRAMEWORK=WARN bash ${root}/mapdb/build/libs/*.jar &
 - wait_for 8080
 - http :8080 message=hello,\ max!
 - http :8080 message=how\ are\ u\?
@@ -38,7 +37,7 @@ script:
 
 # axon-vote
 - bash mvnw -f ${root}/axon-vote/pom.xml >/dev/null
-- bash ${root}/axon-vote/target/*.jar &
+- LOGGING_LEVEL_ORG_SPRINGFRAMEWORK=WARN bash ${root}/axon-vote/target/*.jar &
 - wait_for 8080
 - http :8080/api/v1/registration id=my-vote name=my=vote
 - http put http://localhost:8080/api/v1/registration/approve/my-vote
@@ -49,7 +48,7 @@ script:
 
 # some-spring-boot-2-frontend
 - bash gradlew -b ${root}/some-spring-boot-2-frontend/build.gradle >/dev/null
-- bash ${root}/some-spring-boot-2-frontend/build/libs/*.jar &
+- LOGGING_LEVEL_ORG_SPRINGFRAMEWORK=WARN bash ${root}/some-spring-boot-2-frontend/build/libs/*.jar &
 - wait_for 8080
 - http :8080
 - stop_any 8080 8000 80
@@ -59,7 +58,7 @@ script:
 - http -a "$GITHUB_TOKEN" https://api.github.com
 #
 - bash gradlew -b ${root}/github-api-v3-gateway/build.gradle >/dev/null
-- bash ${root}/github-api-v3-gateway/webflux-gateway/build/libs/*.jar &
+- LOGGING_LEVEL_ORG_SPRINGFRAMEWORK=WARN bash ${root}/github-api-v3-gateway/webflux-gateway/build/libs/*.jar &
 - wait_for 8080
 - http :8080/github/props/manual
 - http :8080/github/props
@@ -70,10 +69,10 @@ script:
 #
 - bash mvnw -f ${root}/github-api-v3-gateway/pom.xml >/dev/null
 - bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway clean package com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up
-- sleep 15
+- sleep 5
 - bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
 #
-- bash ${root}/github-api-v3-gateway/webflux-gateway/target/*.jar &
+- LOGGING_LEVEL_ORG_SPRINGFRAMEWORK=WARN bash ${root}/github-api-v3-gateway/webflux-gateway/target/*.jar &
 - wait_for 8080
 - http :8080/github/props/manual
 - http :8080/github/props
@@ -84,14 +83,14 @@ script:
 - stop_any 8080 8000 80
 #
 - docker-compose -f ${root}/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml build --force-rm --no-cache --pull
-- docker-compose -f ${root}/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml up &
+- LOGGING_LEVEL_ORG_SPRINGFRAMEWORK=WARN docker-compose -f ${root}/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml up &
 - sleep 20
 - docker-compose -f ${root}/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml down -v &
 
 # reactor-processors
 - bash gradlew -b ${root}/reactor-processors/build.gradle >/dev/null
 - bash mvnw -f ${root}/reactor-processors/pom.xml >/dev/null
-- bash ${root}/reactor-processors/flux-sink/build/libs/*.jar &
+- LOGGING_LEVEL_ORG_SPRINGFRAMEWORK=WARN bash ${root}/reactor-processors/flux-sink/build/libs/*.jar &
 - wait_for 8080
 - curl http://127.0.0.1:8080 &
 - http :8080 --stream &
@@ -102,38 +101,40 @@ script:
 # reactive axon
 - bash gradlew -b ${root}/axon-lock/build.gradle >/dev/null
 - bash mvnw -f ${root}/axon-lock/pom.xml >/dev/null
-- java -jar ${root}/axon-lock/axon-app/build/libs/*.jar &
-- java -jar ${root}/axon-lock/axon-app/target/*.jar --server.port=8000 &
+- java -jar ${root}/axon-lock/axon-app/build/libs/*.jar --logging.level=org.springframework=warn &
+- java -jar ${root}/axon-lock/axon-app/target/*.jar --server.port=8000 --logging.level=org.springframework=warn &
 - wait_for 8080 8000
 - http :8080 name=Max
 - http :8000 name=Axon
-- stop_any 8080 8000 80
+- stop_any 8080 8080 8000 8000 80
 
 # kotlin-beans-dsl
 - bash gradlew -b ${root}/kotlin-beans-dsl/build.gradle >/dev/null
-- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/build/libs/*.jar
+- java -Dlogging.level=org.springframework=warn -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/build/libs/*.jar
 - bash mvnw -f ${root}/kotlin-beans-dsl/pom.xml >/dev/null
-- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/target/*.jar
+- java -Dlogging.level=org.springframework=warn -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/target/*.jar
 
 ## xml-wtf
 - bash gradlew -b ${root}/xml-wtf/build.gradle >/dev/null
-- java -jar ${root}/xml-wtf/kotlin-xml/build/libs/*.jar &
+- java -Dlogging.level=org.springframework=warn -jar ${root}/xml-wtf/kotlin-xml/build/libs/*.jar &
 - bash mvnw -f ${root}/xml-wtf/pom.xml >/dev/null
-- java -jar ${root}/xml-wtf/kotlin-xml/target/*.jar --server.port=8000 &
+- java -Dlogging.level=org.springframework=warn -jar ${root}/xml-wtf/kotlin-xml/target/*.jar --server.port=8000 &
 - wait_for 8080 8000
 - http :8080
 - http :8000
 - stop_any 8080 8000 80
 # maven docker
 - docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml build --force-rm --no-cache --pull
-- docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml up --force-recreate --remove-orphans &
+- LOGGING_LEVEL_ORG_SPRINGFRAMEWORK=WARN docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml up --force-recreate --remove-orphans &
+- wait_for 8080
 - sleep 20
 - http :8080
 - docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml down -v
 - stop_any 8080 8000 80
 # gradle docker
 - docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml build --force-rm --no-cache --pull
-- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+- LOGGING_LEVEL_ORG_SPRINGFRAMEWORK=WARN docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+- wait_for 8080
 - sleep 20
 - http :8080
 - docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml down -v
@@ -141,39 +142,43 @@ script:
 
 # monolith
 - bash gradlew -b ${root}/monolith/build.gradle >/dev/null
-- java -jar ${root}/monolith/app/build/libs/*.jar &
+- LOGGING_LEVEL_ORG_SPRINGFRAMEWORK=WARN java -jar ${root}/monolith/app/build/libs/*.jar &
 - bash mvnw -f ${root}/monolith/pom.xml >/dev/null
-- java -jar ${root}/monolith/app/target/*.jar --server.port=8000 &
+- LOGGING_LEVEL_ORG_SPRINGFRAMEWORK=WARN java -jar ${root}/monolith/app/target/*.jar --server.port=8000 &
 - wait_for 8080 8000
 - http :8080
 - http --stream :8080/api/v1/messages
 - http :8000
 - http --stream :8000/api/v1/messages 'accept:application/stream+json'
-- stop_any 8080 8000 80
+- stop_any 8080 8080 8000 8000 80 80
 
-## listener-of-listener
-#- bash gradlew -b ${root}/listener-of-listener/build.gradle >/dev/null
-#- java -jar ${root}/listener-of-listener/kotlin-listeners/build/libs/*.jar &
-#- bash mvnw -f ${root}/listener-of-listener/pom.xml >/dev/null
-#- java -jar ${root}/listener-of-listener/kotlin-listeners/target/*.jar --server.port=8000 &
-#- wait_for 8080 8000
-#- http :8080
-#- http :8080 message=send\ message,\ y0!
-#- stop_any 8080 8000
-## maven docker
-#- docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml build --force-rm --no-cache --pull
-#- docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml up --force-recreate --remove-orphans &
-#- sleep 20
-#- http :8080
-#- http :8080 message=send\ message,\ y0!
-#- docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml down -v
-## gradle docker
-#- docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml build --force-rm --no-cache --pull
-#- docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
-#- sleep 20
-#- http :8080
-#- http :8080 message=send\ message,\ y0!
-#- docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml down -v
+# listener-of-listener
+- bash gradlew -b ${root}/listener-of-listener/build.gradle >/dev/null
+- java -jar ${root}/listener-of-listener/kotlin-listeners/build/libs/*.jar --logging.level=org.springframework=warn &
+- bash mvnw -f ${root}/listener-of-listener/pom.xml >/dev/null
+- java -jar ${root}/listener-of-listener/kotlin-listeners/target/*.jar --server.port=8000 --logging.level=org.springframework=warn &
+- wait_for 8080 8000
+- http :8080
+- http :8080 message=send\ message,\ y0!
+- stop_any 8080 8080 8000 8000 80 80
+# maven docker
+- docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml build --force-rm --no-cache --pull
+- LOGGING_LEVEL_ORG_SPRINGFRAMEWORK=WARN docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml up --force-recreate --remove-orphans &
+- wait_for 8080
+- sleep 20
+- http :8080
+- http :8080 message=send\ message,\ y0!
+- docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml down -v
+- stop_any 8080 8080 8000 8000 80 80
+# gradle docker
+- docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml build --force-rm --no-cache --pull
+- LOGGING_LEVEL_ORG_SPRINGFRAMEWORK=WARN docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+- wait_for 8080
+- sleep 20
+- http :8080
+- http :8080 message=send\ message,\ y0!
+- docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml down -v
+- stop_any 8080 8080 8000 8000 80 80
 
 # thymeleaf-webflux
 - bash gradlew -b ${root}/thymeleaf-webflux/build.gradle clean build            >/dev/null
@@ -252,35 +257,39 @@ script:
 ## mustache-json gradle
 #- bash gradlew build -b ${root}/mustache-json/build.gradle >/dev/null
 #- java -jar ${root}/mustache-json/build/libs/*.jar &
-#- sleep 10
+#- wait_for 8080
 #- http :8080
 #- http :8080/hello/
 #- http :8080/hello/mustache
-#- stop_any 8080
-#- bash ./gradlew clean build
+#- stop_any 8080 80
 ## mustache-json docker
+#- bash ./gradlew clean build >/dev/null
 #- docker-compose -f ${root}/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
 #- docker-compose -f ${root}/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
+#- wait_for 8080
 #- sleep 20
 #- http :8080
 #- http :8080/hello
 #- http :8080/hello/lol
 #- docker-compose -f ${root}/mustache-json/docker-compose.yaml down -v
+#- stop_any 8080 80
 
 # reactive-ngrx gradle
-- bash mvnw -f ${root}/reactive-ngrx/pom.xml
+- bash mvnw -f ${root}/reactive-ngrx/pom.xml >/dev/null
 - java -jar ${root}/reactive-ngrx/target/*.jar &
-- sleep 25
+- wait_for 8080
 - http :8080
 - stop_any 8080 8000 80
 - bash gradlew -b ${root}/reactive-ngrx/build.gradle
 # reactive-ngrx docker
 - docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml build --force-rm --no-cache --pull
 - docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml up &
+- wait_for 8001 8002
 - sleep 30
 - http :8001
 - http :8002
 - docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
+- stop_any 8001 8002 80
 
 #- >
 #  for path in \
@@ -299,7 +308,7 @@ script:
 #    export project="${root}/$path"
 #    cd ${project}
 #    echo "build $path"
-#    bash gradlew clean build >/dev/null 2>&1
+#    bash gradlew clean build >/dev/null
 #  done;
 cache:
   directories:
