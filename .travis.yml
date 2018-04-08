@@ -36,23 +36,23 @@ script:
 - http :8080 message=how\ are\ u\?
 - stop_any 8080 80
 
-## axon-vote
-#- bash mvnw -f ${root}/axon-vote/pom.xml
-#- bash ${root}/axon-vote/target/*.jar &
-#- wait_for 8080
-#- http :8080/api/v1/registration id=my-vote name=my=vote
-#- http put http://localhost:8080/api/v1/registration/approve/my-vote
-#- http post http://localhost:8080/api/v1/vote/my-vote electorId=dag
-#- http post http://localhost:8080/api/v1/vote/my-vote electorId=max
-#- http :8080
-#- stop_any 8080 8000 80
+# axon-vote
+- bash mvnw -f ${root}/axon-vote/pom.xml >/dev/null
+- bash ${root}/axon-vote/target/*.jar &
+- wait_for 8080
+- http :8080/api/v1/registration id=my-vote name=my=vote
+- http put http://localhost:8080/api/v1/registration/approve/my-vote
+- http post http://localhost:8080/api/v1/vote/my-vote electorId=dag
+- http post http://localhost:8080/api/v1/vote/my-vote electorId=max
+- http :8080
+- stop_any 8080 8000 80
 
-## some-spring-boot-2-frontend
-#- bash gradlew -b ${root}/some-spring-boot-2-frontend/build.gradle >/dev/null 2>&1
-#- bash ${root}/some-spring-boot-2-frontend/build/libs/*.jar &
-#- wait_for 8080
-#- http :8080
-#- stop_any 8080
+# some-spring-boot-2-frontend
+- bash gradlew -b ${root}/some-spring-boot-2-frontend/build.gradle >/dev/null
+- bash ${root}/some-spring-boot-2-frontend/build/libs/*.jar &
+- wait_for 8080
+- http :8080
+- stop_any 8080 8000 80
 
 # github-api-v3-gateway
 - cp -Rf ${root}/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github-default.properties ${root}/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github.properties
@@ -109,33 +109,35 @@ script:
 - http :8000 name=Axon
 - stop_any 8080 8000 80
 
-## kotlin-beans-dsl
-#- bash gradlew -b ${root}/kotlin-beans-dsl/build.gradle >/dev/null
-#- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/build/libs/*.jar
-#- bash mvnw -f ${root}/kotlin-beans-dsl/pom.xml >/dev/null
-#- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/target/*.jar
+# kotlin-beans-dsl
+- bash gradlew -b ${root}/kotlin-beans-dsl/build.gradle >/dev/null
+- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/build/libs/*.jar
+- bash mvnw -f ${root}/kotlin-beans-dsl/pom.xml >/dev/null
+- java -jar ${root}/kotlin-beans-dsl/kotlin-config-dsl/target/*.jar
 
 ## xml-wtf
-#- bash gradlew -b ${root}/xml-wtf/build.gradle >/dev/null
-#- java -jar ${root}/xml-wtf/kotlin-xml/build/libs/*.jar &
-#- bash mvnw -f ${root}/xml-wtf/pom.xml >/dev/null
-#- java -jar ${root}/xml-wtf/kotlin-xml/target/*.jar --server.port=8000 &
-#- wait_for 8080 8000
-#- http :8080
-#- http :8000
-#- stop_any 8080 8000
-## maven docker
-#- docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml build --force-rm --no-cache --pull
-#- docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml up --force-recreate --remove-orphans &
-#- sleep 20
-#- http :8080
-#- docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml down -v
-## gradle docker
-#- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml build --force-rm --no-cache --pull
-#- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
-#- sleep 20
-#- http :8080
-#- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml down -v
+- bash gradlew -b ${root}/xml-wtf/build.gradle >/dev/null
+- java -jar ${root}/xml-wtf/kotlin-xml/build/libs/*.jar &
+- bash mvnw -f ${root}/xml-wtf/pom.xml >/dev/null
+- java -jar ${root}/xml-wtf/kotlin-xml/target/*.jar --server.port=8000 &
+- wait_for 8080 8000
+- http :8080
+- http :8000
+- stop_any 8080 8000 80
+# maven docker
+- docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml build --force-rm --no-cache --pull
+- docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml up --force-recreate --remove-orphans &
+- sleep 20
+- http :8080
+- docker-compose -f ${root}/xml-wtf/docker-compose-maven.yaml down -v
+- stop_any 8080 8000 80
+# gradle docker
+- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml build --force-rm --no-cache --pull
+- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+- sleep 20
+- http :8080
+- docker-compose -f ${root}/xml-wtf/docker-compose-gradle.yaml down -v
+- stop_any 8080 8000 80
 
 # monolith
 - bash gradlew -b ${root}/monolith/build.gradle >/dev/null
