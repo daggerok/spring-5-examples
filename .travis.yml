@@ -142,9 +142,9 @@ script:
 
 # monolith
 - bash gradlew -b ${root}/monolith/build.gradle >/dev/null
-- LOGGING_LEVEL_ORG=WARN java -jar ${root}/monolith/app/build/libs/*.jar &
+- LOGGING_LEVEL=WARN java -jar ${root}/monolith/app/build/libs/*.jar &
 - bash mvnw -f ${root}/monolith/pom.xml >/dev/null
-- LOGGING_LEVEL_ORG=WARN java -jar ${root}/monolith/app/target/*.jar --server.port=8000 &
+- LOGGING_LEVEL=WARN java -jar ${root}/monolith/app/target/*.jar --server.port=8000 &
 - wait_for 8080 8000
 - http :8080
 - http --stream :8080/api/v1/messages
@@ -163,7 +163,7 @@ script:
 - stop_any 8080 8080 8000 8000 80 80
 # maven docker
 - docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml build --force-rm --no-cache --pull
-- LOGGING_LEVEL_ORG=WARN docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml up --force-recreate --remove-orphans &
+- LOGGING_LEVEL=WARN docker-compose -f ${root}/listener-of-listener/docker-compose-maven.yaml up --force-recreate --remove-orphans &
 - wait_for 8080
 - sleep 20
 - http :8080
@@ -172,7 +172,7 @@ script:
 - stop_any 8080 8080 8000 8000 80 80
 # gradle docker
 - docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml build --force-rm --no-cache --pull
-- LOGGING_LEVEL_ORG=WARN docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+- LOGGING_LEVEL=WARN docker-compose -f ${root}/listener-of-listener/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
 - wait_for 8080
 - sleep 20
 - http :8080
@@ -182,25 +182,25 @@ script:
 
 # thymeleaf-webflux
 - bash gradlew -b ${root}/thymeleaf-webflux/build.gradle clean build            >/dev/null
-- java -jar       ${root}/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar &
+- java -jar       ${root}/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar --logging.level=warn &
 - bash mvnw    -f ${root}/thymeleaf-webflux/pom.xml      clean package          >/dev/null
-- java -jar       ${root}/thymeleaf-webflux/reactive-thymeleaf/target/*.jar     --server.port=8000 &
+- java -jar       ${root}/thymeleaf-webflux/reactive-thymeleaf/target/*.jar     --logging.level=warn --server.port=8000 &
 - wait_for 8080 8000
 - http --stream :8080
 - http --stream :8000
 - stop_any 8080 8000 80 80 8080 8000
 # maven docker
-- bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp   -Pprofile=maven
+- LOGGING_LEVEL=WARN bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp   -Pprofile=maven
 - wait_for 8080
 - http --stream :8080
 - bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeDown -Pprofile=maven
-- stop_any 8080 8000 80
+- stop_any 8080 8080 8000 8000 80 80
 # gradle docker
-- bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp   -Pprofile=gradle
+- LOGGING_LEVEL=WARN bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeUp   -Pprofile=gradle
 - wait_for 8080
 - http --stream :8080
 - bash gradlew -b ${root}/thymeleaf-webflux/build.gradle composeDown -Pprofile=gradle
-- stop_any 8080 8000 80
+- stop_any 8080 8080 8000 8000 80 80
 
 ## rmi
 #- bash gradlew -b ${root}/rmi/build.gradle >/dev/null
@@ -276,14 +276,14 @@ script:
 
 # reactive-ngrx gradle
 - bash mvnw -f ${root}/reactive-ngrx/pom.xml >/dev/null
-- java -jar ${root}/reactive-ngrx/target/*.jar &
+- java -jar ${root}/reactive-ngrx/target/*.jar --loging.level=warn &
 - wait_for 8080
 - http :8080
 - stop_any 8080 8000 80
-- bash gradlew -b ${root}/reactive-ngrx/build.gradle
 # reactive-ngrx docker
+- bash gradlew -b ${root}/reactive-ngrx/build.gradle >/dev/null
 - docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml build --force-rm --no-cache --pull
-- docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml up &
+- LOGGING_LEVEL=WARN docker-compose -f ${root}/reactive-ngrx/src/main/docker/docker-compose.yaml up &
 - wait_for 8001 8002
 - sleep 30
 - http :8001
@@ -310,6 +310,7 @@ script:
 #    echo "build $path"
 #    bash gradlew clean build >/dev/null
 #  done;
+
 cache:
   directories:
   - $HOME/.m2
