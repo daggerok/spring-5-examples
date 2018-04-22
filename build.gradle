@@ -1,9 +1,22 @@
 plugins {
   id "idea"
   id "base"
+  id "eclipse"
 }
 
 task wrapper(type: Wrapper) {
+  gradleVersion = "4.7"
   distributionType = "ALL"
-  gradleVersion = "4.5.1"
+}
+
+idea {
+  module {
+    downloadSources = true
+  }
+}
+
+eclipse {
+  classpath {
+    downloadSources = true
+  }
 }

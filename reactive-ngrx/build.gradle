@@ -1,17 +1,11 @@
 import java.nio.file.Paths
 
-buildscript {
-  ext {
-    springBootVersion = "2.0.0.RELEASE"
-  }
-}
-
 plugins {
   id "java"
   id "idea"
   id "eclipse"
   id "com.moowork.node" version "1.2.0"
-  id "org.springframework.boot" version "2.0.0.RELEASE"
+  id "org.springframework.boot" version "2.0.1.RELEASE"
   id "io.spring.dependency-management" version "1.0.5.RELEASE"
 }
 
@@ -34,20 +28,21 @@ dependencies {
   compile("org.springframework.boot:spring-boot-starter-webflux")
   runtime("org.springframework.boot:spring-boot-devtools")
   compileOnly("org.springframework.boot:spring-boot-configuration-processor")
+  testCompileOnly("org.springframework.boot:spring-boot-configuration-processor")
   testCompile("org.springframework.boot:spring-boot-starter-test")
   testCompile("io.projectreactor:reactor-test")
 }
 
 task wrapper(type: Wrapper) {
   distributionType = "ALL"
-  gradleVersion = "4.6"
+  gradleVersion = "4.7"
 }
 
 node {
   download = true
-  version = "9.3.0"
+  version = "9.11.1"
   npmVersion = "5.6.0"
-  yarnVersion = "1.3.2"
+  yarnVersion = "1.6.0"
   nodeModulesDir = Paths.get("src", "main", "ngrx").toFile()
 }
 
@@ -62,4 +57,4 @@ clean.doFirst {
   delete Paths.get(node.nodeModulesDir.path, "node_modules")
 }
 
-defaultTasks "build"
+defaultTasks "clean", "build"

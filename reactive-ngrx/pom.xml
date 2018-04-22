@@ -11,7 +11,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.0.0.M7</version>
+    <version>2.0.1.RELEASE</version>
     <relativePath/>
   </parent>
 
@@ -83,7 +83,6 @@
           </filesets>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
@@ -96,18 +95,6 @@
             </goals>
             <phase>generate-resources</phase>
           </execution>
-<!--
-          <execution>
-            <id>yarn cache clean</id>
-            <goals>
-              <goal>yarn</goal>
-            </goals>
-            <phase>generate-resources</phase>
-            <configuration>
-              <arguments>cache clean</arguments>
-            </configuration>
-          </execution>
--->
           <execution>
             <id>yarn install</id>
             <goals>
@@ -118,7 +105,6 @@
               <arguments>install</arguments>
             </configuration>
           </execution>
-
           <execution>
             <id>yarn build</id>
             <goals>
@@ -130,13 +116,12 @@
             </configuration>
           </execution>
         </executions>
-
         <configuration>
           <workingDirectory>src/main/ngrx</workingDirectory>
           <installDirectory>target</installDirectory>
-          <nodeVersion>v9.3.0</nodeVersion>
+          <nodeVersion>v9.11.1</nodeVersion>
           <npmVersion>v5.6.0</npmVersion>
-          <yarnVersion>v1.3.2</yarnVersion>
+          <yarnVersion>v1.6.0</yarnVersion>
         </configuration>
       </plugin>
     </plugins>
