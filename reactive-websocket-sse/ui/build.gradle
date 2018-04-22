@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = "1.5.9.RELEASE"
+        springBootVersion = "1.5.12.RELEASE"
     }
 }
 
@@ -8,7 +8,7 @@ plugins {
     id "java"
     id "eclipse"
     id "com.moowork.node" version "1.2.0"
-    id "org.springframework.boot" version "1.5.9.RELEASE"
+    id "org.springframework.boot" version "1.5.12.RELEASE"
 }
 
 group = "daggerok"
