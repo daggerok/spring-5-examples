@@ -31,6 +31,7 @@ This repository is contains some spring-boot 2 / spring 5 playground project exa
 - link:xml-wtf/[XML application context config for Kotlin? O.o]
 - link:kotlin-beans-dsl/[Kotlin beans DSL]
 - link:axon-lock/[Reactive Axon App]
+- link:https://github.com/daggerok/functional-spring[functional spring]
 
 resources:
 
