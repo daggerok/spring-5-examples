@@ -4,7 +4,7 @@ services:
 
   rmi-server:
     build: ./spring-rmi-service
-    volumes: ["rmi-server-data:/home"]
+    volumes: ["rmi-server-data:/home/appuser"]
     ports: ["1199:1199"]
     networks: [backing-services]
     restart: unless-stopped
@@ -14,7 +14,7 @@ services:
     build: ./spring-rmi-client
     environment:
       RMI_SERVER_HOST: rmi-server
-    volumes: ["rmi-client-data:/home"]
+    volumes: ["rmi-client-data:/home/appuser"]
     ports: ["8080:8080"]
     networks: [backing-services]
     restart: unless-stopped

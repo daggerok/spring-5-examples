@@ -209,14 +209,16 @@ script:
 ## rmi
 - bash gradlew -b ${root}/rmi/build.gradle >/dev/null
 - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar ${root}/rmi/spring-rmi-client/build/libs/*.jar &
-- bash mvnw -f ${root}/rmi/pom.xml >/dev/null
-- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar ${root}/rmi/spring-rmi-service/target/*.jar --server.port=8000 &
+##lombok edge required - broken with maven
+#- bash mvnw -f ${root}/rmi/pom.xml >/dev/null
+#- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar ${root}/rmi/spring-rmi-service/target/*.jar --server.port=8000 &
+- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar ${root}/rmi/spring-rmi-service/build/libs//*.jar --server.port=8000 &
 - wait_for 8080 8000
 - http :8080/api/v1/users name=maksimko
 - http :8080/api/v1/users name=maks
 - http :8080/api/v1/users name=max
 - http :8080/api/v1/users
-- stop_any 8080 8080 8000 8000 80 80
+- stop_any 8080 8080 8000 8000 80 80 1199
 # hotel maven docker
 - docker-compose -f ${root}/rmi/docker-compose.yaml build --force-rm --no-cache --pull
 - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f ${root}/rmi/docker-compose.yaml up --force-recreate --remove-orphans &
