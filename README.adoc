@@ -2,8 +2,8 @@
 
 This repository is contains some spring-boot 2 / spring 5 playground project examples
 
-- link:https://github.com/daggerok/spring-boot-http2[HTTP 2.0 (spring-boot 2, java 9+)]
 - link:https://github.com/daggerok/streaming-file-server[File server - full stack spring boot app]
+- link:https://github.com/daggerok/spring-boot-http2[HTTP 2.0 (spring-boot 2, java 9+)]
 - link:https://github.com/daggerok/oauth2-jdbc-example[OAuth2 (JDBC) auth server, resource server and client app]
 - link:https://github.com/daggerok/externalize-spring-boot-public-path[Externalize spring-boot public path]
 - link:https://github.com/daggerok/spring-jdbc-h2-schema[JDBC schema for spring-boot apps]
