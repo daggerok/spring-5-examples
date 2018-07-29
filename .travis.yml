@@ -9,6 +9,7 @@ env:
 
 language: java
 jdk: oraclejdk8
+node_js: lts/*
 
 addons:
   apt:
@@ -23,7 +24,6 @@ addons:
 install: true
 before_install:
 
-- nvm install lts/*
 - sudo pip install docker-compose httpie >/dev/null 2>&1
 - source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
 - stop_any 5432 5672 27017 8080 8000 8081 80 80
