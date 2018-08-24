@@ -31,6 +31,23 @@ before_install:
 script:
 - export root=$(pwd)
 
+# spring-data-jpa-count-query-fix
+- bash gradlew -b ${root}/spring-data-jpa-count-query-fix/build.gradle >/dev/null
+- java -jar ${root}/spring-data-jpa-count-query-fix/build/libs/*.jar &
+- wait_for 8080
+- http :8080/api/orders/
+- http :8080/api/
+- http :8080/
+- stop_any 8080
+#
+- bash mvnw -f ${root}/spring-data-jpa-count-query-fix/pom.xml >/dev/null
+- java -jar ${root}/spring-data-jpa-count-query-fix/target/*.jar &
+- wait_for 8080
+  - http :8080/api/orders/
+  - http :8080/api/
+  - http :8080/
+- stop_any 8080
+
 # mapdb
 - bash gradlew -b ${root}/mapdb/build.gradle >/dev/null
 - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash ${root}/mapdb/build/libs/*.jar &
@@ -322,3 +339,4 @@ cache:
   directories:
   - $HOME/.m2
   - $HOME/.gradle
+  - $HOME/.docker

@@ -1,0 +1,20 @@
+version: "2.1"
+
+services:
+
+  maven-spring-data-count-query-fix-app:
+    build:
+      context: .
+      dockerfile: .mvn/Dockerfile
+    volumes: ["maven-spring-data-count-query-fix-app-data:/home/appuser"]
+    ports: ["8080:8080"]
+    networks: [backing-services]
+    #restart: unless-stopped
+    #mem_limit: 786432000 # container limit: 700Mb (700 * 1024 * 1024)
+
+volumes:
+  maven-spring-data-count-query-fix-app-data: {}
+
+networks:
+  backing-services:
+    driver: bridge

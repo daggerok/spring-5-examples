@@ -1,0 +1,3 @@
+rootProject.name = 'spring-data-count-query-fix'
+enableFeaturePreview 'STABLE_PUBLISHING'
+include 'docs'

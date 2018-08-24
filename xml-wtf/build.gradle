@@ -20,10 +20,12 @@ allprojects {
 
   defaultTasks("clean", "build")
 
+/*
   task wrapper(type: Wrapper) {
     gradleVersion = "4.5"
     distributionType = "ALL"
   }
+*/
 }
 
 subprojects {

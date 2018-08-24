@@ -4,10 +4,12 @@ plugins {
   id "eclipse"
 }
 
+/*
 task wrapper(type: Wrapper) {
   gradleVersion = "4.7"
   distributionType = "ALL"
 }
+*/
 
 idea {
   module {

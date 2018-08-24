@@ -1,0 +1,79 @@
+buildscript {
+  ext {
+    adocProcessingOutputDir = project.file("$buildDir/asciidoc")
+    adocOutputDir = project.file("$rootDir/target/generated-docs")
+  }
+}
+
+apply plugin: 'org.asciidoctor.convert'
+apply plugin: 'org.ajoberstar.git-publish'
+
+asciidoctor {
+  sourceDir = project.file("$rootDir/docs")
+  sources {
+    include 'index.adoc'
+  }
+  outputDir = adocProcessingOutputDir
+  attributes toc: 'left',
+    doctype: 'book',
+    ruby: 'erubis',
+    encoding: 'utf-8',
+    linkattrs: true,
+    numbered: true,
+    sectanchors: true,
+    sectlink: true,
+    idprefix: '',
+    docinfo1: '',
+    icons: 'font',
+    idseparator: '-',
+    setanchors: 'true',
+    imagesdir: './images',
+    'toc-title': 'Table of Contents',
+    'source-highlighter': 'highlightjs',
+    'root-project-name': rootProject.name,
+    'build-gradle': project.file('build.gradle'),
+    'github-url': "https://github.com/daggerok/$rootProject.name",
+    'gitlab-url': "https://gitlab.com/daggerok/$rootProject.name",
+    'bitbucket-url': "https://bitbucket.com/daggerok/$rootProject.name"
+
+  logDocuments = true
+  //backends 'pdf', 'html5'
+  backends = ['html5', 'pdf']
+}
+
+asciidoctor.doLast {
+  def html5 = "$adocProcessingOutputDir/html5"
+  project.file("$html5/404.html").text = project.file("$html5/index.html").text
+  project.file("$html5/.nojekyll").text = ''
+}
+
+task documentation(type: Copy, dependsOn: asciidoctor) {
+  shouldRunAfter clean, asciidoctor
+  from "$asciidoctor.outputDir/html5"
+  from "$asciidoctor.outputDir/pdf"
+  from "$asciidoctor.sourceDir/static", {
+    into '.'
+  }
+  into adocOutputDir
+}
+
+gitPublish {
+  // repoUri = "git@gitlab.com:daggerok/${rootProject.name}.git" // same gitlab plugin?
+  repoUri = "git@github.com:daggerok/${rootProject.name}.git"
+  branch = 'gh-pages'
+
+  contents {
+    from adocOutputDir, {
+      into '.'
+    }
+  }
+
+  commitMessage = "Publish $rootProject.name documentation (${project.group}:${project.name}:$project.version)"
+}
+
+gitPublishPush.dependsOn documentation
+gitPublishPush.shouldRunAfter clean, documentation
+
+task docs(dependsOn: gitPublishPush) {
+  shouldRunAfter clean, asciidoctor
+}

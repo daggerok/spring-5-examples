@@ -2,6 +2,7 @@
 
 This repository is contains some spring-boot 2 / spring 5 playground project examples
 
+- link:./spring-data-jpa-count-query-fix/[using #{entityName} in countQuery - spring data jpa fix]
 - link:https://github.com/daggerok/streaming-file-server[File server - full stack spring boot app]
 - link:https://github.com/daggerok/spring-boot-http2[HTTP 2.0 (spring-boot 2, java 9+)]
 - link:https://github.com/daggerok/oauth2-jdbc-example[OAuth2 (JDBC) auth server, resource server and client app]
