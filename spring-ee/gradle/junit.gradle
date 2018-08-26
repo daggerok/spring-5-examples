@@ -1,6 +1,4 @@
 allprojects {
-  // read more: https://docs.gradle.org/4.6/release-notes.html#junit-5-support
-
   dependencies {
     testImplementation "junit:junit:$junit4Version"
     testImplementation "org.assertj:assertj-core:$assertjVersion"
@@ -13,7 +11,7 @@ allprojects {
     testRuntime "org.junit.platform:junit-platform-launcher:$junitPlatformVersion", {
       because 'allows tests to run from IDEs that bundle older version of launcher'
     }
-    //testCompileOnly 'org.apiguardian:apiguardian-api:1.0.0'
+    testCompileOnly 'org.apiguardian:apiguardian-api:1.0.0'
   }
 
   test {
@@ -22,5 +20,5 @@ allprojects {
     }
   }
 
-  //apply from: "$project.rootDir/gradle/jgiven.gradle"
+  apply from: "$project.rootDir/gradle/jgiven.gradle"
 }

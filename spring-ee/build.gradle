@@ -8,6 +8,8 @@ buildscript {
     logbackVersion = '1.2.3'
     assertjVersion = '3.10.0'
     lombokVersion = '1.18.2'
+    springBootVersion = '2.0.4.RELEASE'
+    springCloudVersion = 'Finchley.SR1'
     hibernateCoreVersion = '4.2.18.Final'
     asciidoctorjPdfVersion = '1.5.0-alpha.15'
     junitPlatformVersion = '1.2.0'
@@ -22,10 +24,11 @@ buildscript {
 }
 
 plugins {
-  id 'com.avast.gradle.docker-compose' version '0.6.18'
   id 'org.asciidoctor.convert' version '1.5.8.1' apply false
   id 'org.ajoberstar.git-publish' version '0.3.0' apply false
   id 'io.franzbecker.gradle-lombok' version '1.14' apply false
+  id 'com.avast.gradle.docker-compose' version '0.6.18' apply false
+  id 'io.spring.dependency-management' version '1.0.6.RELEASE' apply false
   id 'cn.bestwu.propdeps-eclipse' version '0.0.10' apply false
   id 'cn.bestwu.propdeps-maven' version '0.0.10' apply false
   id 'cn.bestwu.propdeps-idea' version '0.0.10' apply false
@@ -43,6 +46,7 @@ apply from: "$projectDir/gradle/ide.gradle"
 apply from: "$projectDir/gradle/clean.gradle"
 apply from: "$projectDir/gradle/repositories.gradle"
 apply from: "$projectDir/gradle/java.gradle"
+apply from: "$projectDir/gradle/jacoco.gradle"
 apply from: "$projectDir/gradle/junit.gradle"
 apply from: "$projectDir/gradle/findbugs.gradle"
 apply from: "$projectDir/gradle/docker-compose.gradle"

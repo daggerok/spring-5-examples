@@ -1,6 +1,5 @@
 allprojects {
   apply plugin: 'org.jetbrains.kotlin.jvm'
-  //apply plugin: 'org.jetbrains.kotlin.kapt'
   apply plugin: 'org.jetbrains.kotlin.plugin.jpa'
   apply plugin: 'org.jetbrains.kotlin.plugin.noarg'
   apply plugin: 'org.jetbrains.kotlin.plugin.spring'
@@ -10,9 +9,6 @@ allprojects {
   def projectFreeCompileArgs = [
       '-Xjsr305=strict',
       '-java-parameters',
-      //1.2.41:
-      //"-Xenable-jvm-default",
-      //1.2.50:
       "-Xjvm-default=compatibility",
   ]
 
@@ -39,7 +35,7 @@ allprojects {
   }
 
   dependencies {
-    //implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 

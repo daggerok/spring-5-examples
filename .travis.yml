@@ -31,6 +31,17 @@ before_install:
 script:
 - export root=$(pwd)
 
+# spring-ee
+- ./mvnw -f ${root}/spring-ee/pom.xml >/dev/null
+- ./gradlew comDown -Pprofile=maven ${root}/spring-ee/build.gradle
+- ( ./gradlew comUp -Pprofile=maven ${root}/spring-ee/build.gradle & ) || true
+- sleep 60
+- http :8080/app/api/health
+- http :8080/api/welcome
+- http :8080/api/
+- ./gradlew comDown -Pprofile=maven ${root}/spring-ee/build.gradle
+- stop_any 8080
+
 # spring-data-jpa-count-query-fix
 - bash gradlew -b ${root}/spring-data-jpa-count-query-fix/build.gradle >/dev/null
 - java -jar ${root}/spring-data-jpa-count-query-fix/build/libs/*.jar &

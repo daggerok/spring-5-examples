@@ -25,5 +25,8 @@ dockerCompose {
   projectName = project.name
 }
 
-composeUp.dependsOn assemble
+if ('maven' != profile) {
+  composeUp.dependsOn assemble
+}
+
 composeUp.shouldRunAfter clean, assemble
