@@ -1,0 +1,3 @@
+rootProject.name = 'spring-ee'
+enableFeaturePreview 'STABLE_PUBLISHING'
+include 'docs'

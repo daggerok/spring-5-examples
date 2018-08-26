@@ -1,0 +1,52 @@
+image: openjdk:8u171-jdk-stretch
+#services:
+#- docker:dind
+
+variables:
+  TERM: dumb
+  DOCKER_DRIVER: overlay2
+
+cache:
+  key: ${CI_BUILD_REF_NAME}
+  untracked: true
+  paths:
+  - ${HOME}/.m2
+  - ${HOME}/.gradle
+
+ci-job:
+  before_script:
+  - pwd
+  - whoami
+  - ls -lah .
+  - uname -a
+  - which bash
+  - which apt-get
+  - which apt || true
+  - apt-get update -y >/dev/null || true
+  - apt-get install -y --no-install-recommends curl jq bash sudo lsof >/dev/null
+  - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
+  - stop_any 80 8080
+
+  script:
+  - echo "uncomment what's needed."
+  - #./gradlew -S >/dev/null
+  - #bash build/libs/*.jar &
+  - #wait_for 8080
+  - #curl -s 127.0.0.1:8080
+  - #curl -s 127.0.0.1:8080/api/ | jq .
+  - #stop_any 80 8080
+  #
+  - #./mvnw >/dev/null
+  - #bash target/*.jar &
+  - #wait_for 8080
+  - #curl http://127.0.0.1:8080
+  - #curl -sH'content-type:application/json' http://127.0.0.1:8080/api/ | jq .
+  - #stop_any 80 8080
+
+pages:
+  script:
+  - ./gradlew documentation >/dev/null
+
+  artifacts:
+    paths:
+    - public

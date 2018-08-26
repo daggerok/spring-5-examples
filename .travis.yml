@@ -39,14 +39,25 @@ script:
 - http :8080/api/
 - http :8080/
 - stop_any 8080
-#
-- bash mvnw -f ${root}/spring-data-jpa-count-query-fix/pom.xml >/dev/null
-- java -jar ${root}/spring-data-jpa-count-query-fix/target/*.jar &
+
+# servlet-and-jsp-registration
+- ./gradlew -b ${root}/servlet-and-jsp-registration/build.gradle build >/dev/null
+- java -jar ${root}/servlet-and-jsp-registration/build/libs/*.war &
 - wait_for 8080
-  - http :8080/api/orders/
-  - http :8080/api/
-  - http :8080/
-- stop_any 8080
+- http :8080/jsp
+- http :8080/hello
+- http :8080/hola
+- http :8080/превед\!
+- stop_any 8080 80
+#
+- ./mvnw -f ${root}/servlet-and-jsp-registration/pom.xml package >/dev/null
+- java -jar ${root}/servlet-and-jsp-registration/target/*.war &
+- wait_for 8080
+- http :8080/jsp
+- http :8080/hello
+- http :8080/hola
+- http :8080/превед\!
+- stop_any 8080 80
 
 # mapdb
 - bash gradlew -b ${root}/mapdb/build.gradle >/dev/null

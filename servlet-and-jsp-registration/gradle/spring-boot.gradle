@@ -1,0 +1,42 @@
+apply plugin: 'cn.bestwu.propdeps'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+defaultTasks 'clean', 'build'
+
+compileJava.dependsOn(processResources)
+
+// jsp only:
+apply plugin: 'war'
+
+dependencies {
+  // jsp only:
+  implementation 'javax.servlet:jstl'
+  runtime 'org.apache.tomcat.embed:tomcat-embed-jasper'
+  runtime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+  // servlet only:
+  implementation 'javax.servlet:javax.servlet-api'
+
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+  runtime 'org.springframework.boot:spring-boot-devtools'
+  annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+  testAnnotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
+  }
+}
+
+bootJar {
+  launchScript()
+}
+
+

@@ -1,0 +1,9 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  # JS'Ps only
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp

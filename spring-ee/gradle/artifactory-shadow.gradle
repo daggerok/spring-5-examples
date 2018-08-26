@@ -1,0 +1,97 @@
+apply plugin: 'java'
+
+project.javadoc.failOnError = false
+
+task sourcesJar(type: Jar) {
+  from sourceSets.main.allJava
+  classifier 'sources'
+}
+
+task javadocJar(type: Jar) {
+  from javadoc
+  classifier 'javadoc'
+}
+
+artifacts {
+
+}
+
+apply plugin: 'maven-publish'
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) { publication ->
+      afterEvaluate {
+        project.shadow.component(publication)
+        artifact sourcesJar
+        artifact javadocJar
+        //artifactId = jar.baseName
+
+        pom {
+          name = project.name
+          description = project.description
+          url = "https://github.com/daggerok/$project.name" as String
+          licenses {
+            license {
+              name = 'MIT License'
+              url = "https://github.com/daggerok/${project.name}/blob/master/LICENSE" as String
+            }
+          }
+          developers {
+            developer {
+              id = 'daggerok'
+              name = 'Maksim Kostromin'
+              email = 'daggerok@gmail.com'
+            }
+          }
+          scm {
+            connection = "scm:git:git://github.com/daggeropk/${project.name}.git" as String
+            developerConnection = "scm:git:ssh://github.com/daggeropk/${project.name}.git" as String
+            url = "http://github.com/daggeropk/$project.name" as String
+          }
+        }
+      }
+    }
+  }
+}
+
+apply plugin: 'com.jfrog.artifactory'
+
+artifactory {
+  contextUrl = "${artifactory_contextUrl}"   //The base Artifactory URL if not overridden by the publisher/resolver
+  publish {
+    repository {
+      repoKey = 'gradle-releases'
+      username = "${artifactory_user}"
+      password = "${artifactory_password}"
+      maven = true
+    }
+    defaults {
+      publishBuildInfo = false
+      publishIvy = false
+      publishPom = true
+      publishConfigs('archives')
+      //doesn't work?
+      //publishArtifacts = true
+      publications('mavenJava')
+      publishArtifacts = true
+      properties = [
+          'ololo': 'trololo',
+          'Deployed By': System.properties['user.name'],
+      ]
+    }
+  }
+  resolve {
+    repository {
+      repoKey = 'gradle-release'
+      username = "${artifactory_user}"
+      password = "${artifactory_password}"
+      maven = true
+    }
+  }
+
+  clientConfig.includeEnvVars = true
+  clientConfig.envVarsExcludePatterns = '*pwd*,*password*,*PWD*,*PASSWORD*,*Password,*secret*,*SECRET*,*key*,*KEY*,sonar.login'
+  clientConfig.info.buildName = project.name
+  clientConfig.info.buildNumber = version
+}

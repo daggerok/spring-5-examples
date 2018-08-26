@@ -1,0 +1,53 @@
+ifdef::backend-html5[]
+= {root-project-name} ({project-version}) image:https://travis-ci.org/daggerok/{root-project-name}.svg?branch=master["Build Status", link={github-url}]
+endif::backend-html5[]
+ifndef::backend-html5[]
+= {root-project-name} ({project-version})
+endif::backend-html5[]
+////
+image:https://travis-ci.org/daggerok/root-project-name.svg?branch=master["Build Status", link=github-url]
+image:https://gitlab.com/daggerok/root-project-name/badges/master/build.svg["Build Status", link=gitlab-url]
+image:https://img.shields.io/bitbucket/pipelines/daggerok/root-project-name.svg["Build Status", link=bitbucket-url]
+////
+Maksim Kostromin <daggerok@gmail.com>
+{docdatetime}
+:docinfo:
+:doctype: book
+:toc: left
+:toclevels: 4
+:numbered:
+:icons: font
+:hide-uri-scheme:
+:revnumber: {project-version}
+:example-caption!:
+:source-highlighter: highlightjs
+
+////
+Travis CI status:
+image:https://travis-ci.org/daggerok/{root-project-name}.svg?branch=master["Build Status", link={github-url}]
+
+GitLab CI status:
+image:https://gitlab.com/daggerok/{root-project-name}/badges/master/build.svg["Build Status", link={gitlab-url}]
+
+BitBucket CI status:
+image:https://img.shields.io/bitbucket/pipelines/daggerok/{root-project-name}.svg["Build Status", link={bitbucket-url}]
+////
+
+== Introduction
+
+include::../README.adoc[tags=content]
+
+== Implementation
+
+TODO: implement documentation...
+
+== Links
+
+ifdef::backend-html5[- link:./index.pdf[Documentation in PFD format]]
+- link:{github-url}[GitHub repo]
+- link:https://daggerok.github.io/{root-project-name}[GitHub pages]
+////
+- link:{gitlab-url}[GitLab repo]
+- link:https://daggerok.gitlab.io/{root-project-name}[GitLab pages]
+- link:{bitbucket-url}[BitBucket repo]
+////

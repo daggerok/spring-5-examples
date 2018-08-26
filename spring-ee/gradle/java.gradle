@@ -1,0 +1,42 @@
+allprojects {
+  apply plugin: 'java'
+
+  apply plugin: 'io.franzbecker.gradle-lombok'
+  lombok.version = project.lombokVersion
+
+  version = '0.0.1'
+  group = 'com.github.daggerok'
+  sourceCompatibility = targetCompatibility = "$javaVersion"
+
+  /*
+  apply plugin: 'ear'
+
+  ear {
+    archiveName = "${project.name}.ear"
+  }
+  */
+
+  apply plugin: 'war'
+
+  war {
+    archiveName = "${project.name}.war"
+  }
+
+  defaultTasks 'clean', 'build'
+
+  compileJava.dependsOn(processResources)
+
+  dependencies {
+    providedCompile "javax:javaee-api:$javaeeVersion"
+    implementation 'javax.json:javax.json-api:1.0'
+    implementation 'org.glassfish:javax.json:1.0.4'
+
+    // In java we trust...
+    implementation "io.vavr:vavr:$vavrVersion"
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
+    implementation "org.slf4j:slf4j-jdk14:$slf4jVersion"
+
+    //providedCompile 'com.h2database:h2:1.4.196'
+    //implementation "org.hibernate:hibernate-core:$hibernateCoreVersion"
+  }
+}

@@ -1,0 +1,25 @@
+allprojects {
+  apply plugin: 'io.qameta.allure'
+
+  dependencies {
+    testCompile "io.qameta.allure:allure-selenide:$allureVersion"
+  }
+
+  allure {
+
+    useJUnit4 {
+      version = project.allureVersion
+    }
+
+    useJUnit5 {
+      version = project.allureVersion
+    }
+
+    version = project.allureVersion
+    autoconfigure = true
+    allureJavaVersion = project.allureVersion
+    //reportDir = file("$rootDir/build/allure-report")
+    //resultsDir = file("$rootDir/build/allure-results")
+    downloadLink = "https://dl.bintray.com/qameta/generic/io/qameta/allure/allure/$allureVersion/allure-${allureVersion}.zip"
+  }
+}

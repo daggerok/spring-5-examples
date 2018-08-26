@@ -1,0 +1,6 @@
+repositories {
+  //mavenLocal() // for some reasons code source not attaching with this mavenLocal repository enabled in idea...
+  mavenCentral()
+  jcenter()
+  //maven { url 'https://repo.spring.io/libs-milestone' }
+}
