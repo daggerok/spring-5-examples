@@ -33,13 +33,13 @@ script:
 
 # spring-ee
 - ./mvnw -f ${root}/spring-ee/pom.xml >/dev/null
-- ./gradlew comDown -Pprofile=maven ${root}/spring-ee/build.gradle
-- ( ./gradlew comUp -Pprofile=maven ${root}/spring-ee/build.gradle & ) || true
+- ./gradlew composeDown -Pprofile=maven -b ${root}/spring-ee/build.gradle
+- ( ./gradlew composeUp -Pprofile=maven -b ${root}/spring-ee/build.gradle & ) || true
 - sleep 60
 - http :8080/app/api/health
-- http :8080/api/welcome
-- http :8080/api/
-- ./gradlew comDown -Pprofile=maven ${root}/spring-ee/build.gradle
+- http :8080/app/welcome
+- http :8080/app/
+- ./gradlew comDown -Pprofile=maven -b ${root}/spring-ee/build.gradle
 - stop_any 8080
 
 # spring-data-jpa-count-query-fix

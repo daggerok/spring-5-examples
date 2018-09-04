@@ -113,18 +113,6 @@
       <artifactId>javax.servlet-api</artifactId>
       <version>4.0.0</version>
     </dependency>
-    <!-- in java we trust -->
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <optional>true</optional>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.vavr</groupId>
-      <artifactId>vavr</artifactId>
-      <version>${vavr.version}</version>
-    </dependency>
     <!-- java-ee -->
     <dependency>
       <groupId>javax</groupId>
