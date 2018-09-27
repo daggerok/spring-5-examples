@@ -1,0 +1,16 @@
+dependencies {
+  testCompile "com.tngtech.jgiven:jgiven-junit:$jgivenVersion"
+  testCompile "com.tngtech.jgiven:jgiven-junit5:$jgivenVersion"
+  testRuntime "com.tngtech.jgiven:jgiven-html5-report:$jgivenVersion"
+  //testRuntime "org.slf4j:slf4j-api:$slf4jVersion"
+  testCompile "ch.qos.logback:logback-classic:$logbackVersion"
+}
+
+task jgivenTestReport(type: JavaExec, dependsOn: 'test') {
+  main = 'com.tngtech.jgiven.report.ReportGenerator'
+  args '--targetDir=./build/jgiven-report', '--format=html'
+  classpath = configurations.testCompile
+  shouldRunAfter clean, assemble
+}
+
+test.finalizedBy jgivenTestReport

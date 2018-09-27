@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="
+         http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.github.daggerok</groupId>
+  <artifactId>voting-service</artifactId>
+  <version>0.0.1</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <axon.version>3.2.1</axon.version>
+
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+    <material.design.icons.version>3.0.1</material.design.icons.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+    <hibernate.core.version>4.2.18.Final</hibernate.core.version>
+    <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
+    <materializecss.version>1.0.0-rc.2</materializecss.version>
+    <spring-boot.version>2.0.5.RELEASE</spring-boot.version>
+    <junit.platform.version>1.3.0</junit.platform.version>
+    <jakson-kotlin.version>2.9.7</jakson-kotlin.version>
+    <junit.jupiter.version>5.3.1</junit.jupiter.version>
+    <assertj.version>3.11.0</assertj.version>
+    <assertk.version>0.12</assertk.version>
+    <lombok.version>1.18.2</lombok.version>
+    <kotlin.version>1.2.71</kotlin.version>
+    <jgiven.version>0.15.3</jgiven.version>
+    <junit4.version>4.12</junit4.version>
+    <vavr.version>0.9.2</vavr.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <repositories>
+    <repository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/libs-milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.axonframework</groupId>
+      <artifactId>axon-spring-boot-starter</artifactId>
+      <version>${axon.version}</version>
+    </dependency>
+
+    <!--
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>material-design-icons</artifactId>
+      <version>${material.design.icons.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>materializecss</artifactId>
+      <version>${materializecss.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    -->
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webflux</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <!-- JPA (+embedded)
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-rest</artifactId>
+    </dependency>
+    -->
+    <!-- Hibernate UUID
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.core.version}</version>
+    </dependency>
+    -->
+
+    <!-- Kafka (+embedded)
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-stream</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-stream-binder-kafka</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka-test</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-stream-test-support</artifactId>
+      <scope>test</scope>
+    </dependency>
+    -->
+
+    <!-- In java we trust -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vavr</groupId>
+      <artifactId>vavr</artifactId>
+      <version>${vavr.version}</version>
+    </dependency>
+
+    <!-- Kotlin -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-kotlin</artifactId>
+      <version>${jakson-kotlin.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib-jdk8</artifactId>
+      <version>${kotlin.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-reflect</artifactId>
+      <version>${kotlin.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-test-junit</artifactId>
+      <version>${kotlin.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- assertj -->
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.willowtreeapps.assertk</groupId>
+      <artifactId>assertk-jvm</artifactId>
+      <version>${assertk.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- junit 4 -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit4.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- junit 5 -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <version>${junit.platform.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-runner</artifactId>
+      <version>${junit.platform.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>${junit.jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- jgiven -->
+    <dependency>
+      <groupId>com.tngtech.jgiven</groupId>
+      <artifactId>jgiven-html5-report</artifactId>
+      <version>${jgiven.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.tngtech.jgiven</groupId>
+      <artifactId>jgiven-junit</artifactId>
+      <version>${jgiven.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.tngtech.jgiven</groupId>
+      <artifactId>jgiven-junit5</artifactId>
+      <version>${jgiven.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <defaultGoal>clean package</defaultGoal>
+
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
+
+        <configuration>
+          <executable>true</executable>
+        </configuration>
+
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <version>${kotlin.version}</version>
+
+        <configuration>
+          <jvmTarget>${maven.compiler.target}</jvmTarget>
+          <compilerPlugins>
+            <plugin>spring</plugin>
+            <plugin>no-arg</plugin>
+            <plugin>all-open</plugin>
+            <!--<plugin>jpa</plugin>-->
+            <!--<plugin>sam-with-receiver</plugin>-->
+          </compilerPlugins>
+        </configuration>
+
+        <executions>
+          <execution>
+            <id>compile</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <sourceDirs>
+                <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                <sourceDir>${project.basedir}/src/main/java</sourceDir>
+              </sourceDirs>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>test-compile</id>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+            <configuration>
+              <sourceDirs>
+                <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+                <sourceDir>${project.basedir}/src/test/java</sourceDir>
+              </sourceDirs>
+            </configuration>
+          </execution>
+        </executions>
+
+        <dependencies>
+          <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-allopen</artifactId>
+            <version>${kotlin.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-noarg</artifactId>
+            <version>${kotlin.version}</version>
+          </dependency>
+          <!--
+          <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-sam-with-receiver</artifactId>
+            <version>${kotlin.version}</version>
+          </dependency>
+          -->
+        </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+        </configuration>
+
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>java-compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>java-test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- junit -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.0</version>
+
+        <dependencies>
+          <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+          </dependency>
+        </dependencies>
+
+        <configuration>
+          <properties>
+            <!--
+            <includeTags>acceptance | !feature-a</includeTags>
+            <excludeTags>integration, regression</excludeTags>
+            <configurationParameters>
+              junit.jupiter.conditions.deactivate = *
+              junit.jupiter.extensions.autodetection.enabled = true
+              junit.jupiter.testinstance.lifecycle.default = per_class
+            </configurationParameters>
+            -->
+          </properties>
+        </configuration>
+      </plugin>
+
+      <!-- jgiven: `mvn verify` -->
+      <plugin>
+        <groupId>com.tngtech.jgiven</groupId>
+        <artifactId>jgiven-maven-plugin</artifactId>
+        <version>${jgiven.version}</version>
+
+        <executions>
+          <execution>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+
+        <configuration>
+          <format>html</format>
+          <outputDirectory>${project.build.directory}/jgiven-report</outputDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- mvn verify site -->
+  <!-- generate findbugs html report `target/site/findbugs.html as part of maven-project-info-report -->
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.6</version>
+
+        <configuration>
+          <reportPlugins>
+            <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>findbugs-maven-plugin</artifactId>
+
+              <configuration>
+                <!-- specify classes for analysis -->
+                <onlyAnalyze>*daggerok*</onlyAnalyze>
+              </configuration>
+            </plugin>
+          </reportPlugins>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>3.0.5</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.9</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <!-- mvn deploy -->
+  <distributionManagement>
+    <repository>
+      <id>local-repo</id>
+      <url>file://${project.basedir}/target/local-repo</url>
+    </repository>
+  </distributionManagement>
+
+  <profiles>
+    <profile>
+      <id>docker</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.dkanejs.maven.plugins</groupId>
+            <artifactId>docker-compose-maven-plugin</artifactId>
+            <version>1.0.1</version>
+
+            <executions>
+              <execution>
+                <id>up</id>
+                <!--<phase>process-resources</phase>-->
+                <phase>verify</phase>
+                <goals>
+                  <goal>up</goal>
+                </goals>
+              </execution>
+
+              <execution>
+                <id>down</id>
+                <!--<phase>test</phase>-->
+                <phase>verify</phase>
+                <goals>
+                  <goal>down</goal>
+                </goals>
+              </execution>
+            </executions>
+
+            <configuration>
+              <composeFile>${project.basedir}/docker-compose-maven.yaml</composeFile>
+              <detachedMode>true</detachedMode>
+              <removeVolumes>true</removeVolumes>
+              <detail>true</detail>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- mvn -P docs process-resources -->
+    <profile>
+      <id>docs</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctor-maven-plugin</artifactId>
+            <version>1.5.6</version>
+
+            <dependencies>
+              <dependency>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctorj-pdf</artifactId>
+                <version>1.5.0-alpha.16</version>
+              </dependency>
+              <dependency>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctorj-diagram</artifactId>
+                <version>1.5.4</version>
+              </dependency>
+            </dependencies>
+
+            <configuration>
+              <outputDirectory>target/generated-docs</outputDirectory>
+              <sourceDirectory>docs</sourceDirectory>
+              <relativeBaseDir>true</relativeBaseDir>
+              <headerFooter>true</headerFooter>
+              <imagesDir>.</imagesDir><!-- Don't know why, but yes - use base sources dir... -->
+              <attributes>
+                <headerFooter>true</headerFooter>
+                <toc>left</toc>
+                <linkcss>false</linkcss>
+                <doctype>book</doctype>
+                <ruby>erubis</ruby>
+                <encoding>${project.build.sourceEncoding}</encoding>
+                <linkattrs>true</linkattrs>
+                <numbered>true</numbered>
+                <sectanchors>true</sectanchors>
+                <sectlink>true</sectlink>
+                <idprefix/>
+                <docinfo1/>
+                <icons>font</icons>
+                <idseparator>-</idseparator>
+                <setanchors>true</setanchors>
+                <toc-title>Table of Contents</toc-title>
+                <project-name>${project.artifactId}</project-name>
+                <root-project-name>${project.artifactId}</root-project-name>
+                <project-version>${project.version}</project-version>
+                <github-url>https://github.com/daggerok/${project.artifactId}</github-url>
+              </attributes>
+            </configuration>
+
+            <executions>
+              <execution>
+                <id>output-html</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>process-asciidoc</goal>
+                </goals>
+                <configuration>
+                  <backend>html</backend>
+                  <sourceHighlighter>highlightjs</sourceHighlighter>
+                </configuration>
+              </execution>
+
+              <execution>
+                <id>output-docbook</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>process-asciidoc</goal>
+                </goals>
+                <configuration>
+                  <backend>docbook</backend>
+                </configuration>
+              </execution>
+
+              <execution>
+                <id>output-pdf-doc</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>process-asciidoc</goal>
+                </goals>
+                <configuration>
+                  <backend>pdf</backend>
+                  <sourceHighlighter>coderay</sourceHighlighter>
+                  <requires>
+                    <require>asciidoctor-diagram</require>
+                    <require>coderay</require>
+                  </requires>
+                  <attributes>
+                    <icons>font</icons>
+                    <pagenums/>
+                  </attributes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+
+        <defaultGoal>clean process-resources</defaultGoal>
+      </build>
+    </profile>
+  </profiles>
+</project>

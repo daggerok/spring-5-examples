@@ -1,0 +1,20 @@
+buildscript {
+  ext {
+    axonVersion = '3.2.1'
+  }
+}
+
+plugins {
+  id 'org.springframework.boot' version '2.0.5.RELEASE' apply false
+}
+
+apply from: "$projectDir/gradle/repositories.gradle"
+apply from: "$projectDir/gradle/ide.gradle"
+apply from: "$projectDir/gradle/clean.gradle"
+apply from: "$projectDir/gradle/java.gradle"
+apply from: "$projectDir/gradle/kotlin.gradle"
+apply from: "$projectDir/gradle/spring-boot.gradle"
+apply from: "$projectDir/gradle/junit.gradle"
+apply from: "$projectDir/gradle/findbugs.gradle"
+apply from: "$projectDir/gradle/jacoco.gradle"
+//apply from: "$projectDir/gradle/selenide.gradle"

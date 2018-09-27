@@ -1,0 +1,44 @@
+ifdef::backend-html5[]
+= {root-project-name} ({project-version}) image:https://travis-ci.org/daggerok/{root-project-name}.svg?branch=master["Build Status", link={github-url}]
+endif::backend-html5[]
+ifndef::backend-html5[]
+= {root-project-name} ({project-version})
+endif::backend-html5[]
+
+Maksim Kostromin <daggerok@gmail.com>
+{docdatetime}
+:docinfo:
+:doctype: book
+:toc: left
+:toclevels: 4
+:numbered:
+:icons: font
+:hide-uri-scheme:
+:revnumber: {project-version}
+:example-caption!:
+:source-highlighter: highlightjs
+
+== Introduction
+
+include::../README.adoc[tags=content]
+
+== Implementation
+
+.rapid
+[source,bash]
+----
+npm i -g yo generator-jvm
+yo jvm -t kotlin-parent-multi-project -n voting-app
+
+cd voting-app/
+yo jvm -t kotlin-spring-boot -n voting-service
+yo jvm -t kotlin-spring-boot -n streaming-service
+
+idea pom.xml
+----
+
+== Links
+
+ifdef::backend-html5[- link:./index.pdf[Documentation in PFD format]]
+- link:{github-url}[GitHub repo]
+- link:https://daggerok.github.io/{root-project-name}[GitHub pages]

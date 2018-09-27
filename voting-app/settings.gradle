@@ -1,0 +1,5 @@
+rootProject.name = 'voting-app'
+enableFeaturePreview 'STABLE_PUBLISHING'
+include 'docs'
+include 'voting-service'
+include 'streaming-service'

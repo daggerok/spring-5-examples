@@ -1,0 +1,28 @@
+  version: '2.1'
+services:
+#  gradle-voting-app-app:
+#    build:
+#      context: .
+#      dockerfile: gradle/Dockerfile
+#    volumes: ['gradle-voting-app-app-data:/home/appuser']
+#    networks: [backing-services]
+#    ports: ['8080:8080']
+#    #restart: unless-stopped
+#    #mem_limit: 838860800 # 800Mb
+  rabbitmq:
+    build:
+      context: docker
+      dockerfile: Dockerfile.rabbitmq
+    volumes:
+    - 'rabbitmq-data:/var/lib/rabbitmq'
+    - 'rabbitmq-data:/etc/rabbitmq'
+    ports:
+    - '5672:5672'
+    - '15672:15672'
+    networks: [backing-services]
+volumes:
+  rabbitmq-data: {}
+#  gradle-voting-app-app-data: {}
+networks:
+  backing-services:
+    driver: bridge

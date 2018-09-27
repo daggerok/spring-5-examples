@@ -1,0 +1,59 @@
+dependencies {
+  testImplementation "com.codeborne:selenide:$selenideVersion", {
+    exclude module: 'selenium-opera-driver'
+    exclude module: 'selenium-safari-driver'
+    exclude module: 'selenium-edge-driver'
+    exclude module: 'selenium-ie-driver'
+    because "we don't wanna use any of these..."
+  }
+  testImplementation "com.codeborne:phantomjsdriver:$phantomjsDriverVersion"
+  ////these are must be included by selenide library as a transitive dependencies:
+  //testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumDriverVersion"
+  //testImplementation "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumDriverVersion"
+}
+
+static def findAllSelenideSystemProps() {
+  System.properties?.findAll { it.key.startsWith('selenide') } ?: [:]
+}
+
+test {
+  systemProperties = findAllSelenideSystemProps() + [
+      'selenide.browser': System.getProperty('selenide.browser', 'chrome')
+  ]
+}
+
+['firefox', 'chrome', 'phantomjs'].each { taskName ->
+  Task e2eTestBrowserSelectorTask = tasks.create(name: taskName) {
+    def systemProps = findAllSelenideSystemProps()
+    systemProps['selenide.browser'] = taskName
+
+    doFirst {
+      test {
+        systemProperties = systemProps
+      }
+    }
+  }
+  test.shouldRunAfter(e2eTestBrowserSelectorTask)
+}
+
+task headless {
+  def systemProps = findAllSelenideSystemProps()
+  systemProps['selenide.headless'] = true
+
+  doFirst {
+    test {
+      systemProperties = systemProps
+    }
+  }
+}
+
+task headful {
+  def systemProps = findAllSelenideSystemProps()
+  systemProps['selenide.headless'] = false
+
+  doFirst {
+    test {
+      systemProperties = systemProps
+    }
+  }
+}
