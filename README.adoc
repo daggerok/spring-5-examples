@@ -2,6 +2,7 @@
 
 This repository is contains some spring-boot 2 / spring 5 playground project examples
 
+- link:./boot-jsp/[spring-boot jsp]
 - link:./spring-ee/[Using spring framework 5 in Java EE (JBOSS EAP 7)]
 - link:./js/[Using JSP as template engine / Servlets registration in spring-boot 2 on Tomcat]
 - link:./spring-data-jpa-count-query-fix/[using #{entityName} in countQuery - spring data jpa fix]

@@ -1,0 +1,20 @@
+version: "2.1"
+
+services:
+
+  gradle-boot-jsp-app:
+    build:
+      context: .
+      dockerfile: gradle/Dockerfile
+    volumes: ["gradle-boot-jsp-app-data:/home/appuser"]
+    ports: ["8080:8080"]
+    networks: [backing-services]
+    #restart: unless-stopped
+    #mem_limit: 786432000 # container limit: 700Mb (700 * 1024 * 1024)
+
+volumes:
+  gradle-boot-jsp-app-data: {}
+
+networks:
+  backing-services:
+    driver: bridge

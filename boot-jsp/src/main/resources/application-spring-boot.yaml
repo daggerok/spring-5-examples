@@ -1,0 +1,10 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  mvc:
+    favicon:
+      enabled: false
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp

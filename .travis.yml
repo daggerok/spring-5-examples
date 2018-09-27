@@ -31,6 +31,19 @@ before_install:
 script:
 - export root=$(pwd)
 
+# boot-jsp
+- ./gradlew -b ${root}/boot-jsp/build.gradle build >/dev/null
+- java -jar ${root}/boot-jsp/build/libs/*.war &
+- wait_for 8080
+- http :8080
+- stop_any 8080 80
+#
+- ./mvnw -f ${root}/boot-jsp/pom.xml package >/dev/null
+- java -jar ${root}/boot-jsp/target/*.war &
+- wait_for 8080
+- http :8080/
+- stop_any 8080 80
+
 # spring-ee
 - ./mvnw -f ${root}/spring-ee/pom.xml >/dev/null
 - ./gradlew composeDown -Pprofile=maven -b ${root}/spring-ee/build.gradle

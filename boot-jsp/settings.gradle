@@ -1,0 +1,3 @@
+rootProject.name = 'boot-jsp'
+enableFeaturePreview 'STABLE_PUBLISHING'
+include 'docs'
