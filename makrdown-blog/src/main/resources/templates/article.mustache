@@ -1,0 +1,14 @@
+{{> parts/header}}
+
+{{#article}}
+<article>
+  <header>
+    <h2>{{articleTitle}}</h2>
+    <aside>Created at {{articleCreatedAt}} by <strong>{{authorUsername}}</strong></aside>
+  </header>
+  <main>{{{articleContent}}}</main>
+  <footer>Updated at <strong>{{articleUpdatedAt}}</strong></footer>
+</article>
+{{/article}}
+
+{{> parts/footer}}

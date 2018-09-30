@@ -30,18 +30,49 @@ before_install:
 script:
 - export root=$(pwd)
 
-# voting-app
-- ./gradlew -b ${root}/voting-app/build.gradle build >/dev/null
-- java -jar ${root}/voting-app/voting-service/build/libs/*.jar &
+# makrdown-blog
+- ./gradlew -b ${root}/makrdown-blog/build.gradle build >/dev/null
+- java -jar ${root}/makrdown-blog/build/libs/*.jar &
 - wait_for 8080
 - http :8080
+- http :8080/api
+- http :8080/api/2
+- http :8080/api/3
+- http post :8080/api/1
+- http post :8080/api/1
+- http post :8080/api/1
+- http :8080/api
+- http :8080/article/1
+- http :8080/article/2
 - stop_any 8080 80
 #
-- ./mvnw -f ${root}/voting-app/pom.xml package >/dev/null
-- java -jar ${root}/voting-app/voting-service/target/*.jar &
+- ./mvnw -f ${root}/makrdown-blog/pom.xml package >/dev/null
+- java -jar ${root}/makrdown-blog/target/*.jar &
 - wait_for 8080
-- http :8080/
+- http :8080
+- http :8080/api
+- http :8080/api/2
+- http :8080/api/3
+- http post :8080/api/1
+- http post :8080/api/1
+- http post :8080/api/1
+- http :8080/api
+- http :8080/article/1
+- http :8080/article/2
 - stop_any 8080 80
+
+## voting-app
+#- ./gradlew -b ${root}/voting-app/build.gradle build >/dev/null
+#- java -jar ${root}/voting-app/voting-service/build/libs/*.jar &
+#- wait_for 8080
+#- http :8080
+#- stop_any 8080 80
+##
+#- ./mvnw -f ${root}/voting-app/pom.xml package >/dev/null
+#- java -jar ${root}/voting-app/voting-service/target/*.jar &
+#- wait_for 8080
+#- http :8080/
+#- stop_any 8080 80
 
 ## boot-jsp
 #- ./gradlew -b ${root}/boot-jsp/build.gradle build >/dev/null
@@ -114,12 +145,12 @@ script:
 - http :8080
 - stop_any 8080 8000 80
 
-# some-spring-boot-2-frontend
-- bash gradlew -b ${root}/some-spring-boot-2-frontend/build.gradle >/dev/null
-- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash ${root}/some-spring-boot-2-frontend/build/libs/*.jar &
-- wait_for 8080
-- http :8080
-- stop_any 8080 8000 80
+## some-spring-boot-2-frontend
+#- bash gradlew -b ${root}/some-spring-boot-2-frontend/build.gradle >/dev/null
+#- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash ${root}/some-spring-boot-2-frontend/build/libs/*.jar &
+#- wait_for 8080
+#- http :8080
+#- stop_any 8080 8000 80
 
 # github-api-v3-gateway
 - cp -Rf ${root}/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github-default.properties ${root}/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github.properties

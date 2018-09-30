@@ -1,0 +1,13 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  mvc:
+    favicon:
+      enabled: false
+    view:
+      suffix: .mustache
+logging:
+  level:
+    org.springframework.data: INFO
+    org.springframework.jdbc.core.JdbcTemplate: DEBUG

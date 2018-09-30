@@ -1,0 +1,15 @@
+// read more: https://docs.gradle.com/build-scan-plugin/
+
+buildScan {
+  termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+  termsOfServiceAgree = 'yes'
+  //// Always publish a build scan
+  //publishAlways()
+  // Publish a build scan only when the build fails:
+  publishOnFailure()
+  //// Publish a build scan if the given condition is true, regardless of whether the build succeeds or fails:
+  //publishAlwaysIf('TRAVIS' == System.getenv('CI'))
+  //// Publish a build scan only if the condition is true and the build fails:
+  //publishOnFailureIf('TRAVIS' == System.getenv('CI'))
+  tag System.getProperty('os.name', 'unknown')
+}
