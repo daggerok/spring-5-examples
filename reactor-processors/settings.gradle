@@ -1,2 +1,3 @@
-rootProject.name = "reactor-processors"
-include "flux-sink"
+enableFeaturePreview 'STABLE_PUBLISHING'
+rootProject.name = 'reactor-processors'
+include 'flux-sink'

@@ -42,6 +42,6 @@ clean {
 }
 
 wrapper {
-  gradleVersion = "4.2.1"
-  distributionType = "ALL"
+  gradleVersion = "4.10.2"
+  distributionType = 'BIN'
 }

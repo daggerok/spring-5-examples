@@ -7,7 +7,7 @@ defaultTasks 'clean', 'build'
 compileJava.dependsOn(processResources)
 
 dependencies {
-  implementation "org.axonframework:axon-spring-boot-starte:$axonVersion"
+  implementation "org.axonframework:axon-spring-boot-starter:$axonVersion"
 
   //implementation "org.webjars:materializecss:$materializecssVersion"
   //implementation "org.webjars:material-design-icons:$materialDesignIconsVersion"

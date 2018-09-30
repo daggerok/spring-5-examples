@@ -33,6 +33,6 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-  distributionType = "ALL"
-  gradleVersion = "4.5"
+  distributionType = 'BIN'
+  gradleVersion = "4.10.2"
 }

@@ -1,2 +1,3 @@
-rootProject.name = "kotlin-beans-dsl"
-include "kotlin-config-dsl"
+enableFeaturePreview 'STABLE_PUBLISHING'
+rootProject.name = 'kotlin-beans-dsl'
+include 'kotlin-config-dsl'

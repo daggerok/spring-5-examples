@@ -1,3 +1,4 @@
-rootProject.name = "reactive-websocket-api"
-includeBuild "ui"
-includeBuild "back"
+rootProject.name = 'reactive-websocket-api'
+enableFeaturePreview 'STABLE_PUBLISHING'
+includeBuild 'ui'
+includeBuild 'back'

@@ -1,3 +1,4 @@
 include 'docker'
 include 'reactive-backend'
 include 'reactive-client'
+enableFeaturePreview 'STABLE_PUBLISHING'

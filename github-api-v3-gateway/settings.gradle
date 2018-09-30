@@ -1,2 +1,3 @@
-rootProject.name = "github-api-v3-gateway"
-include "webflux-gateway"
+rootProject.name = 'github-api-v3-gateway'
+enableFeaturePreview 'STABLE_PUBLISHING'
+include 'webflux-gateway'

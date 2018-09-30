@@ -1,2 +1,3 @@
-rootProject.name = "xml-wtf"
-include "kotlin-xml"
+enableFeaturePreview 'STABLE_PUBLISHING'
+rootProject.name = 'xml-wtf'
+include 'kotlin-xml'

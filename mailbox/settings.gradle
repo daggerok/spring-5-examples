@@ -1,4 +1,5 @@
-rootProject.name = "mailbox"
-include "users-map"
-include "users-mongo"
-include "webapp"
+enableFeaturePreview 'STABLE_PUBLISHING'
+rootProject.name = 'mailbox'
+include 'users-map'
+include 'users-mongo'
+include 'webapp'

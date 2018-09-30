@@ -1,2 +1,3 @@
-rootProject.name = "monolith"
-include "app"
+enableFeaturePreview 'STABLE_PUBLISHING'
+rootProject.name = 'monolith'
+include 'app'

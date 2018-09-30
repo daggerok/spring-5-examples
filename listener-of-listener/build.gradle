@@ -47,6 +47,6 @@ dockerCompose {
 composeUp.dependsOn assemble
 
 task wrapper(type: Wrapper) {
-  gradleVersion = "4.5"
-  distributionType = "ALL"
+  gradleVersion = "4.10.2"
+  distributionType = 'BIN'
 }

@@ -1,2 +1,3 @@
-include "reservations"
-include "webapp"
+enableFeaturePreview 'STABLE_PUBLISHING'
+include 'reservations'
+include 'webapp'

@@ -1,4 +1,5 @@
-rootProject.name = "rmi"
-include "spring-rmi-api"
-include "spring-rmi-service"
-include "spring-rmi-client"
+enableFeaturePreview 'STABLE_PUBLISHING'
+rootProject.name = 'rmi'
+include 'spring-rmi-api'
+include 'spring-rmi-service'
+include 'spring-rmi-client'

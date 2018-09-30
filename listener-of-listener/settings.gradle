@@ -1,2 +1,3 @@
-rootProject.name = "listener-of-listener"
-include ":kotlin-listeners"
+rootProject.name = 'listener-of-listener'
+enableFeaturePreview 'STABLE_PUBLISHING'
+include ':kotlin-listeners'

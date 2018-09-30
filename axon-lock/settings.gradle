@@ -1,2 +1,3 @@
-rootProject.name = "axon-lock"
-include "axon-app"
+enableFeaturePreview 'STABLE_PUBLISHING'
+rootProject.name = 'axon-lock'
+include 'axon-app'
