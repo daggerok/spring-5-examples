@@ -51,5 +51,7 @@ This repository is contains some spring-boot 2 / spring 5 playground project exa
 
 resources:
 
+- link:https://www.youtube.com/watch?v=btNIey_2Zdw[YouTube: Bootiful Kotlin by Sébastien Deleuze and Josh Long @ Spring I/O 2018]
+- link:https://www.youtube.com/watch?v=8yHc0beE164[YouTube: Why Spring Loves Kotlin - Sébastien Deleuze]
 - link:https://www.brighttalk.com/webcast/14893/263393[Spring 5 reactive web deep dive]
 - link:https://www.youtube.com/watch?v=TZUZgU6rsNY[TODO: watch Reactive Spring by Juergen Hoeller and Josh Long]
