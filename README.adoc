@@ -2,6 +2,7 @@
 
 This repository is contains some spring-boot 2 / spring 5 playground project examples
 
+- link:https://github.com/daggerok/r2dbc-example[GitHub daggerok/r2dbc-example - R2DBC: Reactive JDBC]
 - link:./makrdown-blog/[Spring Data JDBC, Kotlin | Markdown Blog]
 - link:./boot-jsp/[spring-boot jsp]
 - link:./spring-ee/[Using spring framework 5 in Java EE (JBOSS EAP 7)]
