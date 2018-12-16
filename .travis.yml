@@ -167,9 +167,9 @@ script:
 - stop_any 8080 8000 80
 #
 - bash mvnw -f ${root}/github-api-v3-gateway/pom.xml >/dev/null
-- bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway clean package com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up
+- bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway clean package docker-compose:up
 - sleep 5
-- bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
+- bash mvnw -f ${root}/github-api-v3-gateway/pom.xml -pl webflux-gateway docker-compose:down
 #
 - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash ${root}/github-api-v3-gateway/webflux-gateway/target/*.jar &
 - wait_for 8080
