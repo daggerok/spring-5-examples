@@ -38,7 +38,7 @@ apply plugin: "io.spring.dependency-management"
 
 dependencies {
   compile("org.springframework.boot:spring-boot-starter")
-  compile("com.fasterxml.jackson.core:jackson-databind:2.9.7")
+  compile("com.fasterxml.jackson.core:jackson-databind:2.9.8")
   compile("org.projectlombok:lombok:1.16.18")
   compile("io.vavr:vavr:0.9.1")
   testCompile("org.springframework.boot:spring-boot-starter-test")

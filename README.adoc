@@ -2,6 +2,7 @@
 
 This repository is contains some spring-boot 2 / spring 5 playground project examples
 
+- link:./awesome-kotlin/[Spring Boot + Kotlin is Awesome!]
 - link:https://github.com/daggerok/r2dbc-example[GitHub daggerok/r2dbc-example - R2DBC: Reactive JDBC]
 - link:./makrdown-blog/[Spring Data JDBC, Kotlin | Markdown Blog]
 - link:./boot-jsp/[spring-boot jsp]
