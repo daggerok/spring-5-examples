@@ -19,16 +19,45 @@ val spa: (ServerRequest) -> Mono<RenderingResponse> = {
       .build()
 }
 
-val defaultFallback = ok().body(mapOf("hello" to "world").toMono())
+val helloApi = ok().body(mapOf("hello" to "world").toMono())
+
+val defaultFallback: (ServerRequest) -> Mono<ServerResponse> = {
+  val url = it.uri().toURL()
+  val baseURL = "${url.protocol}://${url.authority}"
+  ok().body(mapOf(
+      "_links" to listOf(
+          mapOf(
+              "rel" to "hello.v1",
+              "href" to "$baseURL/api/v1/hello",
+              "templated" to false
+          ),
+          mapOf(
+              "rel" to "hello.v2",
+              "href" to "$baseURL/api/v2/hello",
+              "templated" to false
+          ),
+          mapOf(
+              "rel" to "index",
+              "href" to "$baseURL/",
+              "templated" to false
+          ),
+          mapOf(
+              "rel" to "_self",
+              "href" to url.toString(),
+              "templated" to false
+          )
+      )
+  ).toMono())
+}
 
 val v1: RouterFunctionDsl.() -> Unit = {
-  GET("/hello") { defaultFallback }
-  GET("/**") { defaultFallback }
+  GET("/hello") { helloApi }
+  GET("/**", defaultFallback)
 }
 
 val v2: RouterFunctionDsl.() -> Unit = {
-  GET("/2hello") { defaultFallback }
-  GET("/2**") { defaultFallback }
+  GET("/2hello") { helloApi }
+  GET("/2**", defaultFallback)
 }
 
 @Configuration
@@ -44,7 +73,7 @@ class RouterFunctionConfig {
       "/v1".nest(v1)
       "/v2".nest(v2)
     }
-    GET("/**") { defaultFallback }
+    GET("/**", defaultFallback)
   }
 }
 
