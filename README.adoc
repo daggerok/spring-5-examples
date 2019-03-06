@@ -2,6 +2,7 @@
 
 This repository is contains some spring-boot 2 / spring 5 playground project examples
 
+- link:https://github.com/daggerok/webflux-cqrs-es[Eventsourcing using JPA (in progress..)]
 - link:https://github.com/daggerok/spring-boot-wiremock-example[Awesome integration testing using Spring Cloud Contract (WireMock)]
 - link:https://github.com/daggerok/spring-fu-jafu-example[Spring Fu JaFu (java) example]
 - link:./awesome-kotlin/[Spring Boot + Kotlin is Awesome!]
