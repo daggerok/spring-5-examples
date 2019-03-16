@@ -2,6 +2,7 @@
 
 This repository is contains some spring-boot 2 / spring 5 playground project examples
 
+- link:https://github.com/daggerok/spring-data-java8[Spring Data (JPA) repository return types: CompletableFuture, Stream / Streamble]
 - link:https://github.com/daggerok/functional-spring-boot-transaction[Functional Spring Boot Transaction execution]
 - link:https://github.com/daggerok/webflux-cqrs-es[Eventsourcing using JPA (in progress..)]
 - link:https://github.com/daggerok/jpa-uuid[JPA UUID]
