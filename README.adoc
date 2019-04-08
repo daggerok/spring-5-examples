@@ -1,7 +1,8 @@
 = spring-5-examples image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
 
-This repository is contains some spring-boot 2 / spring 5 playground project examples
+Some spring-boot 2 / spring 5 playground project examples
 
+- link:https://github.com/daggerok/spring-boot-reactive-scala-example[Reactive Scala with Spring Boot and Gradle Kotlin DSL]
 - link:https://github.com/daggerok/hazelcast-examples[Hazelcast examples]
 - link:https://github.com/daggerok/spring-boot-functional-servlet-example[Functional Servlet based Spring MVC resources]
 - link:https://github.com/daggerok/spring-data-jdbc-example[Lightway Spring Data JDBC]
