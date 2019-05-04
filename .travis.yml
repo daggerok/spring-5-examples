@@ -6,7 +6,7 @@ env:
   - secure: "PLL6z6iFOkP1zcJt2R7Yq8ut1313FX70opXUrC7/O0HUEgQdU1q77McSjxxyY4AtzvT+XPgbGNAx5JXuVpHyQ4rnM1Q/3HBz7E2ZHr+71ehLap95x9XKkwShw/Can9IYu66FUGm7sOdN2b01JOpH4IKR50tGeUY9dWzdld10f/Se5KaRjCtzCKsMyMPm02dhUvxvzLn0VWNQDuZC2hAsLsBGOBKc9cGcI03b0u98We8lqyaJ6FT6j0Fjd4t3CycOVR+0XrVbEJ3tFaILmSZoer+N76vqnY42sTyHfbNUPyJboZshy8A19AAngebw4yJWKaHQ+B3eowLcpDRoR32SYnFHgDMtDLLsKMVZeGBvUazORgQpl5YKQeInOKbSku796ZiWz7ciGsCm52ve9dymlX+PUzkfA9J9ylK4XRl9/yLNFfqtjmWLRkP0+V3qRtwCnLU3yd5ZQ7D8t1dhSNJHddvC75oH6Cn/KFOk+4h6jjo+hXOj64ZcjJF8bvYLbdhlFNbNdmq8I9MT0qge95UcufJ9pJk42PL1ojAmxw2REACdW3MMPfcSWukQAuzOgPeZYAjQ9zUIFBqkrrbH2j4Eo+wEq+wwxsgcmBSAkgjdLR9Ni1x/RcqrO1kZ3fXbIr/1P8XXF9d1l0oMDgNjgt64MVT0wwNyxOEPBwGXUO3TkFw="
   - TERM=dumb
 language: java
-jdk: oraclejdk8
+jdk: openjdk8
 node_js: lts/*
 python: "2.7"
 addons:
@@ -427,6 +427,8 @@ script:
   done;
 
 cache:
+  packages: true
+  pip: true
   directories:
   - $HOME/.m2
   - $HOME/.gradle
