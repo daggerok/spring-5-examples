@@ -2,6 +2,7 @@
 
 Some spring-boot 2 / spring 5 playground project examples
 
+- link:./fn/[Simple Fn example]
 - link:https://github.com/daggerok/spring-boot-reactive-scala-example[Reactive Scala with Spring Boot and Gradle Kotlin DSL]
 - link:https://github.com/daggerok/hazelcast-examples[Hazelcast examples]
 - link:https://github.com/daggerok/spring-boot-functional-servlet-example[Functional Servlet based Spring MVC resources]

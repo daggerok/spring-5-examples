@@ -23,12 +23,22 @@ addons:
 install: true
 before_install:
 
-- sudo pip install docker-compose httpie >/dev/null 2>&1
+- sudo pip install --upgrade docker-compose httpie >/dev/null 2>&1
 - source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
 - stop_any 5432 5672 27017 8080 8000 8081 80 80
 
 script:
 - export root=$(pwd)
+
+# fn
+- ./mvnw -f fn/pom.xml >/dev/null
+- java -jar fn/target/*.jar &
+- wait_for 8080
+- http :8080/person id=1 name=ololo | jq '.'
+- http :8080/person name=trololo    | jq '.'
+- http :8080/person/1               | jq '.'
+- http :8080/person/                | jq '.'
+- stop_any 80 8080
 
 # awesome-kotlin
 - ./mvnw -f ./awesome-kotlin/pom.xml
