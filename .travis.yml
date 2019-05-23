@@ -67,13 +67,13 @@ script:
   - java -jar ${root}/makrdown-blog/build/libs/*.jar &
   - wait_for 8080
   - http :8080
-  - http :8080/api
-  - http :8080/api/2
+  - http :8080/api | jq '.'
+  - http :8080/api/2 | jq '.'
   - http :8080/api/3
-  - http post :8080/api/1
-  - http post :8080/api/1
-  - http post :8080/api/1
-  - http :8080/api
+  - http post :8080/api/1 | jq '.'
+  - http post :8080/api/1 | jq '.'
+  - http post :8080/api/1 | jq '.'
+  - http :8080/api | jq '.'
   - http :8080/article/1
   - http :8080/article/2
   - stop_any 8080 80
