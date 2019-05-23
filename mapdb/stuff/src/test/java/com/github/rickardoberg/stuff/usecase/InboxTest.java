@@ -14,6 +14,7 @@ import com.github.rickardoberg.stuff.event.DoneEvent;
 import org.junit.Test;
 
 public class InboxTest {
+
   @Test
   public void givenInboxWhenCreateNewTaskThenNewTaskCreated() {
     // Given

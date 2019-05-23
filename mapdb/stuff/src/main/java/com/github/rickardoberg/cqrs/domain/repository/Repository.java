@@ -4,8 +4,7 @@
  */
 package com.github.rickardoberg.cqrs.domain.repository;
 
-import java.util.function.Block;
-import java.util.function.Function;
+import java.util.function.*;
 
 import com.github.rickardoberg.cqrs.domain.Entity;
 import com.github.rickardoberg.cqrs.domain.Identifier;
@@ -17,6 +16,6 @@ import com.github.rickardoberg.cqrs.event.InteractionContext;
 public interface Repository {
   <T extends Entity> Function<String, Function<Function<Identifier, T>, InteractionContext>> create();
 
-  <T extends Entity> Function<String, Function<Identifier, Function<Block<T>, InteractionContext>>> update()
+  <T extends Entity> Function<String, Function<Identifier, Function<T, InteractionContext>>> update()
       throws IllegalArgumentException, IllegalStateException;
 }

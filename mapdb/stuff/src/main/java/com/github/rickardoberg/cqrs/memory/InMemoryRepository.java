@@ -3,8 +3,7 @@ package com.github.rickardoberg.cqrs.memory;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Block;
-import java.util.function.Function;
+import java.util.function.*;
 
 import com.github.rickardoberg.cqrs.domain.Entity;
 import com.github.rickardoberg.cqrs.domain.Identifier;
@@ -79,7 +78,7 @@ public class InMemoryRepository
   }
 
   @Override
-  public <T extends Entity> Function<String, Function<Identifier, Function<Block<T>, InteractionContext>>> update()
+  public <T extends Entity> Function<String, Function<Identifier, Function<T, InteractionContext>>> update()
       throws IllegalArgumentException, IllegalStateException {
     return type -> id -> block ->
     {
