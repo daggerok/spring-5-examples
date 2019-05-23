@@ -7,7 +7,7 @@ allprojects {
 
   apply plugin: 'kotlin-sam-with-receiver'
   samWithReceiver {
-//    annotation("com.my.Annotation")
+    annotation("com.my.Annotation")
   }
 
   def projectIncremental = true
@@ -15,14 +15,8 @@ allprojects {
       '-Xjsr305=strict',
       '-java-parameters',
       //"-Xenable-jvm-default",     //1.2.41
-      "-Xjvm-default=compatibility",//1.2.50
+      //"-Xjvm-default=compatibility",//1.2.50
   ]
-
-  kotlin {
-    experimental {
-      coroutines 'enable'
-    }
-  }
 
   compileKotlin {
     incremental = projectIncremental

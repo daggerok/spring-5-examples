@@ -44,7 +44,7 @@ script:
 - stop_any 80 8080
 
 # makrdown-blog
-- ./gradlew -b ${root}/makrdown-blog/build.gradle build >/dev/null
+- bash ${root}/makrdown-blog/gradlew -b ${root}/makrdown-blog/build.gradle build >/dev/null
 - java -jar ${root}/makrdown-blog/build/libs/*.jar &
 - wait_for 8080
 - http :8080

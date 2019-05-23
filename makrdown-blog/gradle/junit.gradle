@@ -10,6 +10,7 @@ allprojects {
     testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$junitJupiterVersion", {
       because 'allows JUnit 3 and JUnit 4 tests to run'
     }
+    testRuntime "org.junit.platform:junit-platform-commons:$junitPlatformVersion"
     testRuntime "org.junit.platform:junit-platform-launcher:$junitPlatformVersion", {
       because 'allows tests to run from IDEs that bundle older version of launcher'
     }
