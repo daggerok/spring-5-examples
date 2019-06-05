@@ -2,7 +2,7 @@
 
 Some spring-boot 2 / spring 5 playground project examples
 
-- link:https://github.com/daggerok/r2dbc-example[GitHub daggerok/r2dbc-example example with Spring WebFlux, R2DBC postgress RDBMS]
+- link:https://github.com/daggerok/r2dbc-kickass[GitHub: daggerok/r2dbc-kickass example with Spring WebFlux, R2DBC postgress RDBMS]
 - link:./fn/[Simple Fn example]
 - link:https://github.com/daggerok/spring-boot-reactive-scala-example[Reactive Scala with Spring Boot and Gradle Kotlin DSL]
 - link:https://github.com/daggerok/hazelcast-examples[Hazelcast examples]
