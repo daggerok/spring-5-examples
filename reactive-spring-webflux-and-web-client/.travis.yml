@@ -1,0 +1,80 @@
+notifications:
+  email: false
+git:
+  quiet: true
+  depth: 1
+env:
+  global:
+    - TERM=dumb
+language: java
+jdk: openjdk8
+install: true
+addons:
+  apt:
+    update: true
+    packages:
+      - zip
+      - unzip
+      - curl
+      - bash
+before_install:
+  # gradle
+  - curl -s "https://get.sdkman.io" | bash
+  - source "$HOME/.sdkman/bin/sdkman-init.sh"
+  - sdk selfupdate
+  - touch "$HOME/.sdkman/etc/config"
+  - sed -i -e 's/^sdkman_auto_answer=false$/sdkman_auto_answer=true/g' "$HOME/.sdkman/etc/config"
+  - sdk use gradle 5.5-rc-2
+  - sdk install gradle
+  - mkdir -p "$HOME/.sdkman/etc"
+  - sdk use gradle
+  - source "$HOME/.sdkman/bin/sdkman-init.sh"
+jobs:
+  include:
+    # java 8
+    - stage: openjdk8
+      jdk: openjdk8
+      name: "Maven Java 8 Build"
+      script:
+        - cd $TRAVIS_BUILD_DIR
+        - mvn -N io.takari:maven:wrapper -Dmaven=3.6.1
+        - ./mvnw
+        - java -jar target/*-SNAPSHOT.jar
+    - stage: openjdk8
+      jdk: openjdk8
+      name: "Maven Java 8 Updates"
+      script: cd $TRAVIS_BUILD_DIR && mvn -N io.takari:maven:wrapper -Dmaven=3.6.1 && ./mvnw versions:display-property-updates
+    - stage: openjdk8
+      jdk: openjdk8
+      name: "Gradle Java 8 Build"
+      script:
+        - cd $TRAVIS_BUILD_DIR
+        - gradle :wrapper
+        - ./gradlew
+        - java -jar build/libs/*-SNAPSHOT.jar
+    - stage: openjdk8
+      jdk: openjdk8
+      name: "Gradle Java 8 Updates"
+      script: cd $TRAVIS_BUILD_DIR && gradle :wrapper && ./gradlew dependencyUpdates -Drevision=release
+    # java 11
+    - stage: openjdk11
+      jdk: openjdk11
+      name: "Maven Java 11 Build"
+      script: cd $TRAVIS_BUILD_DIR ; mvn -N io.takari:maven:wrapper -Dmaven=3.6.1 ; ./mvnw ; java -jar target/*-SNAPSHOT.jar
+    - stage: openjdk11
+      jdk: openjdk11
+      name: "Maven Java 11 Updates"
+      script: cd $TRAVIS_BUILD_DIR ; mvn -N io.takari:maven:wrapper -Dmaven=3.6.1 ; ./mvnw versions:display-property-updates
+    - stage: openjdk11
+      jdk: openjdk11
+      name: "Gradle Java 11 Build"
+      script: cd $TRAVIS_BUILD_DIR ; gradle :wrapper ; ./gradlew ; java -jar build/libs/*-SNAPSHOT.jar
+    - stage: openjdk11
+      jdk: openjdk11
+      name: "Gradle Java 11 Updates"
+      script: cd $TRAVIS_BUILD_DIR ; gradle :wrapper ; ./gradlew dependencyUpdates -Drevision=release
+cache:
+  directories:
+    - ~/.gradle
+    - ~/.m2
+  packages: true

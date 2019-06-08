@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%boldWhite(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-5level) %magenta(%-10.10thread{10}) [ %cyan(%-25.25logger{25}) %highlight(%-25.25M{25}) ] - %gray(%msg%n)</pattern>
+    </encoder>
+  </appender>
+  <logger name="org.jboss.weld.Bootstrap" level="warn" />
+  <logger name="org.jboss.weld.Version" level="warn" />
+  <root level="info">
+    <appender-ref ref="STDOUT"/>
+  </root>
+</configuration>
