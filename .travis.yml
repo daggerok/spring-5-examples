@@ -68,12 +68,12 @@ jobs:
         - java -jar $TRAVIS_BUILD_DIR/reactive-spring-webflux-and-web-client/target/*-SNAPSHOT.jar &
         - wait_for 8080
         - http :8080 | jq '.'
-        - http :8080/api/v1/collect
+        - curl -sS localhost:8080/api/v1/collect
         - stop_any 80 8080
         - cd $TRAVIS_BUILD_DIR/reactive-spring-webflux-and-web-client && gradle :wrapper && ./gradlew >/dev/null
         - java -jar $TRAVIS_BUILD_DIR/reactive-spring-webflux-and-web-client/build/libs/*-SNAPSHOT.jar &
         - wait_for 8080
-        - http :8080 | jq '.'
+        - curl -sS localhost:8080
         - http :8080/api/v1/collect | jq '.'
         - stop_any 80 8080
 
