@@ -2,6 +2,7 @@
 
 Some spring-boot 2 / spring 5 playground project examples
 
+- link:https://github.com/daggerok/spring-cloud-function-stream-integration[spring-cloud-function and spring-cloud-stream integration]
 - link:./reactive-spring-webflux-and-web-client/[Non Blocking WebFlux]
 - link:https://github.com/daggerok/r2dbc-kickass[GitHub: daggerok/r2dbc-kickass example with Spring WebFlux, R2DBC postgress RDBMS]
 - link:./fn/[Simple Fn example]
