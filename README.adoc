@@ -2,8 +2,9 @@
 
 Some spring-boot 2 / spring 5 playground project examples
 
-- link:https://github.com/daggerok/r2dbcpg[R2DBC PG Kotlin example (maven)]
-- link:https://github.com/daggerok/pgr2dbc[R2DBC PG Kotlin example (gradle)]
+- link:https://github.com/daggerok/kotlin-coroutines-reactor-r2dbc[GitHub: daggerok/kotlin-coroutines-reactor-r2dbc Kotlin coroutines + Spring WebFlux + Spring Reactor + R2DBC (postgres) + fabric8-maven-plugin (docker) + Flyway migratoins]
+- link:https://github.com/daggerok/r2dbcpg[GitHub: daggerok/r2dbcpg R2DBC PG Kotlin example (maven)]
+- link:https://github.com/daggerok/pgr2dbc[GitHub: daggerok/pgr2dbc R2DBC PG Kotlin example (gradle)]
 - link:https://github.com/daggerok/spring-cloud-function-stream-integration[spring-cloud-function and spring-cloud-stream integration]
 - link:./reactive-spring-webflux-and-web-client/[Non Blocking WebFlux]
 - link:https://github.com/daggerok/r2dbc-kickass[GitHub: daggerok/r2dbc-kickass example with Spring WebFlux, R2DBC postgress RDBMS]
