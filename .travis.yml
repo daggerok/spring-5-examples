@@ -261,6 +261,7 @@ jobs:
     - stage: test
       jdk: openjdk8
       name: reactor-processors
+      script:
         - bash gradlew -b $TRAVIS_BUILD_DIR/reactor-processors/build.gradle >/dev/null
         - bash mvnw -f $TRAVIS_BUILD_DIR/reactor-processors/pom.xml >/dev/null
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash $TRAVIS_BUILD_DIR/reactor-processors/flux-sink/build/libs/*.jar &
@@ -273,6 +274,7 @@ jobs:
     - stage: test
       jdk: openjdk8
       name: reactive axon
+      script:
         - bash gradlew -b $TRAVIS_BUILD_DIR/axon-lock/build.gradle >/dev/null
         - bash mvnw -f $TRAVIS_BUILD_DIR/axon-lock/pom.xml >/dev/null
         - java -jar $TRAVIS_BUILD_DIR/axon-lock/axon-app/build/libs/*.jar --logging.level.root=warn --logging.level.daggerok=debug &
@@ -284,6 +286,7 @@ jobs:
     - stage: test
       jdk: openjdk8
       name: kotlin-beans-dsl
+      script:
         - bash gradlew -b $TRAVIS_BUILD_DIR/kotlin-beans-dsl/build.gradle >/dev/null
         - java -Dlogging.levelorg=warn -jar $TRAVIS_BUILD_DIR/kotlin-beans-dsl/kotlin-config-dsl/build/libs/*.jar
         - bash mvnw -f $TRAVIS_BUILD_DIR/kotlin-beans-dsl/pom.xml >/dev/null
@@ -316,6 +319,7 @@ jobs:
     - stage: test
       jdk: openjdk8
       name: monolith
+      script:
         - bash gradlew -b $TRAVIS_BUILD_DIR/monolith/build.gradle >/dev/null
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/monolith/app/build/libs/*.jar &
         - bash mvnw -f $TRAVIS_BUILD_DIR/monolith/pom.xml >/dev/null
@@ -356,6 +360,7 @@ jobs:
     - stage: test
       jdk: openjdk8
       name: thymeleaf-webflux
+      script:
         - bash gradlew -b $TRAVIS_BUILD_DIR/thymeleaf-webflux/build.gradle clean build            >/dev/null
         - java -jar       $TRAVIS_BUILD_DIR/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar --logging.level.root=warn --logging.level.daggerok=debug &
         - bash mvnw    -f $TRAVIS_BUILD_DIR/thymeleaf-webflux/pom.xml      clean package          >/dev/null
@@ -402,6 +407,7 @@ jobs:
     - stage: test
       jdk: openjdk8
       name: mailbox
+      script:
         - bash gradlew clean build -b $TRAVIS_BUILD_DIR/mailbox/build.gradle >/dev/null
         - bash mvnw clean package -f $TRAVIS_BUILD_DIR/mailbox/pom.xml >/dev/null
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/mailbox/webapp/target/*.jar &
@@ -433,6 +439,7 @@ jobs:
     - stage: test
       jdk: openjdk8
       name: mustache-json gradle
+      script:
         - bash gradlew build -b $TRAVIS_BUILD_DIR/mustache-json/build.gradle >/dev/null
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/mustache-json/build/libs/*.jar &
         - wait_for 8080
@@ -443,6 +450,7 @@ jobs:
     - stage: test
       jdk: openjdk8
       name: mustache-json docker
+      script:
         - bash ./gradlew clean build >/dev/null
         - docker-compose -f $TRAVIS_BUILD_DIR/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
@@ -456,6 +464,7 @@ jobs:
     - stage: test
       jdk: openjdk8
       name: reactive-ngrx gradle
+      script:
         - bash mvnw -f $TRAVIS_BUILD_DIR/reactive-ngrx/pom.xml >/dev/null
         - java -jar $TRAVIS_BUILD_DIR/reactive-ngrx/target/*.jar --loging.level=warn &
         - wait_for 8080
@@ -464,6 +473,7 @@ jobs:
     - stage: test
       jdk: openjdk8
       name: reactive-ngrx docker
+      script:
         - bash gradlew -b $TRAVIS_BUILD_DIR/reactive-ngrx/build.gradle >/dev/null
         - docker-compose -f $TRAVIS_BUILD_DIR/reactive-ngrx/src/main/docker/docker-compose.yaml build --force-rm --no-cache --pull
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/reactive-ngrx/src/main/docker/docker-compose.yaml up &
