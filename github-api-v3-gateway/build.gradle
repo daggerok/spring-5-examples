@@ -1,7 +1,7 @@
 buildscript {
   ext {
     javaVersion = "1.8"
-    vavrVersion = "0.9.2"
+    vavrVersion = "0.10.2"
   }
 }
 
@@ -10,24 +10,21 @@ plugins {
   id "eclipse"
 }
 
-allprojects {
+defaultTasks "clean", "build"
 
+wrapper {
+  gradleVersion = "4.10.2"
+}
+
+allprojects {
   apply plugin: "base"
   apply plugin: "maven"
 
   group = "daggerok"
   version = "0.0.1"
-
-  defaultTasks "clean", "build"
-
-  task wrapper(type: Wrapper) {
-    gradleVersion = "4.10.2"
-    distributionType = 'BIN'
-  }
 }
 
 subprojects {
-
   apply plugin: "java"
 
   sourceCompatibility = targetCompatibility = "$javaVersion"
