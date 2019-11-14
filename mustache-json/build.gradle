@@ -32,6 +32,7 @@ dependencies {
   compile("org.springframework.boot:spring-boot-starter-mustache")
 }
 
-wrapper {
+task wrapper(type: Wrapper) {
+  distributionType = 'BIN'
   gradleVersion = "4.10.2"
 }

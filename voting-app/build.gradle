@@ -34,7 +34,7 @@ buildscript {
 }
 
 plugins {
-  // id 'com.gradle.build-scan' version '2.0.2'
+  id 'com.gradle.build-scan' version '1.16'
 
   id 'idea'
   id 'eclipse'
@@ -59,7 +59,7 @@ plugins {
 }
 
 wrapper {
-  gradleVersion = '4.10.3'
+  gradleVersion = '4.10.2'
   distributionType = 'BIN'
 }
 
@@ -71,7 +71,7 @@ apply from: "$projectDir/gradle/java.gradle"
 apply from: "$projectDir/gradle/kotlin.gradle"
 apply from: "$projectDir/gradle/junit.gradle"
 apply from: "$projectDir/gradle/jacoco.gradle"
-// apply from: "$projectDir/gradle/findbugs.gradle"
+apply from: "$projectDir/gradle/findbugs.gradle"
 apply from: "$projectDir/gradle/docker-compose.gradle"
 apply from: "$projectDir/gradle/docs.gradle"
-// apply from: "$projectDir/gradle/build-scan.gradle"
+apply from: "$projectDir/gradle/build-scan.gradle"
