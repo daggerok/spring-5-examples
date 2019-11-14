@@ -216,6 +216,7 @@ jobs:
         - stop_any 8080 8000 80
     - stage: test
       name: who-cares?
+      jdk: openjdk8
       script:
         - cd $TRAVIS_BUILD_DIR/
         ## some-spring-boot-2-frontend
@@ -257,7 +258,9 @@ jobs:
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml up &
         - sleep 20
         - docker-compose -f $TRAVIS_BUILD_DIR/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml down -v &
-        # reactor-processors
+    - stage: test
+      jdk: openjdk8
+      name: reactor-processors
         - bash gradlew -b $TRAVIS_BUILD_DIR/reactor-processors/build.gradle >/dev/null
         - bash mvnw -f $TRAVIS_BUILD_DIR/reactor-processors/pom.xml >/dev/null
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash $TRAVIS_BUILD_DIR/reactor-processors/flux-sink/build/libs/*.jar &
@@ -267,7 +270,9 @@ jobs:
         - http :8080/message message=hi!
         - http :8080/message message=hey!
         - stop_any 8080 8000 80
-        # reactive axon
+    - stage: test
+      jdk: openjdk8
+      name: reactive axon
         - bash gradlew -b $TRAVIS_BUILD_DIR/axon-lock/build.gradle >/dev/null
         - bash mvnw -f $TRAVIS_BUILD_DIR/axon-lock/pom.xml >/dev/null
         - java -jar $TRAVIS_BUILD_DIR/axon-lock/axon-app/build/libs/*.jar --logging.level.root=warn --logging.level.daggerok=debug &
@@ -276,7 +281,9 @@ jobs:
         - http :8080 name=Max
         - http :8000 name=Axon
         - stop_any 8080 8080 8000 8000 80
-        # kotlin-beans-dsl
+    - stage: test
+      jdk: openjdk8
+      name: kotlin-beans-dsl
         - bash gradlew -b $TRAVIS_BUILD_DIR/kotlin-beans-dsl/build.gradle >/dev/null
         - java -Dlogging.levelorg=warn -jar $TRAVIS_BUILD_DIR/kotlin-beans-dsl/kotlin-config-dsl/build/libs/*.jar
         - bash mvnw -f $TRAVIS_BUILD_DIR/kotlin-beans-dsl/pom.xml >/dev/null
@@ -306,7 +313,9 @@ jobs:
         #- http :8080
         #- docker-compose -f $TRAVIS_BUILD_DIR/xml-wtf/docker-compose-gradle.yaml down -v
         #- stop_any 8080 8000 80
-        # monolith
+    - stage: test
+      jdk: openjdk8
+      name: monolith
         - bash gradlew -b $TRAVIS_BUILD_DIR/monolith/build.gradle >/dev/null
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/monolith/app/build/libs/*.jar &
         - bash mvnw -f $TRAVIS_BUILD_DIR/monolith/pom.xml >/dev/null
@@ -344,7 +353,9 @@ jobs:
         #- http :8080 message=send\ message,\ y0!
         #- docker-compose -f $TRAVIS_BUILD_DIR/listener-of-listener/docker-compose-gradle.yaml down -v
         #- stop_any 8080 8080 8000 8000 80 80
-        # thymeleaf-webflux
+    - stage: test
+      jdk: openjdk8
+      name: thymeleaf-webflux
         - bash gradlew -b $TRAVIS_BUILD_DIR/thymeleaf-webflux/build.gradle clean build            >/dev/null
         - java -jar       $TRAVIS_BUILD_DIR/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar --logging.level.root=warn --logging.level.daggerok=debug &
         - bash mvnw    -f $TRAVIS_BUILD_DIR/thymeleaf-webflux/pom.xml      clean package          >/dev/null
@@ -388,7 +399,9 @@ jobs:
         #- http :8080/api/v1/users name=max
         #- http :8080/api/v1/users
         #- docker-compose -f $TRAVIS_BUILD_DIR/rmi/docker-compose.yaml down -v
-        # mailbox
+    - stage: test
+      jdk: openjdk8
+      name: mailbox
         - bash gradlew clean build -b $TRAVIS_BUILD_DIR/mailbox/build.gradle >/dev/null
         - bash mvnw clean package -f $TRAVIS_BUILD_DIR/mailbox/pom.xml >/dev/null
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/mailbox/webapp/target/*.jar &
@@ -417,7 +430,9 @@ jobs:
         #- http :8080/actuator/
         #- http :8080/actuator/health
         #- docker-compose -f $TRAVIS_BUILD_DIR/hotel/docker-compose.yaml down -v
-        # mustache-json gradle
+    - stage: test
+      jdk: openjdk8
+      name: mustache-json gradle
         - bash gradlew build -b $TRAVIS_BUILD_DIR/mustache-json/build.gradle >/dev/null
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/mustache-json/build/libs/*.jar &
         - wait_for 8080
@@ -425,7 +440,9 @@ jobs:
         - http :8080/hello/
         - http :8080/hello/mustache
         - stop_any 8080 8080 80 80
-        # mustache-json docker
+    - stage: test
+      jdk: openjdk8
+      name: mustache-json docker
         - bash ./gradlew clean build >/dev/null
         - docker-compose -f $TRAVIS_BUILD_DIR/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
@@ -436,13 +453,17 @@ jobs:
         - http :8080/hello/lol
         - docker-compose -f $TRAVIS_BUILD_DIR/mustache-json/docker-compose.yaml down -v
         - stop_any 8080 8080 80 80
-        # reactive-ngrx gradle
+    - stage: test
+      jdk: openjdk8
+      name: reactive-ngrx gradle
         - bash mvnw -f $TRAVIS_BUILD_DIR/reactive-ngrx/pom.xml >/dev/null
         - java -jar $TRAVIS_BUILD_DIR/reactive-ngrx/target/*.jar --loging.level=warn &
         - wait_for 8080
         - http :8080
         - stop_any 8080 8000 80
-        # reactive-ngrx docker
+    - stage: test
+      jdk: openjdk8
+      name: reactive-ngrx docker
         - bash gradlew -b $TRAVIS_BUILD_DIR/reactive-ngrx/build.gradle >/dev/null
         - docker-compose -f $TRAVIS_BUILD_DIR/reactive-ngrx/src/main/docker/docker-compose.yaml build --force-rm --no-cache --pull
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/reactive-ngrx/src/main/docker/docker-compose.yaml up &
@@ -453,25 +474,46 @@ jobs:
         - docker-compose -f $TRAVIS_BUILD_DIR/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
         - stop_any 8001 8002 80
     - stage: test
-      name: too-lazy
-      script:
-        - cd $TRAVIS_BUILD_DIR/
-        - >
-          for path in \
-            spring-shell \
-            reactive-websocket-sse \
-            spring-boot-under-the-hood \
-            reactive-auth \
-            reactive-security-client \
-            reactive-functional-security \
-            reactive-mongo-webflux-functional \
-            reactive-mongo-webflux \
-            reactive-webflux-spring-data-redis \
-            spring-integration-5-example \
-            functional-spring;
-          do
-            export project="$TRAVIS_BUILD_DIR/$path"
-            cd ${project}
-            echo "build $path"
-            bash gradlew build >/dev/null
-          done;
+      jdk: openjdk8
+      name: spring-shell
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+    - stage: test
+      jdk: openjdk8
+      name: reactive-websocket-sse
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+    - stage: test
+      jdk: openjdk8
+      name: spring-boot-under-the-hood
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+    - stage: test
+      jdk: openjdk8
+      name: reactive-auth
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+    - stage: test
+      jdk: openjdk8
+      name: reactive-security-client
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+    - stage: test
+      jdk: openjdk8
+      name: reactive-functional-security
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+    - stage: test
+      jdk: openjdk8
+      name: reactive-mongo-webflux-functional
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+    - stage: test
+      jdk: openjdk8
+      name: reactive-mongo-webflux
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+    - stage: test
+      jdk: openjdk8
+      name: reactive-webflux-spring-data-redis
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+    - stage: test
+      jdk: openjdk8
+      name: spring-integration-5-example
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+    - stage: test
+      jdk: openjdk8
+      name: functional-spring
+      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
