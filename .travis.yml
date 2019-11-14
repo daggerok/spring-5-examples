@@ -218,7 +218,6 @@ jobs:
       name: who-cares?
       jdk: openjdk8
       script:
-        - cd $TRAVIS_BUILD_DIR/
         ## some-spring-boot-2-frontend
         #- bash gradlew -b $TRAVIS_BUILD_DIR/some-spring-boot-2-frontend/build.gradle >/dev/null
         #- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash $TRAVIS_BUILD_DIR/some-spring-boot-2-frontend/build/libs/*.jar &
@@ -229,7 +228,7 @@ jobs:
         - cp -Rf $TRAVIS_BUILD_DIR/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github-default.properties $TRAVIS_BUILD_DIR/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github.properties
         - http -a "$GITHUB_TOKEN" https://api.github.com
         #
-        - bash gradlew -b $TRAVIS_BUILD_DIR/github-api-v3-gateway/build.gradle >/dev/null
+        - cd $TRAVIS_BUILD_DIR/github-api-v3-gateway && ./gradlew >/dev/null
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash $TRAVIS_BUILD_DIR/github-api-v3-gateway/webflux-gateway/build/libs/*.jar &
         - wait_for 8080
         - http :8080/github/props/manual
