@@ -17,7 +17,6 @@ addons:
   apt:
     update: false
     packages:
-      - jq
       - bash
       - curl
       - tree
@@ -108,7 +107,7 @@ jobs:
         - http post :8080/api/1
         - http post :8080/api/1
         - http post :8080/api/1
-        - http :8080/api | jq
+        - http :8080/api
         - http :8080/article/1
         - http :8080/article/2
         - stop_any 8080 80
