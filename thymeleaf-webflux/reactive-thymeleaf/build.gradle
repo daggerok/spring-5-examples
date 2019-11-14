@@ -20,11 +20,7 @@ dependencies {
   compile("org.springframework.boot:spring-boot-starter-thymeleaf")
   compile("org.springframework.boot:spring-boot-starter-webflux")
   runtime("org.springframework.boot:spring-boot-devtools")
-
   compileOnly("org.projectlombok:lombok")
-  testCompileOnly("org.projectlombok:lombok")
-  annotationProcessor("org.projectlombok:lombok")
-
   testCompile("org.springframework.boot:spring-boot-starter-test")
   testCompile("io.projectreactor:reactor-test")
 }

@@ -8,10 +8,10 @@ plugins {
   id "idea"
   id "eclipse"
   id "com.avast.gradle.docker-compose" version "0.6.12"
-  id("io.franzbecker.gradle-lombok") version "3.2.0"
 }
 
 allprojects {
+
   apply plugin: "base"
   apply plugin: "maven"
 
@@ -22,6 +22,7 @@ allprojects {
 }
 
 subprojects {
+
   apply plugin: "java"
 
   sourceCompatibility = targetCompatibility = "$javaVersion"
@@ -44,3 +45,10 @@ dockerCompose {
 }
 
 composeUp.dependsOn assemble
+
+/*
+task wrapper(type: Wrapper) {
+  gradleVersion = "4.10.2"
+  distributionType = 'BIN'
+}
+*/
