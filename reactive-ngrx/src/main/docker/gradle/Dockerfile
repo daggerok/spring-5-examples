@@ -9,9 +9,9 @@ VOLUME ["/home/app"]
 ENV JAVA_OPTS=${java_opts}
 ENTRYPOINT java ${JAVA_OPTS} -jar ./app.jar
 EXPOSE 8080
-HEALTHCHECK --retries=9 \
-            --timeout=1s \
-            --interval=3s \
-            --start-period=1s \
+HEALTHCHECK --retries=22 \
+            --timeout=2s \
+            --interval=2s \
+            --start-period=2s \
             CMD curl -f http://127.0.0.1:8080/actuator/health || exit 1
 COPY ./build/libs/*.jar ./app.jar
