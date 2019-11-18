@@ -6,12 +6,16 @@ buildscript {
 }
 
 plugins {
+  id "base"
   id "idea"
   id "eclipse"
 }
 
-allprojects {
+wrapper {
+  gradleVersion = "4.10.2"
+}
 
+allprojects {
   apply plugin: "base"
   apply plugin: "maven"
 
@@ -19,11 +23,6 @@ allprojects {
   version = "0.0.1"
 
   defaultTasks "clean", "build"
-
-  task wrapper(type: Wrapper) {
-    gradleVersion = "4.10.2"
-    distributionType = 'BIN'
-  }
 }
 
 subprojects {
