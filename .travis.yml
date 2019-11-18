@@ -473,11 +473,11 @@ jobs:
       jdk: openjdk8
       name: reactive-ngrx docker
       script:
+        - bash mvnw -f $TRAVIS_BUILD_DIR/reactive-ngrx/pom.xml
         - bash gradlew -b $TRAVIS_BUILD_DIR/reactive-ngrx/build.gradle
         - docker-compose -f $TRAVIS_BUILD_DIR/reactive-ngrx/src/main/docker/docker-compose.yaml build --force-rm --no-cache --pull
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/reactive-ngrx/src/main/docker/docker-compose.yaml up &
-        - wait_for 8001 8002
-        - sleep 30
+        - wait_healthy_docker_containers 2
         - http :8001
         - http :8002
         - docker-compose -f $TRAVIS_BUILD_DIR/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
