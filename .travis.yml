@@ -26,7 +26,7 @@ addons:
       - python3-pip
 install: true
 before_install:
-  - export CHROME_BIN=/usr/bin/google-chrome
+  #- export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:99.0
   #
   - if [ ! -f ${HOME}/.local/daggerok/bash-functions/master/main.bash ] ; then
@@ -55,15 +55,18 @@ cache:
 jobs:
   include:
     - stage: test
-      name: reactive-spring-webflux-and-web-client
+      name: reactive-spring-webflux-and-web-client maven
       script:
-        - cd $TRAVIS_BUILD_DIR && ./mvnw -f reactive-spring-webflux-and-web-client >/dev/null
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f reactive-spring-webflux-and-web-client
         - java -jar $TRAVIS_BUILD_DIR/reactive-spring-webflux-and-web-client/target/*-SNAPSHOT.jar &
         - wait_for 8080
         - http :8080
         - curl -v localhost:8080/api/v1/collect
         - stop_any 80 8080
-        - cd $TRAVIS_BUILD_DIR && ./gradlew -b ./reactive-spring-webflux-and-web-client/build.gradle.kts >/dev/null
+    - stage: test
+      name: reactive-spring-webflux-and-web-client maven
+      script:
+        - cd $TRAVIS_BUILD_DIR && ./gradlew -b ./reactive-spring-webflux-and-web-client/build.gradle.kts
         - java -jar $TRAVIS_BUILD_DIR/reactive-spring-webflux-and-web-client/build/libs/*-SNAPSHOT.jar &
         - wait_for 8080
         - curl -sS localhost:8080
@@ -72,7 +75,7 @@ jobs:
     - stage: test
       name: fn
       script:
-        - cd $TRAVIS_BUILD_DIR && ./mvnw -f fn >/dev/null
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f fn
         - java -jar $TRAVIS_BUILD_DIR/fn/target/*.jar &
         - wait_for 8080
         - http :8080/person id=1 name=ololo
@@ -436,7 +439,7 @@ jobs:
       jdk: openjdk8
       name: mustache-json gradle
       script:
-        - bash gradlew build -b $TRAVIS_BUILD_DIR/mustache-json/build.gradle >/dev/null
+        - bash gradlew build -b $TRAVIS_BUILD_DIR/mustache-json/build.gradle
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/mustache-json/build/libs/*.jar &
         - wait_for 8080
         - http :8080
@@ -447,7 +450,7 @@ jobs:
       jdk: openjdk8
       name: mustache-json docker
       script:
-        - bash ./gradlew clean build >/dev/null
+        - bash ./gradlew clean build -b $TRAVIS_BUILD_DIR/mustache-json/build.gradle
         - docker-compose -f $TRAVIS_BUILD_DIR/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
         - wait_for 8080
@@ -459,9 +462,9 @@ jobs:
         - stop_any 8080 8080 80 80
     - stage: test
       jdk: openjdk8
-      name: reactive-ngrx gradle
+      name: reactive-ngrx maven
       script:
-        - bash mvnw -f $TRAVIS_BUILD_DIR/reactive-ngrx/pom.xml >/dev/null
+        - bash mvnw -f $TRAVIS_BUILD_DIR/reactive-ngrx/pom.xml
         - java -jar $TRAVIS_BUILD_DIR/reactive-ngrx/target/*.jar --loging.level=warn &
         - wait_for 8080
         - http :8080
@@ -470,7 +473,7 @@ jobs:
       jdk: openjdk8
       name: reactive-ngrx docker
       script:
-        - bash gradlew -b $TRAVIS_BUILD_DIR/reactive-ngrx/build.gradle >/dev/null
+        - bash gradlew -b $TRAVIS_BUILD_DIR/reactive-ngrx/build.gradle
         - docker-compose -f $TRAVIS_BUILD_DIR/reactive-ngrx/src/main/docker/docker-compose.yaml build --force-rm --no-cache --pull
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/reactive-ngrx/src/main/docker/docker-compose.yaml up &
         - wait_for 8001 8002
