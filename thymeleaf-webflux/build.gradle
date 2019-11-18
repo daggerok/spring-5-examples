@@ -3,6 +3,7 @@ plugins {
   id "idea"
   id "eclipse"
   id "com.avast.gradle.docker-compose" version "0.6.13"
+  id("io.franzbecker.gradle-lombok") version "3.2.0"
 }
 
 subprojects {
