@@ -19,5 +19,8 @@ dependencies {
   testCompile("org.springframework.security:spring-security-test")
   testCompile("org.springframework.boot:spring-boot-starter-test")
   testCompile("io.projectreactor:reactor-test")
+
+  compileOnly("org.projectlombok:lombok")
   testCompileOnly("org.projectlombok:lombok")
+  annotationProcessor("org.projectlombok:lombok")
 }
