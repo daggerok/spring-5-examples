@@ -54,6 +54,19 @@ cache:
 jobs:
   include:
     - stage: test
+      name: springdoc-openapi
+      jdk: openjdk11
+      before_script:
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f springdoc-openapi
+        - java -jar $TRAVIS_BUILD_DIR/springdoc-openapi/target/*.jar &
+        - wait_for 8080
+      script:
+        - http :8080/
+        - http :8080/swagger-ui.html
+        - http :8080/v3/api-docs/
+      after_script:
+        - wait_for 8080
+    - stage: test
       name: optional-mvc-path-variable
       jdk: openjdk11
       before_script:
