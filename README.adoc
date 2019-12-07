@@ -2,6 +2,7 @@
 
 Some spring-boot 2 / spring 5 playground project examples
 
+- link:optional-mvc-path-variable[Spring MVC Optional @PathVariable]
 - link:https://github.com/daggerok/spring-webflux-groovy-example[Dynamic groovy for spring weblux! see GitHub repo: daggerok/spring-webflux-groovy-example]
 - link:https://github.com/daggerok/kotlin-coroutines-reactor-r2dbc[GitHub: daggerok/kotlin-coroutines-reactor-r2dbc Kotlin coroutines + Spring WebFlux + Spring Reactor + R2DBC (postgres) + fabric8-maven-plugin (docker) + Flyway migratoins]
 - link:https://github.com/daggerok/r2dbcpg[GitHub: daggerok/r2dbcpg R2DBC PG Kotlin example (maven)]
