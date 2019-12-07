@@ -54,11 +54,11 @@ cache:
 jobs:
   include:
     - stage: test
-      name:  springdoc-openapi-webflux
+      name: springdoc-openapi-webflux
       jdk: openjdk11
       before_script:
         - cd $TRAVIS_BUILD_DIR && ./mvnw -f  springdoc-openapi-webflux
-        - java -jar $TRAVIS_BUILD_DIR/ springdoc-openapi-webflux/target/*.jar &
+        - java -jar $TRAVIS_BUILD_DIR/springdoc-openapi-webflux/target/*.jar &
         - wait_for 8080
       script:
         - http :8080/v3/api-docs/
