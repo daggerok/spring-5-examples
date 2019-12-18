@@ -529,44 +529,44 @@ jobs:
     - stage: test
       jdk: openjdk8
       name: spring-shell
-      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+      script: cd $TRAVIS_BUILD_DIR/spring-shell && ./gradlew build
     - stage: test
       jdk: openjdk8
       name: reactive-websocket-sse
-      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+      script: cd $TRAVIS_BUILD_DIR/reactive-websocket-sse && ./gradlew build
     - stage: test
       jdk: openjdk8
       name: spring-boot-under-the-hood
-      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+      script: cd $TRAVIS_BUILD_DIR/spring-boot-under-the-hood && ./gradlew build
     - stage: test
       jdk: openjdk8
       name: reactive-auth
-      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+      script: cd $TRAVIS_BUILD_DIR/reactive-auth && ./gradlew build
     - stage: test
       jdk: openjdk8
       name: reactive-security-client
-      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+      script: cd $TRAVIS_BUILD_DIR/reactive-security-client && ./gradlew build
     - stage: test
       jdk: openjdk8
       name: reactive-functional-security
-      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+      script: cd $TRAVIS_BUILD_DIR/reactive-functional-security && ./gradlew build
     - stage: test
       jdk: openjdk8
       name: reactive-mongo-webflux-functional
-      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+      script: cd $TRAVIS_BUILD_DIR/reactive-mongo-webflux-functional && ./gradlew build
     - stage: test
       jdk: openjdk8
       name: reactive-mongo-webflux
-      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+      script: cd $TRAVIS_BUILD_DIR/reactive-mongo-webflux && ./gradlew build
     - stage: test
       jdk: openjdk8
       name: reactive-webflux-spring-data-redis
-      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+      script: cd $TRAVIS_BUILD_DIR/reactive-webflux-spring-data-redis && ./gradlew build
     - stage: test
       jdk: openjdk8
       name: spring-integration-5-example
-      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+      script: cd $TRAVIS_BUILD_DIR/spring-integration-5-example && ./gradlew build
     - stage: test
       jdk: openjdk8
       name: functional-spring
-      script: cd $TRAVIS_BUILD_DIR && ./gradlew build
+      script: cd $TRAVIS_BUILD_DIR/functional-spring && ./gradlew build
