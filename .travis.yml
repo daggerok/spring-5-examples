@@ -329,9 +329,10 @@ jobs:
       jdk: openjdk8
       name: kotlin-beans-dsl
       script:
-        - bash gradlew -b $TRAVIS_BUILD_DIR/kotlin-beans-dsl/build.gradle >/dev/null
+        - cd $TRAVIS_BUILD_DIR/kotlin-beans-dsl && ./gradlew
         - java -Dlogging.levelorg=warn -jar $TRAVIS_BUILD_DIR/kotlin-beans-dsl/kotlin-config-dsl/build/libs/*.jar
-        - bash mvnw -f $TRAVIS_BUILD_DIR/kotlin-beans-dsl/pom.xml >/dev/null
+        #
+        - cd $TRAVIS_BUILD_DIR/kotlin-beans-dsl && ./mvnw
         - java -Dlogging.levelorg=warn -jar $TRAVIS_BUILD_DIR/kotlin-beans-dsl/kotlin-config-dsl/target/*.jar
         ### xml-wtf
         #- bash gradlew -b $TRAVIS_BUILD_DIR/xml-wtf/build.gradle >/dev/null
@@ -482,7 +483,7 @@ jobs:
       jdk: openjdk8
       name: mustache-json gradle
       script:
-        - bash gradlew build -b $TRAVIS_BUILD_DIR/mustache-json/build.gradle
+        - cd $TRAVIS_BUILD_DIR/mustache-json && gradlew build
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/mustache-json/build/libs/*.jar &
         - wait_for 8080
         - http :8080
@@ -493,7 +494,7 @@ jobs:
       jdk: openjdk8
       name: mustache-json docker
       script:
-        - bash ./gradlew clean build -b $TRAVIS_BUILD_DIR/mustache-json/build.gradle
+        - cd $TRAVIS_BUILD_DIR/mustache-json && ./gradlew clean build
         - docker-compose -f $TRAVIS_BUILD_DIR/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
         - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
         - wait_for 8080
