@@ -25,7 +25,7 @@ buildscript {
   }
 
   dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-sam-with-receiver:$kotlinVersion"
+    // classpath "org.jetbrains.kotlin:kotlin-sam-with-receiver:$kotlinVersion"
     classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.16'
     classpath 'org.jruby:jruby-complete:9.1.13.0'
   }
@@ -34,14 +34,14 @@ buildscript {
 }
 
 plugins {
-  id 'com.gradle.build-scan' version '2.0.2'
+  // id 'com.gradle.build-scan' version '2.0.2'
 
   id 'idea'
   id 'eclipse'
   id 'com.avast.gradle.docker-compose' version '0.6.18'
 
   id 'org.jetbrains.kotlin.jvm' version '1.2.71' apply false
-  id 'org.jetbrains.kotlin.kapt' version '1.2.71' apply false
+  // id 'org.jetbrains.kotlin.kapt' version '1.2.71' apply false
   id 'org.jetbrains.kotlin.plugin.jpa' version '1.2.71' apply false
   id 'org.jetbrains.kotlin.plugin.noarg' version '1.2.71' apply false
   id 'org.jetbrains.kotlin.plugin.spring' version '1.2.71' apply false
@@ -59,7 +59,7 @@ plugins {
 }
 
 wrapper {
-  gradleVersion = '4.10.2'
+  gradleVersion = '4.10.3'
   distributionType = 'BIN'
 }
 
@@ -71,7 +71,7 @@ apply from: "$projectDir/gradle/java.gradle"
 apply from: "$projectDir/gradle/kotlin.gradle"
 apply from: "$projectDir/gradle/junit.gradle"
 apply from: "$projectDir/gradle/jacoco.gradle"
-apply from: "$projectDir/gradle/findbugs.gradle"
+// apply from: "$projectDir/gradle/findbugs.gradle"
 apply from: "$projectDir/gradle/docker-compose.gradle"
 apply from: "$projectDir/gradle/docs.gradle"
-apply from: "$projectDir/gradle/build-scan.gradle"
+// apply from: "$projectDir/gradle/build-scan.gradle"
