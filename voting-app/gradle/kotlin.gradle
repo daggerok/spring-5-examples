@@ -1,15 +1,15 @@
 allprojects {
   apply plugin: 'org.jetbrains.kotlin.jvm'
-  apply plugin: 'org.jetbrains.kotlin.kapt'
+  // apply plugin: 'org.jetbrains.kotlin.kapt'
   apply plugin: 'org.jetbrains.kotlin.plugin.jpa'
   apply plugin: 'org.jetbrains.kotlin.plugin.noarg'
   apply plugin: 'org.jetbrains.kotlin.plugin.spring'
   apply plugin: 'org.jetbrains.kotlin.plugin.allopen'
 
-  apply plugin: 'kotlin-sam-with-receiver'
-  samWithReceiver {
-    //annotation("com.my.Annotation")
-  }
+  // apply plugin: 'kotlin-sam-with-receiver'
+  // samWithReceiver {
+  //   //annotation("com.my.Annotation")
+  // }
 
   def projectIncremental = true
   def projectFreeCompileArgs = [
