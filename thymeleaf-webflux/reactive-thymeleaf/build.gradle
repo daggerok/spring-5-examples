@@ -1,0 +1,34 @@
+plugins {
+  id "java"
+  id "idea"
+  id "eclipse"
+  id "org.springframework.boot" version "2.0.1.RELEASE"
+  id "io.spring.dependency-management" version "1.0.5.RELEASE"
+}
+
+group = "daggerok"
+version = "0.0.1"
+sourceCompatibility = targetCompatibility = 1.8
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+dependencies {
+  compile("org.springframework.boot:spring-boot-starter-actuator")
+  compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+  compile("org.springframework.boot:spring-boot-starter-webflux")
+  runtime("org.springframework.boot:spring-boot-devtools")
+
+  compileOnly("org.projectlombok:lombok")
+  testCompileOnly("org.projectlombok:lombok")
+  annotationProcessor("org.projectlombok:lombok")
+
+  testCompile("org.springframework.boot:spring-boot-starter-test")
+  testCompile("io.projectreactor:reactor-test")
+}
+
+bootJar {
+  launchScript()
+}

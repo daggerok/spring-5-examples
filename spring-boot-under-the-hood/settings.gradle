@@ -1,0 +1,4 @@
+enableFeaturePreview 'STABLE_PUBLISHING'
+include 'power-of-conditions'
+include 'spring-boot-custom-json-starter'
+include 'spring-boot-custom-json-starter-test'

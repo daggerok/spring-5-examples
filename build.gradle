@@ -1,0 +1,17 @@
+plugins {
+  id 'idea'
+  id 'base'
+  id 'eclipse'
+}
+
+idea {
+  module {
+    downloadSources = true
+  }
+}
+
+eclipse {
+  classpath {
+    downloadSources = true
+  }
+}

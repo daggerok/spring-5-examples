@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    include:
+    - spring-boot
+    - spring-data
+---

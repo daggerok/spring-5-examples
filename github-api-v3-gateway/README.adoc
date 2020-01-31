@@ -1,0 +1,32 @@
+= github-api-v3-gateway
+
+//tag::content[]
+in progress...
+
+. GitHub API v3
+. Spring configuration processor
+. Spring Webflux WebClient interceptor
+
+.build, run and test
+----
+./gradlew bootRun
+http :8080/github/search/users/dagg\?page=0\&size=2
+http :8080/github/search/users/dagge\?page=0\&size=2
+http :8080/github/search/users/daggr\?page=0\&size=2
+----
+
+.docker
+----
+./mvnw -pl webflux-gateway clean package com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up
+./mvnw -pl webflux-gateway com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
+
+./gradlew clean build composeUp
+./gradlew composeDown
+----
+
+links:
+
+. link:https://www.youtube.com/watch?v=aA4tfBGY6jY[From Zero to Hero with Spring Boot - Brian Clozel]
+. link:https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-client-filter[Spring Webflux | WebClient | Filters]
+
+//end::content[]

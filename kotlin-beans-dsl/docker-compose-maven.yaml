@@ -1,0 +1,17 @@
+version: "2.1"
+
+services:
+
+  maven-kotlin-beans-dsl-app:
+    build:
+      context: ./kotlin-config-dsl
+      dockerfile: ./.mvn/Dockerfile
+    volumes: ["maven-app-data:/home/appuser"]
+    networks: [backing-services]
+
+volumes:
+  maven-app-data: {}
+
+networks:
+  backing-services:
+    driver: bridge

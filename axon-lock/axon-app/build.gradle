@@ -1,0 +1,12 @@
+apply plugin: "org.springframework.boot"
+
+dependencies {
+  compile("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
+  compile("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
+  compile("org.springframework.boot:spring-boot-starter-webflux")
+  runtime("org.springframework.boot:spring-boot-devtools")
+  compile("org.axonframework:axon-spring-boot-starter:$axonVersion")
+  compile("org.axonframework:axon-spring:$axonVersion")
+  compile("org.axonframework:axon-core:$axonVersion")
+  testCompile("org.axonframework:axon-test:$axonVersion")
+}

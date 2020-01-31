@@ -1,0 +1,54 @@
+buildscript {
+  ext {
+    springBootVersion = "2.0.0.M7"
+  }
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url "http://repo.maven.apache.org/maven2" }
+    jcenter()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+  }
+}
+
+allprojects {
+
+  apply plugin: "base"
+
+  defaultTasks "clean", "build"
+
+  group = "daggerok"
+  version = "0.0.1"
+
+/*
+  task wrapper(type: Wrapper) {
+    distributionType = 'BIN'
+    gradleVersion = "4.10.2"
+  }
+*/
+}
+
+subprojects {
+
+  apply plugin: "java"
+  apply plugin: "maven"
+
+  sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url "http://repo.maven.apache.org/maven2" }
+    jcenter()
+  }
+
+  tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+  }
+}

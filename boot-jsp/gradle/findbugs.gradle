@@ -1,0 +1,52 @@
+allprojects {
+  apply plugin: 'findbugs'
+
+  tasks.withType(FindBugs) {
+    reports {
+      xml.enabled false
+      html.enabled true
+      //// see for details/example: https://github.com/findbugsproject/findbugs/blob/master/findbugs/src/xsl/default.xsl
+      //html.stylesheet resources.text.fromFile('config/xsl/findbugs-custom.xsl')
+    }
+  }
+
+  findbugs {
+    reportsDir = file("$rootProject.buildDir/findbugs")
+    ignoreFailures = true
+  }
+
+  /* // hell, no!
+  findbugs {
+    reportsDir = file("$project.buildDir/findbugs")
+
+    // specify concrete tested and worked version for you
+    toolVersion = '...'
+
+    // specify custome sources for analysis:
+    sourceSets = [
+        sourceSets.main,
+        sourceSets.test,
+    ]
+
+    // do not fail on errors
+    ignoreFailures = true
+
+    effort = 'max'
+    showProgress = true
+    reportLevel = 'high'
+
+    // specify which bugs detect to analysis:
+    visitors = ['FindSqlInjection', 'SwitchFallthrough']
+    // specify which bugs skip for analysis:
+    omitVisitors = ['FindNonShortCircuit']
+
+    //// avoid configuration errors:
+    // Cannot read file specified for FindBugs 'excludeFilter' property: /private/tmp/findbugs-example/config/findbugs/excludeFilter.xml
+    excludeFilter = file("$rootProject.projectDir/config/findbugs/excludeFilter.xml")
+    // Cannot read file specified for FindBugs 'includeFilter' property: /private/tmp/findbugs-example/config/findbugs/includeFilter.xml
+    includeFilter = file("$rootProject.projectDir/config/findbugs/includeFilter.xml")
+    // Cannot read file specified for FindBugs 'excludeBugsFilter' property: /private/tmp/findbugs-example/config/findbugs/excludeBugsFilter.xml
+    excludeBugsFilter = file("$rootProject.projectDir/config/findbugs/excludeBugsFilter.xml")
+  }
+  */
+}

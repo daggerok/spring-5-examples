@@ -1,0 +1,33 @@
+= spring-5-examples image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
+
+//tag::content[]
+
+This is a simple spring-boot 5 shell example using spring-boot-keyvalue (Map as database) and kotlin language.
+
+.build and run
+----
+bash gradlew clean assemble
+java -jar build/libs/*.jar
+
+shell>help
+
+shell>connect --name max
+> connected: true
+> total: 1
+
+shell>all
+> all system users: [User(id=1c2568c4-0de2-481a-ada1-707c3a5c83ff, name=Max, username=max)]
+
+shell>disconnect --name max
+> disconnected: false
+> total: 0
+----
+
+using:
+
+. spring shell
+. spring-data-keyvalue
+. kotlin
+
+//end::content[]
+

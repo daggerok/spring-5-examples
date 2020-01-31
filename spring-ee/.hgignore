@@ -1,0 +1,17 @@
+syntax: glob
+^.gradle/*
+.gradle
+^.git/*
+.git
+*/build/*
+*/target/*
+.DS_Store
+Thumbs.db
+*/out/*
+^.idea/*
+.idea
+*.iml
+*.ipr
+*.iws
+*.log*
+leveldb-*

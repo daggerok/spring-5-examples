@@ -1,0 +1,10 @@
+= parcel-vue-example image:https://travis-ci.org/daggerok/parcel-vue-example.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/parcel-vue-example"]
+This is all about how easy and quick we can start vue.js application using parcel without any generators..
+
+.log
+----
+yarn -i
+yarn start
+yarn build
+yarn github
+----

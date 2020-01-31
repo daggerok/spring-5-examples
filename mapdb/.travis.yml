@@ -1,0 +1,54 @@
+service:
+- docker
+sudo: required
+group: travis_lts
+env:
+  global:
+  - TERM=dumb
+  - secure: cs34wHwsLTKMWTxLhfyWe7lbaYadcSAo0lyTxBdHinhH82ohWGVYpV7Zm3pbBH15BZv65pvqspgm2oNOExHBonZ1yhn3VUreso+4h+nf8mAwCjH+71MNTeuQo+d8Jky3SIeLvf4LqYZ6Zbf8yXksPF3DFG49M1S1KByIPmF+LT08pbZEptrsb+T6tuAIyWqMosx4Y4mKub9IgFjudtw42yd+sE4kihpVhW9ebw3wrZYtREXuZxIDfIvvjC+n5cEs0plm41725CVTv893WU6P3Kl0Gtkl6mER6HDLYPIKnSBrDFKvnmMSD7Sc3w/wPFaxfRayC4LB2til324+IcmFq8EeQ7mKRsEwQiIqWra8702/5v9+JH4JntO5lS8cs5osMEv7bf1+bI4+AFTb4S2PqjWFwuvts2yLOZ3tmpFMjHK666+Jaa63JBSVA4+Bhjn2+9hAeIVxhQuiT5oZ3fenHFC8cZV/ywDqjSWfzgoEWJNfiBAfl/ZQRgt1JBFSJrCVjaYIoqscj64L89KMzBu0wrkuepU3n4gJMGPX+7cv4CHcrzCXX3f3mpfiP58swfCh2bNNhuR1xCu7Yyus2UsFcrI5ell4b84Hl1nkY6pOZhr9cwiylSHkBM2TEZQlCRLqbATaFK8/4GpDcCjFey6tyrg6tqhflND+oiiR3WZQYo0=
+language: java
+jdk:
+- oraclejdk8
+- openjdk8
+install: true
+before_script:
+- sudo apt udate -y || true
+- sudo apt install -y --no-install-recommends bash unzip curl jq libxml2-utils docker-ce python-pip
+- sudo pip install docker-compose httpie
+- source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
+- stop_any 8080 80
+script:
+- bash gradlew
+- java -jar ./build/libs/*.jar &
+- wait_for 8080
+- http :8080
+- stop_any 8080 80
+#
+- bash ./build/libs/*.jar &
+- wait_for 8080
+- http :8080
+- stop_any 8080 80
+#
+- bash gradlew composeUp
+- http :8080
+- bash gradlew composeDown
+#
+- bash mvnw
+- java -jar ./target/*.jar &
+- wait_for 8080
+- http :8080
+- stop_any 8080 80
+#
+- bash ./target/*.jar &
+- wait_for 8080
+- http :8080
+- stop_any 8080 80
+#
+- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up
+- sleep 20
+- http :8080
+- bash mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.gradle

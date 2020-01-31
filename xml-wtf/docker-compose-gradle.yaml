@@ -1,0 +1,19 @@
+version: "2.1"
+
+services:
+
+  gradle-xml-wtf-app:
+    build:
+      context: ./kotlin-xml
+      dockerfile: ./gradle/Dockerfile
+    volumes: ["gradle-app-data:/home/appuser"]
+    networks: [backing-services]
+    ports: ["8080:8080"]
+    restart: unless-stopped
+
+volumes:
+  gradle-app-data: {}
+
+networks:
+  backing-services:
+    driver: bridge

@@ -1,0 +1,52 @@
+buildscript {
+  ext {
+    javaVersion = "1.8"
+  }
+}
+
+plugins {
+  id "idea"
+  id "eclipse"
+  id "com.avast.gradle.docker-compose" version "0.6.12"
+}
+
+allprojects {
+
+  apply plugin: "base"
+  apply plugin: "maven"
+
+  group = "daggerok"
+  version = "0.0.1"
+
+  defaultTasks("clean", "build")
+}
+
+subprojects {
+
+  apply plugin: "java"
+
+  sourceCompatibility = targetCompatibility = "$javaVersion"
+
+  repositories {
+    mavenLocal()
+    mavenCentral()
+  }
+}
+
+dockerCompose {
+  useComposeFiles = [project.file("docker-compose-gradle.yaml")]
+  captureContainersOutput = true
+  stopContainers = true
+  removeContainers = true
+  removeImages = "Local"
+  removeVolumes = true
+  removeOrphans = true
+  projectName = project.name
+}
+
+composeUp.dependsOn assemble
+
+task wrapper(type: Wrapper) {
+  gradleVersion = "4.10.2"
+  distributionType = 'BIN'
+}

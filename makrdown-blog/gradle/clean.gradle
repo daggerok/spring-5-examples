@@ -1,0 +1,29 @@
+allprojects {
+  apply plugin: 'base'
+
+  clean.doFirst {
+    [
+        project.buildDir,
+        project.file('out'),
+        project.file('bin'),
+        project.file('build'),
+        project.file('target'),
+        project.file('public'),
+        project.file('.allure'),
+        project.file('.project'),
+        project.file('.settings'),
+        project.file('.classpath'),
+        project.file("$rootDir/dist"),
+        project.file('allure-report'),
+        project.file('allure-results'),
+        project.file("$rootDir/src/main/resources/public/docs"),
+    ].each { delete it }
+    // rm -rf $(find . -name 'ajcore.*.txt')
+    delete fileTree(rootDir).matching {
+      include '**/ajcore.*.txt'
+      include '**/allure-results/**'
+      include '**/allure-report/**'
+      include '**/.allure/**'
+    }
+  }
+}

@@ -1,0 +1,14 @@
+= functional-spring image:https://travis-ci.org/daggerok/functional-spring.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/reactive-spring"]
+
+this repository contains a very simple spring webflux examples
+
+[source,bash]
+----
+gradle bootRun-service
+gradle bootRun-other-service
+gradle bootRun-client
+----
+
+read more
+
+* https://github.com/spring-projects/spring-retry[spring-retry]

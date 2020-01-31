@@ -1,0 +1,46 @@
+= listener-of-listener
+
+. listening spring boot application event
+. react on them with custom events
+. listening own events
+. manually rise events
+. kotlin-webflux DSL
+
+.gradle
+----
+./gradelw
+java -jar kotlin-listeners/build/libs/*.jar
+http :8080
+http :8080 message=hello,\ gradle\ y0!
+----
+
+.gradle-docker
+----
+./gradlew
+docker-compose -f docker-compose-gradle.yaml up --build
+http :8080
+http :8080 message=hello,\ docker\ y0!
+docker-compose -f docker-compose-gradle.yaml down -v
+----
+
+.maven
+----
+./mvnw
+java -jar kotlin-listeners/target/*.jar
+http :8080
+http :8080 message=hello,\ mvn\ y0!
+----
+
+.maven-docker
+----
+./mvnw
+docker-compose -f docker-compose-gradle.yaml up --build
+http :8080
+http :8080 message=hello,\ maven\ y0!
+docker-compose -f docker-compose-gradle.yaml down -v
+----
+
+links:
+
+. link:https://spring.io/blog/2017/08/01/spring-framework-5-kotlin-apis-the-functional-way[kotlin spring 2 DSL]
+. link:https://github.com/snicoll-scratches/test-kotlin-event-listener[Github: snicoll-scratches/test-kotlin-event-listener]

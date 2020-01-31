@@ -1,0 +1,18 @@
+version: "2.1"
+
+services:
+
+  maven-thymeleaf-webflux-app:
+    build:
+      context: ./reactive-thymeleaf
+      dockerfile: ./.mvn/Dockerfile
+    volumes: ["maven-app-data:/home/appuser"]
+    networks: [backing-services]
+    ports: ["8080:8080"]
+
+volumes:
+  maven-app-data: {}
+
+networks:
+  backing-services:
+    driver: bridge

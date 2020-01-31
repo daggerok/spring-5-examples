@@ -1,0 +1,10 @@
+spring:
+  thymeleaf:
+    prefix: classpath:/public/
+    suffix: .html
+  mvc:
+    favicon:
+      enabled: false
+  output:
+    ansi:
+      enabled: always

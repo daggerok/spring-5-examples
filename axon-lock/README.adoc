@@ -1,0 +1,13 @@
+= axon-lock
+
+. Reactive sprin Webflux + Axon Framework App
+. Maven / Gradle Kotlin configuration
+
+.build
+----
+./mvnw clean package com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:up
+./mvnw com.dkanejs.maven.plugins:docker-compose-maven-plugin:1.0.1:down
+
+./gradlew clean build composeUp
+./gradlew composeDown
+----

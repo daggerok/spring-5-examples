@@ -1,0 +1,5 @@
+enableFeaturePreview 'STABLE_PUBLISHING'
+rootProject.name = 'functional-spring'
+includeBuild 'reactive-old-service'
+includeBuild 'reactive-service'
+includeBuild 'reactive-client'

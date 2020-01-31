@@ -1,0 +1,4 @@
+rootProject.name = 'reactive-websocket-api'
+enableFeaturePreview 'STABLE_PUBLISHING'
+includeBuild 'ui'
+includeBuild 'back'

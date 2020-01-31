@@ -1,0 +1,7 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  mvc:
+    favicon:
+      enabled: false

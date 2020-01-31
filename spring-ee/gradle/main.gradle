@@ -1,0 +1,6 @@
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+mainClassName = 'daggerok.App'
+shadowJar.mustRunAfter jar
+defaultTasks 'clean', 'build'

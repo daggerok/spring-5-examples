@@ -1,0 +1,26 @@
+= spring-5-examples image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
+
+This repository contains:
+
+. reactive static content
+. ngrx: in progress...
+
+.gradle
+----
+./gradlew build bootRun
+open http://localhost:8000
+----
+
+.maven
+----
+./mvnw install spring-boot:run
+open http://localhost:8000
+----
+
+.docker
+----
+docker-compose -f src/main/docker/docker-compose.yaml up --build
+open http://localhost:8001 # built with maven
+open http://localhost:8002 # built with gradle
+docker-compose -f src/main/docker/docker-compose.yaml down -v
+----

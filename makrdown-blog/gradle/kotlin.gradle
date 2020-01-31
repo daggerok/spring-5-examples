@@ -1,0 +1,48 @@
+allprojects {
+  apply plugin: 'org.jetbrains.kotlin.jvm'
+  apply plugin: 'org.jetbrains.kotlin.plugin.jpa'
+  apply plugin: 'org.jetbrains.kotlin.plugin.noarg'
+  apply plugin: 'org.jetbrains.kotlin.plugin.spring'
+  apply plugin: 'org.jetbrains.kotlin.plugin.allopen'
+
+  apply plugin: 'kotlin-sam-with-receiver'
+  samWithReceiver {
+    annotation("com.my.Annotation")
+  }
+
+  def projectIncremental = true
+  def projectFreeCompileArgs = [
+      '-Xjsr305=strict',
+      '-java-parameters',
+      //"-Xenable-jvm-default",     //1.2.41
+      //"-Xjvm-default=compatibility",//1.2.50
+  ]
+
+  compileKotlin {
+    incremental = projectIncremental
+    kotlinOptions {
+      jvmTarget = "$javaVersion"
+      freeCompilerArgs = projectFreeCompileArgs
+    }
+  }
+
+  compileTestKotlin {
+    incremental = projectIncremental
+    kotlinOptions {
+      jvmTarget = "$javaVersion"
+      freeCompilerArgs = projectFreeCompileArgs
+    }
+  }
+
+  dependencies {
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+  }
+
+  apply plugin: 'org.jetbrains.kotlin.kapt'
+  processResources.dependsOn('kaptKotlin')
+}

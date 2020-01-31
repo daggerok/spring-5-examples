@@ -1,0 +1,553 @@
+notifications:
+  email: false
+git:
+  quiet: true
+  depth: false
+language: python
+python: 3.8
+node_js: lts/*
+jdk: openjdk8
+os: linux
+arch: amd64
+services:
+  - xvfb
+  - docker
+install: true
+addons:
+  apt:
+    update: false
+    packages:
+      - jq
+      - bash
+      - curl
+      - tree
+      - docker-ce
+      - libappindicator1
+      - fonts-liberation
+      - google-chrome-stable
+before_install:
+  - |
+    if [ ! -f ${HOME}/.local/daggerok/bash-functions/master/main.bash ] ; then
+      mkdir -p ${HOME}/.local/daggerok/bash-functions/master ;
+      curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash > ${HOME}/.local/daggerok/bash-functions/master/main.bash ;
+    fi
+    source ${HOME}/.local/daggerok/bash-functions/master/main.bash ;
+  - stop_any 80 5432 8080 5672 27017 8000 8081 80
+  #
+  - |
+    python -m pip install --upgrade pip setuptools pyopenssl
+    python -m pip install --upgrade httpie docker-compose
+  - export DISPLAY=:99.0
+env:
+  global:
+    - TERM=dumb
+    - secure: "PLL6z6iFOkP1zcJt2R7Yq8ut1313FX70opXUrC7/O0HUEgQdU1q77McSjxxyY4AtzvT+XPgbGNAx5JXuVpHyQ4rnM1Q/3HBz7E2ZHr+71ehLap95x9XKkwShw/Can9IYu66FUGm7sOdN2b01JOpH4IKR50tGeUY9dWzdld10f/Se5KaRjCtzCKsMyMPm02dhUvxvzLn0VWNQDuZC2hAsLsBGOBKc9cGcI03b0u98We8lqyaJ6FT6j0Fjd4t3CycOVR+0XrVbEJ3tFaILmSZoer+N76vqnY42sTyHfbNUPyJboZshy8A19AAngebw4yJWKaHQ+B3eowLcpDRoR32SYnFHgDMtDLLsKMVZeGBvUazORgQpl5YKQeInOKbSku796ZiWz7ciGsCm52ve9dymlX+PUzkfA9J9ylK4XRl9/yLNFfqtjmWLRkP0+V3qRtwCnLU3yd5ZQ7D8t1dhSNJHddvC75oH6Cn/KFOk+4h6jjo+hXOj64ZcjJF8bvYLbdhlFNbNdmq8I9MT0qge95UcufJ9pJk42PL1ojAmxw2REACdW3MMPfcSWukQAuzOgPeZYAjQ9zUIFBqkrrbH2j4Eo+wEq+wwxsgcmBSAkgjdLR9Ni1x/RcqrO1kZ3fXbIr/1P8XXF9d1l0oMDgNjgt64MVT0wwNyxOEPBwGXUO3TkFw="
+cache:
+  pip: true
+  packages: true
+  directories:
+    - $HOME/.m2
+    - $HOME/.gradle
+    - $HOME/.docker
+jobs:
+  include:
+    - stage: test
+      name: springdoc-openapi-webflux
+      jdk: openjdk11
+      before_script:
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f  springdoc-openapi-webflux
+        - java -jar $TRAVIS_BUILD_DIR/springdoc-openapi-webflux/target/*.jar &
+        - wait_for 8080
+      script:
+        - http :8080/v3/api-docs/
+        - http :8080/v3/api-docs.yaml
+        - http :8080/swagger-ui.html
+        - http :8080/
+      after_script:
+        - wait_for 8080
+    - stage: test
+      name: springdoc-openapi
+      jdk: openjdk11
+      before_script:
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f springdoc-openapi
+        - java -jar $TRAVIS_BUILD_DIR/springdoc-openapi/target/*.jar &
+        - wait_for 8080
+      script:
+        - http :8080/
+        - http :8080/swagger-ui.html
+        - http :8080/v3/api-docs/
+      after_script:
+        - wait_for 8080
+    - stage: test
+      name: optional-mvc-path-variable
+      jdk: openjdk11
+      before_script:
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f optional-mvc-path-variable
+        - java -jar $TRAVIS_BUILD_DIR/optional-mvc-path-variable/target/*.jar &
+        - wait_for 8080
+      script:
+        - http :8080/
+        - http :8080/optional
+        - http :8080/optional/ololo%20trololo
+        - http :8080/nullable
+        - http :8080/nullable/ololo
+        - http :8080/non-nullable
+        - http :8080/non-nullable/trololo
+      after_script:
+        - wait_for 8080
+    - stage: test
+      name: reactive-spring-webflux-and-web-client maven
+      script:
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f reactive-spring-webflux-and-web-client
+        - java -jar $TRAVIS_BUILD_DIR/reactive-spring-webflux-and-web-client/target/*-SNAPSHOT.jar &
+        - wait_for 8080
+        - http :8080
+        - curl -v localhost:8080/api/v1/collect
+        - stop_any 80 8080
+    - stage: test
+      name: reactive-spring-webflux-and-web-client maven
+      script:
+        - cd $TRAVIS_BUILD_DIR && ./gradlew -b ./reactive-spring-webflux-and-web-client/build.gradle.kts
+        - java -jar $TRAVIS_BUILD_DIR/reactive-spring-webflux-and-web-client/build/libs/*-SNAPSHOT.jar &
+        - wait_for 8080
+        - curl -sS localhost:8080
+        - http --debug :8080/api/v1/collect
+        - stop_any 80 8080
+    - stage: test
+      name: fn
+      script:
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f fn
+        - java -jar $TRAVIS_BUILD_DIR/fn/target/*.jar &
+        - wait_for 8080
+        - http :8080/person id=1 name=ololo
+        - http :8080/person name=trololo
+        - http :8080/person/1
+        - http :8080/person/
+        - stop_any 80 8080
+    - stage: test
+      name: awesome-kotlin
+      script:
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f ./awesome-kotlin
+        - bash $TRAVIS_BUILD_DIR/awesome-kotlin/target/*.jar &
+        - wait_for 8080
+        - http :8080
+        - http :8080/api
+        - http :8080/api/v2
+        - http :8080/api/v1/hello
+        - stop_any 80 8080
+    - stage: test
+      name: makrdown-blog
+      script:
+        - cd $TRAVIS_BUILD_DIR && bash $TRAVIS_BUILD_DIR/gradlew --stop
+        - cd $TRAVIS_BUILD_DIR && bash $TRAVIS_BUILD_DIR/gradlew build
+        - java -jar $TRAVIS_BUILD_DIR/makrdown-blog/build/libs/*.jar &
+        - wait_for 8080
+        - http :8080
+        - http :8080/api
+        - http :8080/api/2
+        - http :8080/api/3
+        - http post :8080/api/1
+        - http post :8080/api/1
+        - http post :8080/api/1
+        - http :8080/api
+        - http :8080/article/1
+        - http :8080/article/2
+        - stop_any 8080 80
+        ##
+        #- ./mvnw -f $TRAVIS_BUILD_DIR/makrdown-blog/pom.xml package >/dev/null
+        #- java -jar $TRAVIS_BUILD_DIR/makrdown-blog/target/*.jar &
+        #- wait_for 8080
+        #- http :8080
+        #- http :8080/api
+        #- http :8080/api/2
+        #- http :8080/api/3
+        #- http post :8080/api/1
+        #- http post :8080/api/1
+        #- http post :8080/api/1
+        #- http :8080/api
+        #- http :8080/article/1
+        #- http :8080/article/2
+        #- stop_any 8080 80
+    - stage: test
+      name: voting-app
+      script:
+        - cd $TRAVIS_BUILD_DIR/voting-app/gradlew --stop
+        - cd $TRAVIS_BUILD_DIR/voting-app/gradlew build
+        - java -jar $TRAVIS_BUILD_DIR/voting-app/voting-service/build/libs/*.jar &
+        - wait_for 8080
+        - http :8080
+        - stop_any 8080 80
+        #
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f voting-app package >/dev/null
+        - java -jar $TRAVIS_BUILD_DIR/voting-app/voting-service/target/*.jar &
+        - wait_for 8080
+        - http :8080/
+        - stop_any 8080 80
+        ## boot-jsp
+        #- ./gradlew -b $TRAVIS_BUILD_DIR/boot-jsp/build.gradle build >/dev/null
+        #- java -jar $TRAVIS_BUILD_DIR/boot-jsp/build/libs/*.war &
+        #- wait_for 8080
+        #- http :8080
+        #- stop_any 8080 80
+        ##
+        #- ./mvnw -f $TRAVIS_BUILD_DIR/boot-jsp/pom.xml package >/dev/null
+        #- java -jar $TRAVIS_BUILD_DIR/boot-jsp/target/*.war &
+        #- wait_for 8080
+        #- http :8080/
+        #- stop_any 8080 80
+    - stage: test
+      name: spring-ee
+      script:
+        - cd $TRAVIS_BUILD_DIR && ./mvnw -f $TRAVIS_BUILD_DIR/spring-ee/pom.xml >/dev/null
+        - cd $TRAVIS_BUILD_DIR && ./gradlew composeDown -Pprofile=maven -b $TRAVIS_BUILD_DIR/spring-ee/build.gradle
+        - ( ./gradlew composeUp -Pprofile=maven -b $TRAVIS_BUILD_DIR/spring-ee/build.gradle & ) || true
+        - sleep 60
+        - http :8080/app/api/health
+        - http :8080/app/welcome
+        - http :8080/app/
+        - ./gradlew comDown -Pprofile=maven -b $TRAVIS_BUILD_DIR/spring-ee/build.gradle
+        - stop_any 8080
+    - stage: test
+      name: spring-data-jpa-count-query-fix
+      script:
+        - cd $TRAVIS_BUILD_DIR/
+        - bash gradlew -b $TRAVIS_BUILD_DIR/spring-data-jpa-count-query-fix/build.gradle >/dev/null
+        - java -jar $TRAVIS_BUILD_DIR/spring-data-jpa-count-query-fix/build/libs/*.jar &
+        - wait_for 8080
+        - http :8080/api/orders/
+        - http :8080/api/
+        - http :8080/
+        - stop_any 8080
+        ## servlet-and-jsp-registration
+        #- ./gradlew -b $TRAVIS_BUILD_DIR/servlet-and-jsp-registration/build.gradle build >/dev/null
+        #- java -jar $TRAVIS_BUILD_DIR/servlet-and-jsp-registration/build/libs/*.war &
+        #- wait_for 8080
+        #- http :8080/jsp
+        #- http :8080/hello
+        #- http :8080/hola
+        #- http :8080/превед\!
+        #- stop_any 8080 80
+        ##
+        #- ./mvnw -f $TRAVIS_BUILD_DIR/servlet-and-jsp-registration/pom.xml package >/dev/null
+        #- java -jar $TRAVIS_BUILD_DIR/servlet-and-jsp-registration/target/*.war &
+        #- wait_for 8080
+        #- http :8080/jsp
+        #- http :8080/hello
+        #- http :8080/hola
+        #- http :8080/превед\!
+        #- stop_any 8080 80
+    - stage: test
+      name: mapdb
+      script:
+        - cd $TRAVIS_BUILD_DIR && ./gradlew -b $TRAVIS_BUILD_DIR/mapdb/build.gradle >/dev/null
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash $TRAVIS_BUILD_DIR/mapdb/build/libs/*.jar &
+        - wait_for 8080
+        - http :8080 message=hello,\ max!
+        - http :8080 message=how\ are\ u\?
+        - stop_any 8080 80
+    - stage: test
+      name: axon-vote
+      script:
+        - cd $TRAVIS_BUILD_DIR && bash mvnw -f $TRAVIS_BUILD_DIR/axon-vote/pom.xml >/dev/null
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash $TRAVIS_BUILD_DIR/axon-vote/target/*.jar &
+        - wait_for 8080
+        - http :8080/api/v1/registration id=my-vote name=my=vote
+        - http put http://localhost:8080/api/v1/registration/approve/my-vote
+        - http post http://localhost:8080/api/v1/vote/my-vote electorId=dag
+        - http post http://localhost:8080/api/v1/vote/my-vote electorId=max
+        - http :8080
+        - stop_any 8080 8000 80
+    - stage: test
+      name: who-cares?
+      script:
+        ## some-spring-boot-2-frontend
+        #- bash gradlew -b $TRAVIS_BUILD_DIR/some-spring-boot-2-frontend/build.gradle >/dev/null
+        #- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash $TRAVIS_BUILD_DIR/some-spring-boot-2-frontend/build/libs/*.jar &
+        #- wait_for 8080
+        #- http :8080
+        #- stop_any 8080 8000 80
+        # github-api-v3-gateway
+        - cp -Rf $TRAVIS_BUILD_DIR/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github-default.properties $TRAVIS_BUILD_DIR/github-api-v3-gateway/webflux-gateway/src/main/resources/config/application-github.properties
+        - http -a "$GITHUB_TOKEN" https://api.github.com
+        #
+        - cd $TRAVIS_BUILD_DIR/github-api-v3-gateway && ./gradlew >/dev/null
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash $TRAVIS_BUILD_DIR/github-api-v3-gateway/webflux-gateway/build/libs/*.jar &
+        - wait_for 8080
+        - http :8080/github/props/manual
+        - http :8080/github/props
+        - http :8080/github/search/users/dagg\?page=0\&size=2
+        - http :8080/github/search/users/dagge\?page=0\&size=2
+        - http :8080/github/search/users/daggr\?page=0\&size=2
+        - stop_any 8080 8000 80
+        #
+        - bash mvnw -f $TRAVIS_BUILD_DIR/github-api-v3-gateway/pom.xml >/dev/null
+        - bash mvnw -f $TRAVIS_BUILD_DIR/github-api-v3-gateway/pom.xml -pl webflux-gateway clean package docker-compose:up
+        - sleep 5
+        - bash mvnw -f $TRAVIS_BUILD_DIR/github-api-v3-gateway/pom.xml -pl webflux-gateway docker-compose:down
+        #
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash $TRAVIS_BUILD_DIR/github-api-v3-gateway/webflux-gateway/target/*.jar &
+        - wait_for 8080
+        - http :8080/github/props/manual
+        - http :8080/github/props
+        - http :8080
+        - http :8080/github/search/users/dagg\?page=0\&size=2
+        - http :8080/github/search/users/dagge\?page=0\&size=2
+        - http :8080/github/search/users/daggrok\?page=0\&size=2
+        - stop_any 8080 8000 80
+        #
+        - docker-compose -f $TRAVIS_BUILD_DIR/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml build --force-rm --no-cache --pull
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml up &
+        - sleep 20
+        - docker-compose -f $TRAVIS_BUILD_DIR/github-api-v3-gateway/webflux-gateway/docker-compose-gradle.yaml down -v &
+    - stage: test
+      name: reactor-processors
+      script:
+        - bash gradlew -b $TRAVIS_BUILD_DIR/reactor-processors/build.gradle >/dev/null
+        - bash mvnw -f $TRAVIS_BUILD_DIR/reactor-processors/pom.xml >/dev/null
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash $TRAVIS_BUILD_DIR/reactor-processors/flux-sink/build/libs/*.jar &
+        - wait_for 8080
+        - curl http://127.0.0.1:8080 &
+        - http :8080 --stream &
+        - http :8080/message message=hi!
+        - http :8080/message message=hey!
+        - stop_any 8080 8000 80
+    - stage: test
+      name: reactive axon
+      script:
+        - bash gradlew -b $TRAVIS_BUILD_DIR/axon-lock/build.gradle >/dev/null
+        - bash mvnw -f $TRAVIS_BUILD_DIR/axon-lock/pom.xml >/dev/null
+        - java -jar $TRAVIS_BUILD_DIR/axon-lock/axon-app/build/libs/*.jar --logging.level.root=warn --logging.level.daggerok=debug &
+        - java -jar $TRAVIS_BUILD_DIR/axon-lock/axon-app/target/*.jar --server.port=8000 --logging.level.root=warn --logging.level.daggerok=debug &
+        - wait_for 8080 8000
+        - http :8080 name=Max
+        - http :8000 name=Axon
+        - stop_any 8080 8080 8000 8000 80
+    - stage: test
+      name: kotlin-beans-dsl
+      script:
+        - cd $TRAVIS_BUILD_DIR/kotlin-beans-dsl && ./gradlew
+        - java -Dlogging.levelorg=warn -jar $TRAVIS_BUILD_DIR/kotlin-beans-dsl/kotlin-config-dsl/build/libs/*.jar
+        #
+        - cd $TRAVIS_BUILD_DIR/kotlin-beans-dsl && ./mvnw
+        - java -Dlogging.levelorg=warn -jar $TRAVIS_BUILD_DIR/kotlin-beans-dsl/kotlin-config-dsl/target/*.jar
+        ### xml-wtf
+        #- bash gradlew -b $TRAVIS_BUILD_DIR/xml-wtf/build.gradle >/dev/null
+        #- java -Dlogging.levelorg=warn -jar $TRAVIS_BUILD_DIR/xml-wtf/kotlin-xml/build/libs/*.jar &
+        #- bash mvnw -f $TRAVIS_BUILD_DIR/xml-wtf/pom.xml >/dev/null
+        #- java -Dlogging.levelorg=warn -jar $TRAVIS_BUILD_DIR/xml-wtf/kotlin-xml/target/*.jar --server.port=8000 &
+        #- wait_for 8080 8000
+        #- http :8080
+        #- http :8000
+        #- stop_any 8080 8000 80
+        ## maven docker
+        #- docker-compose -f $TRAVIS_BUILD_DIR/xml-wtf/docker-compose-maven.yaml build --force-rm --no-cache --pull
+        #- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/xml-wtf/docker-compose-maven.yaml up --force-recreate --remove-orphans &
+        #- wait_for 8080
+        #- sleep 20
+        #- http :8080
+        #- docker-compose -f $TRAVIS_BUILD_DIR/xml-wtf/docker-compose-maven.yaml down -v
+        #- stop_any 8080 8000 80
+        ## gradle docker
+        #- docker-compose -f $TRAVIS_BUILD_DIR/xml-wtf/docker-compose-gradle.yaml build --force-rm --no-cache --pull
+        #- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/xml-wtf/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+        #- wait_for 8080
+        #- sleep 20
+        #- http :8080
+        #- docker-compose -f $TRAVIS_BUILD_DIR/xml-wtf/docker-compose-gradle.yaml down -v
+        #- stop_any 8080 8000 80
+    - stage: test
+      name: monolith
+      script:
+        - bash gradlew -b $TRAVIS_BUILD_DIR/monolith/build.gradle >/dev/null
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/monolith/app/build/libs/*.jar &
+        - bash mvnw -f $TRAVIS_BUILD_DIR/monolith/pom.xml >/dev/null
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/monolith/app/target/*.jar --server.port=8000 &
+        - wait_for 8080 8000
+        - http :8080
+        - http --stream :8080/api/v1/messages
+        - http :8000
+        - http --stream :8000/api/v1/messages 'accept:application/stream+json'
+        - stop_any 8080 8080 8000 8000 80 80
+        ## listener-of-listener
+        #- bash gradlew -b $TRAVIS_BUILD_DIR/listener-of-listener/build.gradle >/dev/null
+        #- java -jar $TRAVIS_BUILD_DIR/listener-of-listener/kotlin-listeners/build/libs/*.jar --logging.levelorg=warn &
+        #- bash mvnw -f $TRAVIS_BUILD_DIR/listener-of-listener/pom.xml >/dev/null
+        #- java -jar $TRAVIS_BUILD_DIR/listener-of-listener/kotlin-listeners/target/*.jar --server.port=8000 --logging.levelorg=warn &
+        #- wait_for 8080 8000
+        #- http :8080
+        #- http :8080 message=send\ message,\ y0!
+        #- stop_any 8080 8080 8000 8000 80 80
+        ## maven docker
+        #- docker-compose -f $TRAVIS_BUILD_DIR/listener-of-listener/docker-compose-maven.yaml build --force-rm --no-cache --pull
+        #- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/listener-of-listener/docker-compose-maven.yaml up --force-recreate --remove-orphans &
+        #- wait_for 8080
+        #- sleep 20
+        #- http :8080
+        #- http :8080 message=send\ message,\ y0!
+        #- docker-compose -f $TRAVIS_BUILD_DIR/listener-of-listener/docker-compose-maven.yaml down -v
+        #- stop_any 8080 8080 8000 8000 80 80
+        ## gradle docker
+        #- docker-compose -f $TRAVIS_BUILD_DIR/listener-of-listener/docker-compose-gradle.yaml build --force-rm --no-cache --pull
+        #- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/listener-of-listener/docker-compose-gradle.yaml up --force-recreate --remove-orphans &
+        #- wait_for 8080
+        #- sleep 20
+        #- http :8080
+        #- http :8080 message=send\ message,\ y0!
+        #- docker-compose -f $TRAVIS_BUILD_DIR/listener-of-listener/docker-compose-gradle.yaml down -v
+        #- stop_any 8080 8080 8000 8000 80 80
+    - stage: test
+      name: thymeleaf-webflux
+      script:
+        - bash gradlew -b $TRAVIS_BUILD_DIR/thymeleaf-webflux/build.gradle clean build            >/dev/null
+        - java -jar       $TRAVIS_BUILD_DIR/thymeleaf-webflux/reactive-thymeleaf/build/libs/*.jar --logging.level.root=warn --logging.level.daggerok=debug &
+        - bash mvnw    -f $TRAVIS_BUILD_DIR/thymeleaf-webflux/pom.xml      clean package          >/dev/null
+        - java -jar       $TRAVIS_BUILD_DIR/thymeleaf-webflux/reactive-thymeleaf/target/*.jar     --logging.level.root=warn --logging.level.daggerok=debug --server.port=8000 &
+        - wait_for 8080 8000
+        - http --stream :8080
+        - http --stream :8000
+        - stop_any 8080 8000 80 80 8080 8000
+        # maven docker
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash gradlew -b $TRAVIS_BUILD_DIR/thymeleaf-webflux/build.gradle composeUp   -Pprofile=maven
+        - wait_for 8080
+        - http --stream :8080
+        - bash gradlew -b $TRAVIS_BUILD_DIR/thymeleaf-webflux/build.gradle composeDown -Pprofile=maven
+        - stop_any 8080 8080 8000 8000 80 80
+        # gradle docker
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG bash gradlew -b $TRAVIS_BUILD_DIR/thymeleaf-webflux/build.gradle composeUp   -Pprofile=gradle
+        - wait_for 8080
+        - http --stream :8080
+        - bash gradlew -b $TRAVIS_BUILD_DIR/thymeleaf-webflux/build.gradle composeDown -Pprofile=gradle
+        - stop_any 8080 8080 8000 8000 80 80
+        ### rmi
+        #- bash gradlew -b $TRAVIS_BUILD_DIR/rmi/build.gradle >/dev/null
+        #- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/rmi/spring-rmi-client/build/libs/*.jar &
+        ###lombok edge required - broken with maven
+        ##- bash mvnw -f $TRAVIS_BUILD_DIR/rmi/pom.xml >/dev/null
+        ##- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/rmi/spring-rmi-service/target/*.jar --server.port=8000 &
+        #- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/rmi/spring-rmi-service/build/libs//*.jar --server.port=8000 &
+        #- wait_for 8080 8000
+        #- http :8080/api/v1/users name=maksimko
+        #- http :8080/api/v1/users name=maks
+        #- http :8080/api/v1/users name=max
+        #- http :8080/api/v1/users
+        #- stop_any 8080 8080 8000 8000 80 80 1199
+        ## hotel maven docker
+        #- docker-compose -f $TRAVIS_BUILD_DIR/rmi/docker-compose.yaml build --force-rm --no-cache --pull
+        #- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/rmi/docker-compose.yaml up --force-recreate --remove-orphans &
+        #- wait_for 8080
+        #- sleep 20
+        #- http :8080/api/v1/users name=maksimko
+        #- http :8080/api/v1/users name=maks
+        #- http :8080/api/v1/users name=max
+        #- http :8080/api/v1/users
+        #- docker-compose -f $TRAVIS_BUILD_DIR/rmi/docker-compose.yaml down -v
+    - stage: test
+      jdk: openjdk8
+      name: mailbox
+      script:
+        - bash gradlew clean build -b $TRAVIS_BUILD_DIR/mailbox/build.gradle >/dev/null
+        - bash mvnw clean package -f $TRAVIS_BUILD_DIR/mailbox/pom.xml >/dev/null
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/mailbox/webapp/target/*.jar &
+        - wait_for 8080
+        - http -a max:max get :8080/
+        - stop_any 8080 8080 80 80
+        ## hotel gradle
+        #- bash gradlew clean build -b $TRAVIS_BUILD_DIR/hotel/build.gradle >/dev/null
+        #- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/hotel/webapp/build/libs/*.jar &
+        #- docker-compose -f $TRAVIS_BUILD_DIR/hotel/reservations/docker-compose.yml up -d
+        #- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/hotel/reservations/build/libs/*.jar &
+        #- wait_for 8080 8081
+        #- http :8081/api/v1/reservations
+        #- http :8080
+        #- http :8080?name=Gradle
+        #- http :8080/actuator/
+        #- http :8080/actuator/health
+        #- stop_any 8080 8080 8081 8081 80 80
+        ## hotel maven docker
+        #- bash mvnw -f $TRAVIS_BUILD_DIR/hotel/pom.xml clean package -U >/dev/null
+        #- docker-compose -f $TRAVIS_BUILD_DIR/hotel/docker-compose.yaml   build --force-rm --no-cache --pull
+        #- LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/hotel/docker-compose.yaml up --force-recreate --remove-orphans &
+        #- sleep 20
+        #- http :8080
+        #- http :8080?name=Maven
+        #- http :8080/actuator/
+        #- http :8080/actuator/health
+        #- docker-compose -f $TRAVIS_BUILD_DIR/hotel/docker-compose.yaml down -v
+    - stage: test
+      jdk: openjdk8
+      name: mustache-json gradle
+      script:
+        - cd $TRAVIS_BUILD_DIR/mustache-json && ./gradlew build
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG java -jar $TRAVIS_BUILD_DIR/mustache-json/build/libs/*.jar &
+        - wait_for 8080
+        - http :8080
+        - http :8080/hello/
+        - http :8080/hello/mustache
+        - stop_any 8080 8080 80 80
+    - stage: test
+      jdk: openjdk8
+      name: mustache-json docker
+      script:
+        - cd $TRAVIS_BUILD_DIR/mustache-json && ./gradlew clean build
+        - docker-compose -f $TRAVIS_BUILD_DIR/mustache-json/docker-compose.yaml build --force-rm --no-cache --pull
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/mustache-json/docker-compose.yaml up --force-recreate --remove-orphans &
+        - wait_for 8080
+        - sleep 20
+        - http :8080
+        - http :8080/hello
+        - http :8080/hello/lol
+        - docker-compose -f $TRAVIS_BUILD_DIR/mustache-json/docker-compose.yaml down -v
+        - stop_any 8080 8080 80 80
+    - stage: test
+      name: reactive-ngrx maven
+      script:
+        - bash mvnw -f $TRAVIS_BUILD_DIR/reactive-ngrx/pom.xml
+        - java -jar $TRAVIS_BUILD_DIR/reactive-ngrx/target/*.jar --loging.level=warn &
+        - wait_for 8080
+        - http :8080
+        - stop_any 8080 8000 80
+    - stage: test
+      name: reactive-ngrx docker
+      script:
+        - bash mvnw -f $TRAVIS_BUILD_DIR/reactive-ngrx/pom.xml
+        - bash gradlew -b $TRAVIS_BUILD_DIR/reactive-ngrx/build.gradle
+        - docker-compose -f $TRAVIS_BUILD_DIR/reactive-ngrx/src/main/docker/docker-compose.yaml build --force-rm --no-cache --pull
+        - LOGGING_LEVEL_ROOT=WARN LOGGING_LEVEL_DAGGEROK=DEBUG docker-compose -f $TRAVIS_BUILD_DIR/reactive-ngrx/src/main/docker/docker-compose.yaml up &
+        - wait_healthy_docker_containers 2
+        - http :8001
+        - http :8002
+        - docker-compose -f $TRAVIS_BUILD_DIR/reactive-ngrx/src/main/docker/docker-compose.yaml down -v
+        - stop_any 8001 8002 80
+#     - stage: test
+#       name: spring-shell
+#       script: cd $TRAVIS_BUILD_DIR/spring-shell && ./gradlew build
+#     - stage: test
+#       name: reactive-websocket-sse
+#       script: cd $TRAVIS_BUILD_DIR/reactive-websocket-sse && ./gradlew build
+#     - stage: test
+#       name: spring-boot-under-the-hood
+#       script: cd $TRAVIS_BUILD_DIR/spring-boot-under-the-hood && ./gradlew build
+#     - stage: test
+#       name: reactive-security-auth
+#       script: cd $TRAVIS_BUILD_DIR/reactive-security-auth && ./gradlew build
+#     - stage: test
+#       name: reactive-security-client
+#       script: cd $TRAVIS_BUILD_DIR/reactive-security-client && ./gradlew build
+#     - stage: test
+#       name: reactive-functional-security
+#       script: cd $TRAVIS_BUILD_DIR/reactive-functional-security && ./gradlew build
+#     - stage: test
+#       name: reactive-mongo-webflux-functional
+#       script: cd $TRAVIS_BUILD_DIR/reactive-mongo-webflux-functional && ./gradlew build
+#     - stage: test
+#       name: reactive-mongo-webflux
+#       script: cd $TRAVIS_BUILD_DIR/reactive-mongo-webflux && ./gradlew build
+#     - stage: test
+#       name: reactive-webflux-spring-data-redis
+#       script: cd $TRAVIS_BUILD_DIR/reactive-webflux-spring-data-redis && ./gradlew build
+#     - stage: test
+#       name: spring-integration-5-example
+#       script: cd $TRAVIS_BUILD_DIR/spring-integration-5-example && ./gradlew build
+#     - stage: test
+#       name: functional-spring
+#       script: cd $TRAVIS_BUILD_DIR/functional-spring && ./gradlew build

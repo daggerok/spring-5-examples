@@ -1,0 +1,49 @@
+{{>layout/start}}
+
+<body class="grid-container">
+
+<nav>
+  <div class="nav-wrapper grid-header">
+    <a href="/" class="brand-logo">&nbsp; Mailbox</a>
+    <a href="/" data-activates="mobile-menu" class="button-collapse">
+      <i class="material-icons">menu</i>
+    </a>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="/">Home</a></li>
+      <li><a href="/login">Login</a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+    <ul class="side-nav" id="mobile-menu">
+      <li><a href="/">Home</a></li>
+      <li><a href="/login">Login</a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="grid-mail-content">
+  <div class="container">
+    <p>
+      hi, {{#currentUser}}{{currentUser.name}}{{/currentUser}}!
+      <a href="https://github.com/daggerok/csrf-spring-webflux-mustache">Check this out</a>
+    </p>
+
+    <form method="post" action="/">
+      <input type="text" id="name" name="name" placeholder="enter some.."/>
+      <input type="hidden" name="_csrf" value="{{#_csrf.token}}{{_csrf.token}}{{/_csrf.token}}"/>
+      <button type="submit" class="hide-me btn-floating btn-large waves-effect waves-light red">
+          <i class="material-icons">add</i>
+      </button>
+    </form>
+  </div>
+</div>
+
+<footer class="page-footer blue-grey lighten-1 grid-footer">
+  <div class="footer-copyright">
+    <div class="container">
+      2018 <a class="grey-text text-lighten-3" href="http://materializecss.com">daggerok</a>
+    </div>
+  </div>
+</footer>
+
+{{>layout/end}}

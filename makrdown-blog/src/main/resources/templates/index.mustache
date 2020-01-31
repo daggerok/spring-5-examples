@@ -1,0 +1,16 @@
+{{> parts/header}}
+
+{{#articles}}
+<section>
+  <header>
+    <h2>
+      <a href="/article/{{articleId}}">{{articleTitle}}</a>
+    </h2>
+    <div>By <strong>{{authorUsername}}</strong></div>
+    <div>Created at {{articleCreatedAt}}</div>
+  </header>
+  <article>{{{articleHeadline}}}</article>
+</section>
+{{/articles}}
+
+{{> parts/footer}}

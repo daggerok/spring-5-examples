@@ -1,0 +1,47 @@
+apply plugin: 'cn.bestwu.propdeps'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+defaultTasks 'clean', 'build'
+
+compileJava.dependsOn(processResources)
+
+dependencies {
+  runtime 'org.apache.tomcat.embed:tomcat-embed-jasper'
+
+  implementation "org.webjars:materializecss:$materializecssVersion"
+  implementation "org.webjars:material-design-icons:$materialDesignIconsVersion"
+
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  runtime 'org.springframework.boot:spring-boot-devtools'
+
+  annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+  testAnnotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'io.projectreactor:reactor-test'
+
+  //// JPA (+embedded)
+  //runtime 'com.h2database:h2'
+  //implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  //implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+
+  //// Kafka (+embedded)
+  //implementation 'org.springframework.cloud:spring-cloud-stream'
+  //implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
+  //implementation 'org.springframework.kafka:spring-kafka'
+  //implementation 'org.springframework.kafka:spring-kafka-test'
+  //testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
+}
+
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
+    //mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+  }
+}
+
+bootWar {
+  launchScript()
+}

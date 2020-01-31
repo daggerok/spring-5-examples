@@ -1,0 +1,24 @@
+#service:
+#- docker
+#sudo: required
+group: travis_lts
+env:
+  global:
+    TERM=dumb
+language: java
+jdk:
+- oraclejdk8
+- openjdk8
+install: true
+#before_script:
+#- sudo apt udate -y || true
+#- sudo apt install -y --no-install-recommends curl jq libxml2-utils docker-ce python-pip
+#- sudo pip install docker-compose httpie
+#- source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
+script:
+- bash mvnw
+- bash gradlew
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.gradle

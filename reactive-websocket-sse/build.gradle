@@ -1,0 +1,31 @@
+plugins {
+  id "idea"
+  id "eclipse"
+}
+
+def projectNames = [
+    "ui",
+]
+
+["clean", "assemble", "test", "build"].each { taskName ->
+  tasks.create(taskName) { task ->
+    projectNames.each { projectName ->
+      dependsOn gradle.includedBuild(projectName).task(":$taskName")
+    }
+  }
+}
+
+["bootRun"].each { taskName ->
+  tasks.create(taskName) { task ->
+    gradle.includedBuilds.each { build ->
+      dependsOn gradle.includedBuild(build.name).task(":$taskName")
+    }
+  }
+}
+
+task wrapper(type: Wrapper) {
+  distributionType = 'BIN'
+  gradleVersion = "4.10.2"
+}
+
+defaultTasks("clean", "build")

@@ -1,0 +1,6 @@
+{
+  "app": [
+    { "GET": "/hello" },
+    { "GET": "/hello/{name}" }
+  ]
+}

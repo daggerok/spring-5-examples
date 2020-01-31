@@ -1,0 +1,59 @@
+= axon-vote
+
+//tag::content[]
+
+Absolutely same app as https://github.com/daggerok/spring-examples/tree/master/axon-vote
+but using spring-boot 2
+
+only think was changed - removed link:https://github.com/daggerok/spring-5-examples/blob/master/axon-vote/src/main/kotlin/daggerok/DocumentConverter.kt[DocumentConvernter]
+
+.build, run, test
+----
+./mvnw
+
+java -jar target/*.jar
+
+# voting begin
+http :8080/api/v1/registration id=my-vote name=my=vote
+# or http :8080/api/v1/registration name=my=vote
+# 201:
+Location: http://localhost:8080/api/v1/registration/approve/my-vote
+# ...
+{
+    "PUT": "http://localhost:8080/api/v1/registration/approve/my-vote",
+    "message": "candidate has been registered. Please approve registration."
+}
+
+http put http://localhost:8080/api/v1/registration/approve/my-vote
+# 202:
+{
+    "message": "Registration has been approved. Wait for elections begin and send your campaign URL to your electorate making vote for you!",
+    "vote by electorId in request body - POST": "http://localhost:8080/api/v1/vote/my-vote"
+}
+
+http post http://localhost:8080/api/v1/vote/my-vote electorId=dag
+http post http://localhost:8080/api/v1/vote/my-vote electorId=max
+# 202, and logs: handling VotedForCandidateEvent(candidateId=my-vote, elector={"electorId": "max"})
+
+http :8080
+# output - current snapshot state...
+
+# voting end
+
+# counter begin
+http post :8080/api/v1/counter\?counterId=my-counter
+# or http post :8080/api/v1/counter
+http put :8080//api/v1/counter/my-counter/enable
+http post :8080//api/v1/counter/my-counter/increment
+http post :8080//api/v1/counter/my-counter/increment
+http :8080
+# counter end
+
+# show all events
+http :8080\?collection=events
+
+# show all snapshots
+http :8080 # same as http :8080\?collection=snapshots
+----
+
+//end::content[]

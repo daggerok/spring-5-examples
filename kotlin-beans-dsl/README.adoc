@@ -1,0 +1,8 @@
+= kotlin-beans-dsl
+
+links:
+
+. link:https://docs.spring.io/spring-framework/docs/5.0.0.BUILD-SNAPSHOT/spring-framework-reference/kotlin.html#functional-bean-declaration-dsl[Spring Kotlin Reference]
+. link:https://github.com/sdeleuze/spring-kotlin-functional/tree/master/src/main/kotlin/functional[Github: sdeleuze/spring-kotlin-functional]
+. link:https://spring.io/blog/2017/01/04/introducing-kotlin-support-in-spring-framework-5-0[spring.io/blog]
+. link:https://github.com/hantsy/spring-reactive-sample[GIthub: hantsy/spring-reactive-sample]

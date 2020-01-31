@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    active: spring-boot
+  output:
+      ansi:
+        enabled: always

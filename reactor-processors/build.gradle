@@ -1,0 +1,42 @@
+buildscript {
+  ext {
+    javaVersion = "1.8"
+    vavrVersion = "0.9.2"
+  }
+}
+
+plugins {
+  id "base"
+  id "idea"
+  id "eclipse"
+  id("io.franzbecker.gradle-lombok") version "3.2.0"
+}
+
+wrapper {
+  gradleVersion = "4.10.2"
+}
+
+allprojects {
+  apply plugin: "base"
+  apply plugin: "maven"
+
+  group = "daggerok"
+  version = "0.0.1"
+
+  defaultTasks "clean", "build"
+}
+
+subprojects {
+  apply plugin: "java"
+
+  sourceCompatibility = targetCompatibility = "$javaVersion"
+
+  repositories {
+    mavenLocal()
+    mavenCentral()
+  }
+
+  dependencies {
+    compile "io.vavr:vavr:$vavrVersion"
+  }
+}

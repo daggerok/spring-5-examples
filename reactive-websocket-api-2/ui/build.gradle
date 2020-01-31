@@ -1,0 +1,47 @@
+buildscript {
+    ext {
+        springBootVersion = "1.5.7.RELEASE"
+    }
+}
+
+plugins {
+    id "java"
+    id "eclipse"
+    id "com.moowork.node" version "1.2.0"
+    id "org.springframework.boot" version "1.5.7.RELEASE"
+}
+
+group = "daggerok"
+version = "0.0.1"
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-mustache")
+}
+
+springBoot.executable = true
+
+node {
+  download = true
+  version = "8.6.0"
+  npmVersion = "5.3.0"
+  yarnVersion = "1.1.0"
+}
+
+assemble.dependsOn yarn_build
+yarn_build.dependsOn yarn_install
+yarn_install.dependsOn yarn_cache_clean
+
+clean {
+  delete "$buildDir"
+  // delete "$project.projectDir/node_modules"
+}
+
+wrapper {
+  gradleVersion = "4.10.2"
+  distributionType = 'BIN'
+}

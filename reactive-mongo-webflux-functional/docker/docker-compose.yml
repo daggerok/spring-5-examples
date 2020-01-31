@@ -1,0 +1,13 @@
+version: "2.1"
+services:
+  mongo:
+    #image: mongo:3.0.15
+    image: healthcheck/mongo:latest
+    ports: ["27017:27017"]
+    networks: [backing-services]
+    volumes: ["mongo-data:/data/db"]
+volumes:
+  mongo-data: {}
+networks:
+  backing-services:
+    driver: bridge

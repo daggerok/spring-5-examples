@@ -1,0 +1,6 @@
+allprojects {
+  buildscript {
+    apply from: "$rootDir/gradle/repositories-config.gradle"
+  }
+  apply from: "$rootDir/gradle/repositories-config.gradle"
+}

@@ -1,0 +1,50 @@
+plugins {
+  id "base"
+  id "idea"
+  id "eclipse"
+  id "com.avast.gradle.docker-compose" version "0.6.13"
+  id("io.franzbecker.gradle-lombok") version "3.2.0"
+}
+
+subprojects {
+  apply plugin: "java"
+
+  repositories {
+    mavenLocal()
+    mavenCentral()
+  }
+
+  sourceCompatibility = targetCompatibility = "1.8"
+}
+
+allprojects {
+  apply plugin: "base"
+  apply plugin: "maven"
+
+  group = "daggerok"
+  version = "0.0.1"
+
+  defaultTasks "clean", "build"
+}
+
+def profile = project.hasProperty("profile") ? project.property("profile") : "gradle"
+
+dockerCompose {
+  useComposeFiles = [project.file("docker-compose-${profile}.yaml")]
+  // captureContainersOutput = true
+  captureContainersOutput = false
+  stopContainers = true
+  removeContainers = true
+  removeImages = "Local"
+  removeVolumes = true
+  removeOrphans = true
+  forceRecreate = true
+  waitForTcpPorts = false
+  projectName = project.name
+}
+
+composeUp.dependsOn assemble
+
+wrapper {
+  gradleVersion = "4.10.2"
+}

@@ -1,0 +1,72 @@
+= spring-boot under the hood
+
+This example is about spring-boot in general, not only 5th...
+
+== build and run
+
+[source,bash]
+----
+bash gradlew -t bootRun
+----
+
+== spring-boot POWER
+
+.out-of-the-box conditions
+[source,java]
+----
+// check if bean is in spring factory:
+@OnBeanCondition
+
+// check if class is in classpath:
+@OnClassCondition
+
+// on thruthy evaluated express condition:
+@OnExpressionCondition
+
+// on expected java version
+@OnJavaCondition
+
+// on expected JNDI branch
+@OnJndiCondition
+
+// check if property exists
+@OnPropertyCondition
+
+// check if resource exists
+@OnResourceCondition
+
+// check if WebApplicationContext exists
+@OnWebApplicationCondition
+----
+
+.additional conditions for combine or merge them together
+[source,java]
+----
+// AND condition
+@AllNestedConditions
+
+// OR condition
+@AnyNestedConditions
+
+// NOT condition
+@NoneNestedConditions
+----
+
+== own starters
+
+. create a starter configuration with provided by you custom functionality.
+In our case it's kind of Java analog for JSON.stringify / JSON.parse from JS.
+
+. create src/main/resources/META-INF/spring.factories file
+
+.src/main/resources/META-INF/spring.factories
+[source,properties]
+----
+
+----
+
+TODO: finish readme...
+
+links:
+
+. link:https://www.brighttalk.com/webcast/14893/252475[watch]

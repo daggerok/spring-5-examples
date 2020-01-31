@@ -1,0 +1,18 @@
+version: "2.1"
+
+services:
+
+  gradle-thymeleaf-webflux-app:
+    build:
+      context: ./reactive-thymeleaf
+      dockerfile: ./gradle/Dockerfile
+    volumes: ["gradle-app-data:/home/appuser"]
+    networks: [backing-services]
+    ports: ["8080:8080"]
+
+volumes:
+  gradle-app-data: {}
+
+networks:
+  backing-services:
+    driver: bridge

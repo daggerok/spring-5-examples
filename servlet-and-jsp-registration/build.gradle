@@ -1,0 +1,75 @@
+buildscript {
+  ext {
+    javaVersion = JavaVersion.VERSION_1_8
+    springBootVersion = '2.0.4.RELEASE'
+    springCloudVersion = 'Finchley.SR1'
+    jacksonKotlinVersion = '2.9.6'
+    lombokVersion = '1.18.2'
+    logbackVersion = '1.2.3'
+    kotlinVersion = '1.2.61'
+    slf4jVersion = '1.7.25'
+    vavrVersion = '0.9.2'
+
+    phantomjsDriverVersion = '1.4.4'
+    seleniumDriverVersion = '3.12.0'
+    junitPlatformVersion = '1.2.0'
+    junitJupiterVersion = '5.2.0'
+    selenideVersion = '4.12.3'
+    assertjVersion = '3.10.0'
+    jgivenVersion = '0.15.3'
+    hamcrestVersion = '1.3'
+    junit4Version = '4.12'
+
+    allureVersion = '2.6.0'
+
+    asciidoctorjPdfVersion = '1.5.0-alpha.15'
+  }
+
+  dependencies {
+    classpath "org.asciidoctor:asciidoctorj-pdf:$asciidoctorjPdfVersion"
+  }
+
+  //// spring-boot versions overriding, be careful with it!
+  // In our case we are fixing PhantomJS (replacing older spring-boot version):
+  ext['selenium.version'] = "$seleniumDriverVersion"
+}
+
+plugins {
+  id 'org.asciidoctor.convert' version '1.5.8.1' apply false
+  id 'org.ajoberstar.git-publish' version '0.3.0' apply false
+
+  id 'org.jetbrains.kotlin.jvm' version '1.2.61' apply false
+  id 'org.jetbrains.kotlin.kapt' version '1.2.61' apply false
+  id 'org.jetbrains.kotlin.plugin.noarg' version '1.2.61' apply false
+  id 'org.jetbrains.kotlin.plugin.spring' version '1.2.61' apply false
+  id 'org.jetbrains.kotlin.plugin.allopen' version '1.2.61' apply false
+
+  id 'io.spring.dependency-management' version '1.0.6.RELEASE' apply false
+  id 'org.springframework.boot' version '2.0.4.RELEASE' apply false
+  id 'com.avast.gradle.docker-compose' version '0.6.18' apply false
+  id 'io.franzbecker.gradle-lombok' version '1.14' apply false
+  id 'cn.bestwu.propdeps-eclipse' version '0.0.10' apply false
+  id 'cn.bestwu.propdeps-maven' version '0.0.10' apply false
+  id 'cn.bestwu.propdeps-idea' version '0.0.10' apply false
+  id 'cn.bestwu.propdeps' version '0.0.10' apply false
+  id 'io.qameta.allure' version '2.5' apply false
+}
+
+/*
+wrapper {
+  gradleVersion = '4.10.2'
+  distributionType = 'BIN'
+}
+*/
+
+apply from: "$projectDir/gradle/repositories.gradle"
+apply from: "$projectDir/gradle/ide.gradle"
+apply from: "$projectDir/gradle/clean.gradle"
+apply from: "$projectDir/gradle/java.gradle"
+apply from: "$projectDir/gradle/kotlin.gradle"
+apply from: "$projectDir/gradle/spring-boot.gradle"
+apply from: "$projectDir/gradle/junit.gradle"
+apply from: "$projectDir/gradle/findbugs.gradle"
+apply from: "$projectDir/gradle/jacoco.gradle"
+apply from: "$projectDir/gradle/docker-compose.gradle"
+apply from: "$projectDir/gradle/docs.gradle"

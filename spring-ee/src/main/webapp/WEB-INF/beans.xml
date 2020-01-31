@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- CDI 1.1 webapp/WEB-INF/beans.xml -->
+<!-- J2EE 1.2: http://www.oracle.com/webfolder/technetwork/jsc/j2ee/dtds/index.html -->
+<!-- J2EE 1.3: http://www.oracle.com/webfolder/technetwork/jsc/dtd/index.html -->
+<!-- J2EE 1.4: http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/j2ee/index.html -->
+<!-- Java EE 5: http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/javaee/index.html#5 -->
+<!-- Java EE 6: http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/javaee/index.html#6 -->
+<!-- Java EE 7: http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/javaee/index.html#7 -->
+<!-- Java EE 8: http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/javaee/index.html#8 -->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
+       bean-discovery-mode="all">
+</beans>

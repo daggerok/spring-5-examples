@@ -1,0 +1,80 @@
+buildscript {
+  ext {
+    commonmarkVersion = '0.12.1'
+    springBootVersion = '2.1.5.RELEASE'
+    springDataVersion = 'Lovelace-RELEASE'
+    springCloudVersion = 'Finchley.RELEASE'
+    javaVersion = JavaVersion.VERSION_1_8
+    materialDesignIconsVersion = '3.0.1'
+    materializecssVersion = '1.0.0'
+    jacksonKotlinVersion = '2.9.9'
+    lombokVersion = '1.18.8'
+    logbackVersion = '1.2.3'
+    kotlinVersion = '1.3.31'
+    slf4jVersion = '1.7.25'
+    vavrVersion = '1.0.0-alpha-2'
+
+    phantomjsDriverVersion = '1.4.4'
+    seleniumDriverVersion = '3.14.0'
+    junitPlatformVersion = '1.5.0-M1'
+    junitJupiterVersion = '5.5.0-M1'
+    assertkJvmVersion = '0.12'
+    selenideVersion = '4.14.2'
+    assertjVersion = '3.12.2'
+    jgivenVersion = '0.17.1'
+    hamcrestVersion = '2.1'
+    allureVersion = '2.6.0'
+    junit4Version = '4.13-beta-3'
+  }
+
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-sam-with-receiver:$kotlinVersion"
+    classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.17'
+    classpath 'org.jruby:jruby-complete:9.2.7.0'
+  }
+
+  ext['selenium.version'] = "$seleniumDriverVersion"
+}
+
+plugins {
+  // id 'com.gradle.build-scan' version '2.3' // freeze 1.16 when using Gradle 4!
+
+  id 'org.asciidoctor.convert' version '2.2.0' apply false
+  id 'org.ajoberstar.git-publish' version '2.1.1' apply false
+
+  id 'org.jetbrains.kotlin.jvm' version '1.3.31'
+  id 'org.jetbrains.kotlin.plugin.jpa' version '1.3.31'
+  id 'org.jetbrains.kotlin.plugin.spring' version '1.3.31'
+  id 'org.jetbrains.kotlin.plugin.noarg' version '1.3.31'
+  id 'org.jetbrains.kotlin.plugin.allopen' version '1.3.31'
+  id 'org.jetbrains.kotlin.kapt' version '1.3.31' apply false
+
+  id 'io.spring.dependency-management' version '1.0.7.RELEASE' apply false
+  id 'org.springframework.boot' version '2.1.5.RELEASE' apply false
+  id 'com.avast.gradle.docker-compose' version '0.9.4' apply false
+  id 'com.github.ben-manes.versions' version '0.21.0'
+  id 'io.franzbecker.gradle-lombok' version '3.0.0' apply false
+  id 'cn.bestwu.propdeps-eclipse' version '0.0.10' apply false
+  id 'cn.bestwu.propdeps-maven' version '0.0.10' apply false
+  id 'cn.bestwu.propdeps-idea' version '0.0.10' apply false
+  id 'cn.bestwu.propdeps' version '0.0.10' apply false
+  id 'io.qameta.allure' version '2.7.0' apply false
+}
+
+wrapper {
+  gradleVersion = '4.10.3'
+  distributionType = 'BIN'
+}
+
+apply from: "$projectDir/gradle/repositories.gradle"
+apply from: "$projectDir/gradle/ide.gradle"
+apply from: "$projectDir/gradle/clean.gradle"
+apply from: "$projectDir/gradle/java.gradle"
+apply from: "$projectDir/gradle/kotlin.gradle"
+apply from: "$projectDir/gradle/spring-boot.gradle"
+apply from: "$projectDir/gradle/junit.gradle"
+// apply from: "$projectDir/gradle/findbugs.gradle"
+apply from: "$projectDir/gradle/jacoco.gradle"
+//apply from: "$projectDir/gradle/selenide.gradle"
+apply from: "$projectDir/gradle/docker-compose.gradle"
+// apply from: "$projectDir/gradle/build-scan.gradle"

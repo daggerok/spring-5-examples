@@ -1,0 +1,20 @@
+version: "2.1"
+
+services:
+
+  maven-github-api-v3-gateway-app:
+    build:
+      context: .
+      dockerfile: .mvn/Dockerfile
+    volumes: ["maven-github-api-v3-gateway-app-data:/home/appuser"]
+    networks: [backing-services]
+    ports: ["8080:8080"]
+    restart: unless-stopped
+    mem_limit: 838860800 # 800Mb
+
+volumes:
+  maven-github-api-v3-gateway-app-data: {}
+
+networks:
+  backing-services:
+    driver: bridge

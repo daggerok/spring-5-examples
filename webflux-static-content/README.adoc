@@ -1,0 +1,3 @@
+= webflux-static-content image:https://travis-ci.org/daggerok/webflux-static-content.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/webflux-static-content"]
+
+link:../../../../webflux-static-content/[go to repo]

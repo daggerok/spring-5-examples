@@ -1,0 +1,10 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  data:
+    mongodb:
+      database: reservations
+      host: ${SPRING_DATA_MONGODB_HOST:127.0.0.1}
+server:
+  port: 8081

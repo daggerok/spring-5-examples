@@ -1,0 +1,17 @@
+= spring-integration-5-example image:https://travis-ci.org/daggerok/spring-5-examples.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/spring-5-examples"]
+
+this repository is containing simple spring-integration 5 example
+
+==== build, run, test
+
+[source,bash]
+----
+bash gradle clean build bootRun
+http :8080/sse
+# output:
+data:foo
+
+data:bar
+
+data:baz
+----

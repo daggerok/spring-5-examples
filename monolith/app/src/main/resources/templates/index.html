@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/webjars/material-design-icons/material-icons.css}">
+  <link rel="stylesheet" th:href="@{/webjars/materializecss/css/materialize.min.css}">
+  <link rel="stylesheet" th:href="@{/style.css}">
+  <title>Monolith</title>
+</head>
+<body>
+
+<p>Hey <span th:text="${name}">name should be here</span>!</p>
+
+<p>
+  <span th:text="#{ololo}"></span>
+  <span th:text="${#messages.msg('trololo')}"></span>
+</p>
+
+<div id="status"></div>
+
+<ul id="messages"></ul>
+
+<script th:src="@{/main.js}"></script>
+</body>
+</html>

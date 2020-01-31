@@ -1,0 +1,90 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+
+  <id>sources</id>
+  <includeBaseDirectory>true</includeBaseDirectory>
+
+  <formats>
+    <!--
+      <format> — specifies the format of the assembly. We can have multiple formats and the assembly plugin will create
+                 archives for each format. The supported formats are as follows:
+        “zip” — Creates a ZIP file format
+        “tar” — Creates a TAR format
+        “tar.gz” or “tgz” — Creates a gzip’d TAR format
+        “tar.bz2” or “tbz2” — Creates a bzip’d TAR format
+        “tar.snappy” — Creates a snappy’d TAR format
+        “tar.xz” or “txz” — Creates a xz’d TAR format
+        “jar” — Creates a JAR format
+        “dir” — Creates an exploded directory format
+        “war” — Creates a WAR format
+        Since we are creating a zip archive, I have added the format as zip:
+    -->
+    <format>zip</format>
+  </formats>
+
+  <fileSets>
+    <!--
+    <fileSet> — defines the directories that need to be included in the assembly. I have added src directory:
+    -->
+    <fileSet>
+      <directory>${project.basedir}/src</directory>
+    </fileSet>
+  </fileSets>
+
+  <files>
+    <!--
+    <file> — As <fileSet> can be used to add directories, <file> can be used to add individual files. I have added
+             this project’s jar file that gets built to be included in the final archive. The path
+             ${project.build.directory}/${project.artifactId}-${project.version}.jar file gets resolved into
+             target/spring-boot-functional-servlet-example-1.0.0-SNAPSHOT.jar. Since I would want the project jar
+             to be in the root of the zip archive, <outputDirectory> value has been added as “/”.
+    -->
+    <!--<file>
+      <source>${project.build.directory}/${project.artifactId}-${project.version}.jar</source>
+      <outputDirectory>/</outputDirectory>
+    </file>-->
+    <file>
+      <source>${project.basedir}/.gitignore</source>
+      <outputDirectory>/</outputDirectory>
+    </file>
+    <file>
+      <source>${project.basedir}/pom.xml</source>
+      <outputDirectory>/</outputDirectory>
+    </file>
+    <file>
+      <source>${project.basedir}/README.md</source>
+      <outputDirectory>/</outputDirectory>
+    </file>
+    <!--<file>
+      <source>${project.basedir}/.java-version</source>
+      <outputDirectory>/</outputDirectory>
+    </file>
+    <file>
+      <source>${project.basedir}/.travis.yml</source>
+      <outputDirectory>/</outputDirectory>
+    </file>
+    <file>
+      <source>${project.basedir}/build.gradle.kts</source>
+      <outputDirectory>/</outputDirectory>
+    </file>
+    <file>
+      <source>${project.basedir}/settings.gradle.kts</source>
+      <outputDirectory>/</outputDirectory>
+    </file>-->
+  </files>
+
+  <dependencySets>
+    <!--
+    <dependencySet> — Defines the location for the all the dependency libraries. Note that I have excluded my project
+                      jar being copied into the dependency directory as I have already included it in the archive root
+                      directory.
+    -->
+    <!--<dependencySet>
+      <outputDirectory>lib</outputDirectory>
+      <excludes>
+        <exclude>${project.groupId}:${project.artifactId}:jar:*</exclude>
+      </excludes>
+    </dependencySet>-->
+  </dependencySets>
+</assembly>

@@ -1,0 +1,13 @@
+syntax: glob
+^.gradle/*
+.idea/*
+.git/*
+*/out/*
+*/build/*
+*/target/*
+.DS_Store
+*.iml
+*.ipr
+*.iws
+*.log
+*/config/application-github.properties

@@ -1,0 +1,32 @@
+GET http://127.0.0.1:8080/swagger-ui.html
+
+###
+GET http://127.0.0.1:8080/v3/api-docs.yaml
+
+###
+GET http://127.0.0.1:8080/v3/api-docs/
+Accept: application/json
+
+###
+GET http://127.0.0.1:8080/
+Accept: application/json
+
+###
+GET http://127.0.0.1:8080/optional
+
+###
+GET http://127.0.0.1:8080/optional/ololo%20trololo
+
+###
+GET http://127.0.0.1:8080/nullable
+
+###
+GET http://127.0.0.1:8080/nullable/ohoho
+
+###
+GET http://127.0.0.1:8080/non-nullable
+
+###
+GET http://127.0.0.1:8080/non-nullable/nonono
+
+###

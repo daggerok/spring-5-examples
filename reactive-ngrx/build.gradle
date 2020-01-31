@@ -1,0 +1,59 @@
+import java.nio.file.Paths
+
+plugins {
+  id "java"
+  id "idea"
+  id "eclipse"
+  id "com.moowork.node" version "1.2.0"
+  id "org.springframework.boot" version "2.0.1.RELEASE"
+  id "io.spring.dependency-management" version "1.0.5.RELEASE"
+}
+
+allprojects {
+  group = "daggerok"
+  version = "0.0.1"
+  description = "Spring Boot 5 Reactive Angular ngrx"
+}
+
+sourceCompatibility = targetCompatibility = 1.8
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+dependencies {
+  compile("org.springframework.boot:spring-boot-starter-actuator")
+  compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+  compile("org.springframework.boot:spring-boot-starter-webflux")
+  runtime("org.springframework.boot:spring-boot-devtools")
+  compileOnly("org.springframework.boot:spring-boot-configuration-processor")
+  testCompileOnly("org.springframework.boot:spring-boot-configuration-processor")
+  testCompile("org.springframework.boot:spring-boot-starter-test")
+  testCompile("io.projectreactor:reactor-test")
+}
+
+wrapper {
+  gradleVersion = "4.10.2"
+}
+
+node {
+  download = true
+  version = "9.11.1"
+  npmVersion = "5.6.0"
+  yarnVersion = "1.6.0"
+  nodeModulesDir = Paths.get("src", "main", "ngrx").toFile()
+}
+
+assemble.dependsOn yarn_build
+yarn_build.dependsOn yarn_install
+yarn_lint.dependsOn yarn_install
+//yarn_install.dependsOn yarn_cache_clean
+
+clean.doFirst {
+  ["nodejs", "npm", "yarn"].each { delete "$projectDir/.gradle/$it" }
+  ["out", "build"].each { delete "$projectDir/$it" }
+  delete Paths.get(node.nodeModulesDir.path, "node_modules")
+}
+
+defaultTasks "clean", "build"

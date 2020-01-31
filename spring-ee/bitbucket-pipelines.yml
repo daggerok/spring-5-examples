@@ -1,0 +1,19 @@
+# This is a sample build configuration for Docker.
+# Check our guides at https://confluence.atlassian.com/x/O1toN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: openjdk:8u171-jdk-stretch
+
+pipelines:
+  default:
+    - step:
+        services:
+        - docker
+        script:
+        - #export IMAGE_NAME=daggerok/spring-ee:$BITBUCKET_COMMIT
+        - #docker build -t $IMAGE_NAME .
+        - #docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+        - #docker push $IMAGE_NAME
+        - #./gradlew -Si
+        - #./mvnw

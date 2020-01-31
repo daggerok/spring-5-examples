@@ -1,0 +1,65 @@
+buildscript {
+  ext {
+    springBootVersion = "2.0.0.M4"
+  }
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+  }
+}
+
+plugins {
+  id "java"
+  id "idea"
+  id "maven"
+  id "eclipse"
+  id "maven-publish"
+}
+
+group = "daggerok"
+version = "4.1.2"
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  maven { url "https://repo.spring.io/snapshot" }
+  maven { url "https://repo.spring.io/milestone" }
+}
+
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+
+dependencies {
+  compile("org.springframework.boot:spring-boot-starter")
+  compile("com.fasterxml.jackson.core:jackson-databind:2.9.8")
+  compile("org.projectlombok:lombok:1.16.18")
+  compile("io.vavr:vavr:0.9.1")
+  testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+bootJar {
+  launchScript {
+    included = true
+  }
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+    }
+  }
+
+  repositories {
+    maven {
+      url "../build/repo"
+    }
+  }
+}

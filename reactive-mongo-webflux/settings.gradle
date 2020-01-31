@@ -1,0 +1,3 @@
+include 'docker'
+include 'boot-reactive-backend'
+enableFeaturePreview 'STABLE_PUBLISHING'

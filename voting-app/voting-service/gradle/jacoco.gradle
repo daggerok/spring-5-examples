@@ -1,0 +1,83 @@
+// read more: https://docs.gradle.org/current/userguide/jacoco_plugin.html
+// Also got some thoughts from here: https://gist.github.com/aalmiray/e6f54aa4b3803be0bcac
+
+allprojects {
+  apply plugin: 'jacoco'
+
+  jacoco {
+    toolVersion = '0.8.1'
+  }
+
+  jacocoTestCoverageVerification {
+    violationRules {
+      rule {
+        limit {
+          minimum = 0.5
+        }
+      }
+      rule {
+        enabled = false
+        element = 'CLASS'
+        includes = [
+            'org.gradle.*',
+        ]
+        limit {
+          counter = 'LINE'
+          value = 'TOTALCOUNT'
+          maximum = 0.3
+        }
+      }
+    }
+  }
+}
+
+subprojects {
+  jacocoTestReport {
+    def main = sourceSets.main
+    def srcDirs = main.allSource.srcDirs
+    additionalSourceDirs = files(srcDirs)
+    sourceDirectories = files(srcDirs)
+    classDirectories = files(main.output)
+    reports {
+      xml.enabled = false
+      csv.enabled = false
+      html.enabled = true
+      html.destination file("$buildDir/jacoco/html")
+    }
+  }
+}
+
+jacocoTestReport {
+  def main = subprojects.sourceSets.main
+  def srcDirs = main.allSource.srcDirs
+  dependsOn = subprojects.check
+  additionalSourceDirs = files(srcDirs)
+  sourceDirectories = files(srcDirs)
+  classDirectories = files(main.output)
+  executionData = files(subprojects.jacocoTestReport.executionData)
+  afterEvaluate {
+    classDirectories = files(classDirectories.files.collect {
+      fileTree(
+        dir    : it,
+        exclude: [
+          '*donot/check/me*',
+          '*dont/check/metoo*',
+        ]
+      )
+    })
+  }
+  reports {
+    xml.enabled = false
+    csv.enabled = false
+    html.enabled = true
+    html.destination file("$rootProject.buildDir/jacoco/html")
+  }
+  onlyIf = {
+    true
+  }
+  doFirst {
+    executionData = files(executionData.findAll {
+      it.exists()
+    })
+  }
+}

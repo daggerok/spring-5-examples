@@ -1,0 +1,56 @@
+allprojects {
+  apply plugin: 'java'
+
+  apply plugin: 'io.franzbecker.gradle-lombok'
+  lombok.version = project.lombokVersion
+
+  version = '0.0.1'
+  group = 'com.github.daggerok'
+  sourceCompatibility = targetCompatibility = "$javaVersion"
+
+  apply plugin: 'war'
+
+  war {
+    archiveName = "${project.name}.war"
+  }
+
+  defaultTasks 'clean', 'build'
+
+  compileJava.dependsOn(processResources)
+
+  apply plugin: 'io.spring.dependency-management'
+
+  dependencyManagement {
+    imports {
+      mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
+      mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+    }
+  }
+
+  dependencies {
+    implementation 'org.springframework:spring-core'
+    implementation 'org.springframework:spring-context'
+    implementation 'org.springframework:spring-web'
+    implementation 'org.springframework:spring-webmvc'
+
+    // java.lang.NoClassDefFoundError: Failed to link org/springframework/http/server/reactive/ServletServerHttpResponse$ResponseBodyProcessor
+    implementation 'org.springframework:spring-webflux'
+    // java.lang.NoClassDefFoundError: com/fasterxml/jackson/databind/exc/InvalidDefinitionException
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    // java.lang.ClassNotFoundException: com.fasterxml.jackson.dataformat.xml.XmlMapper
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+
+    // spring also requires these:
+    implementation 'javax.servlet:jstl:1.2'
+    implementation 'javax.servlet:javax.servlet-api:4.0.0'
+
+    providedCompile "javax:javaee-api:$javaeeVersion"
+    implementation 'javax.json:javax.json-api:1.0'
+    implementation 'org.glassfish:javax.json:1.0.4'
+
+    // In java we trust...
+    implementation "io.vavr:vavr:$vavrVersion"
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
+    implementation "org.slf4j:slf4j-jdk14:$slf4jVersion"
+  }
+}

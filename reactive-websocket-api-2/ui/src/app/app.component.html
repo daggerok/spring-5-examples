@@ -1,0 +1,11 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<h1>
+  Welcome to {{title}}!
+</h1>
+<ul *ngFor="let message of this.messages;" class="list-style-none">
+  <li>
+    Session ID: {{ message.sessionId }}
+    <br/>
+    Message: {{ message.body }}
+  </li>
+</ul>

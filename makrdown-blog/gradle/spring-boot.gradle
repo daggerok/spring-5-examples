@@ -1,0 +1,37 @@
+apply plugin: 'cn.bestwu.propdeps'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+defaultTasks 'clean', 'build'
+
+compileJava.dependsOn(processResources)
+
+dependencies {
+  implementation "org.webjars:materializecss:$materializecssVersion"
+  implementation "org.webjars:material-design-icons:$materialDesignIconsVersion"
+  implementation "com.atlassian.commonmark:commonmark:$commonmarkVersion"
+  implementation "com.atlassian.commonmark:commonmark-ext-autolink:$commonmarkVersion"
+  implementation 'org.springframework.boot:spring-boot-starter-mustache'
+
+  implementation 'org.springframework.boot:spring-boot-starter-webflux'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  implementation 'org.springframework.data:spring-data-jdbc'
+  runtime 'com.h2database:h2'
+
+  annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'io.projectreactor:reactor-test'
+}
+
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
+    mavenBom "org.springframework.data:spring-data-releasetrain:$springDataVersion"
+//    mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+  }
+}
+
+bootJar {
+  launchScript()
+}
