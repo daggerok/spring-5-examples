@@ -2,6 +2,7 @@
 
 Some spring-boot 2 / spring 5 playground project examples
 
+- link:https://github.com/daggerok/spring-jwt-secured-apps[Stateless Spring JWT Security app]
 - link:https://github.com/daggerok/avoiding-reactor-meltdown[Avoiding Reactor Meltdown or how to block correctly with Project Reactor (Spring WebFlux / RSocket)]
 - link:https://github.com/daggerok/ddd-spring-hexagonal-architecture[GitHub: daggerok/ddd-spring-hexagonal-architecture]
 - link:https://github.com/daggerok/javafx-examples/tree/master/spring-boot-kotlin[Spring Boot Kotlin JavaFX starter]
