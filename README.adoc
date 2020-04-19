@@ -3,7 +3,16 @@
 Some spring-boot 2 / spring 5 playground project examples
 
 - link:https://github.com/daggerok/spring-jwt-secured-apps[Stateless Spring JWT Security app]
+- https://github.com/daggerok/spring-integration-flows
+- https://github.com/daggerok/fullstack-rsocket-apps
+- https://github.com/daggerok/spring-integration-kotlin-dsl
+- https://github.com/daggerok/spring-boot-multi-java-ee-apps
+- https://github.com/daggerok/spring-boot-jpa-react-jwt-auth-app
+- https://github.com/daggerok/rsocket-examples
 - link:https://github.com/daggerok/avoiding-reactor-meltdown[Avoiding Reactor Meltdown or how to block correctly with Project Reactor (Spring WebFlux / RSocket)]
+- https://github.com/daggerok/boot-your-reactor-kotlin-coroutines
+- https://github.com/daggerok/spring-boot-oauth2-apps
+- https://github.com/daggerok/spring-integration-java-DSL-example
 - link:https://github.com/daggerok/ddd-spring-hexagonal-architecture[GitHub: daggerok/ddd-spring-hexagonal-architecture]
 - link:https://github.com/daggerok/javafx-examples/tree/master/spring-boot-kotlin[Spring Boot Kotlin JavaFX starter]
 - link:https://github.com/daggerok/webflux-rsocket-cqrs-app[WebFlux RSocket CQRS app GitHub: daggerok/webflux-rsocket-cqrs-app]
@@ -25,6 +34,7 @@ Some spring-boot 2 / spring 5 playground project examples
 - link:https://github.com/daggerok/hazelcast-examples[Hazelcast examples]
 - link:https://github.com/daggerok/spring-boot-functional-servlet-example[Functional Servlet based Spring MVC resources]
 - link:https://github.com/daggerok/spring-data-jdbc-example[Lightway Spring Data JDBC]
+- https://github.com/daggerok/spring-data-jdbc-examples
 - link:https://github.com/daggerok/spring-data-java8[Spring Data (JPA) repository return types: CompletableFuture, Stream / Streamble]
 - link:https://github.com/daggerok/functional-spring-boot-transaction[Functional Spring Boot Transaction execution]
 - link:https://github.com/daggerok/webflux-cqrs-es[Eventsourcing using JPA (in progress..)]
@@ -59,6 +69,7 @@ Some spring-boot 2 / spring 5 playground project examples
 - link:reactor-processors/[Webflux Reactor processors: FluxSink, etc...]
 - link:functional-spring/[Spring 5 Reactive Webflux RouterFunction / WebClient examples]
 - link:spring-integration-5-example/[Spring 5 Integration example]
+- https://github.com/daggerok/spring-integration-5-examples
 - link:reactive-webflux-spring-data-redis/[Spring 5 Reactive Redis / Old Webflux REST API]
 - link:reactive-mongo-webflux/[Spring 5 Reactive MongoDB / Webflux REST API]
 - link:reactive-mongo-webflux-functional/[Spring 5 Reactive MongoDB / Functional REST API]
