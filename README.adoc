@@ -2,6 +2,7 @@
 
 Some spring-boot 2 / spring 5 playground project examples
 
+- link:https://github.com/daggerok/spring-security-basics[GitHub: daggerok/spring-security-basics]
 - link:https://github.com/daggerok/spring-jwt-secured-apps[Stateless Spring JWT Security app]
 - https://github.com/daggerok/spring-integration-flows
 - https://github.com/daggerok/fullstack-rsocket-apps
