@@ -24,7 +24,7 @@
     <assertj.version>3.10.0</assertj.version>
     <lombok.version>1.18.2</lombok.version>
     <jgiven.version>0.15.3</jgiven.version>
-    <junit4.version>4.12</junit4.version>
+    <junit4.version>4.13.1</junit4.version>
     <slf4j.version>1.7.25</slf4j.version>
     <javaee.version>8.0</javaee.version>
     <vavr.version>0.9.2</vavr.version>
